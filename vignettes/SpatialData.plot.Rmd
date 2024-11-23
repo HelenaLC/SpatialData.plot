@@ -46,7 +46,7 @@ to an on-disk *.parquet* file. As such, all data are represented out of memory.
 Element annotation as well as cross-layer summarizations (e.g., count matrices)
 are represented as `r BiocStyle::Biocpkg("SingleCellExperiment")` as tables.
 
-```{r load-data}
+```{r read-blobs}
 x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="SpatialData")
 (x <- readSpatialData(x, anndataR=FALSE))
