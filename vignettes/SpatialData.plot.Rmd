@@ -49,7 +49,7 @@ are represented as `r BiocStyle::Biocpkg("SingleCellExperiment")` as tables.
 ```{r load-data}
 x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="SpatialData")
-(x <- readSpatialData(x))
+(x <- readSpatialData(x, anndataR=FALSE))
 ```
 
 # Visualization
@@ -163,7 +163,7 @@ dir.create(td <- tempfile())
 pa <- unzip_spd_demo(
     zipname="merfish.zarr.zip", 
     dest=td, source="biocOSN")
-(x <- readSpatialData(pa))
+(x <- readSpatialData(pa, anndataR=FALSE))
 ```
 
 There are only `r length(SpatialData::shape(x, "cells"))` cells, but 
@@ -201,7 +201,7 @@ dir.create(td <- tempfile())
 pa <- unzip_spd_demo(
     zipname="visium_hd_3.0.0_io.zip", 
     dest=td, source="biocOSN")
-(x <- readSpatialData(pa, images=4, shapes=3, tables=NULL))
+(x <- readSpatialData(pa, images=4, shapes=3, tables=FALSE))
 ```
 
 ```{r visiumhd-plot}
@@ -220,7 +220,7 @@ dir.create(td <- tempfile())
 pa <- unzip_spd_demo(
     zipname="mibitof.zip", 
     dest=td, source="biocOSN")
-(x <- readSpatialData(pa))
+(x <- readSpatialData(pa, anndataR=FALSE))
 ```
 
 ```{r mibitof-plot, fig.width=10, fig.height=3}
