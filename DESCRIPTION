@@ -66,3 +66,4 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 URL: https://github.com/HelenaLC/SpatialData.plot
 BugReports: https://github.com/HelenaLC/SpatialData.plot/issues
+LazyData: true

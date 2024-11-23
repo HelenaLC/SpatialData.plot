@@ -9,5 +9,5 @@
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
 #' x <- system.file(x, package="SpatialData")
-#' (x <- readSpatialData(x))
+#' (x <- readSpatialData(x, anndataR=FALSE))
 NULL
