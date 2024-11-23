@@ -34,7 +34,6 @@ NULL
 #' @rdname plotLabel
 #' @importFrom grDevices hcl.colors colorRampPalette
 #' @importFrom S4Vectors metadata
-#' @importFrom abind abind
 #' @importFrom rlang .data
 #' @importFrom methods as
 #' @export
