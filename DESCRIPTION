@@ -5,9 +5,8 @@ Version: 0.99.0
 Description: Visualization suit for 'SpatialData' (R). Current functionality 
     includes handling of multiscale 'images', visualizing 'labels', 'points', 
     and 'shapes'. For the latter, POINT, POLYGON, and MULTIPOLYGON geometries 
-    are supported. For all but 'images', there is support to pass data from 
-    annotation 'tables' as aesthetics.
-    e.g., 
+    are supported. For all but 'images', there is support to pass information 
+    from annotation 'tables' as aesthetics (e.g., 'colData' or 'assay' data).
 Authors@R: c(
 	person("Helena L.", "Crowell", 
 	    role=c("aut", "cre"),
