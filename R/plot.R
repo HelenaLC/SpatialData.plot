@@ -40,7 +40,7 @@ NULL
 )
 
 #' @rdname plotImage
-#' @exportMethod plotSpatialData
+#' @export
 plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme 
 
 .guess_scale <- \(x, w, h) {

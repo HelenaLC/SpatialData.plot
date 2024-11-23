@@ -34,6 +34,7 @@ Authors@R: c(
         comment=c(ORCID="0000-0001-8100-6823")))
 Imports:
     DelayedArray,
+    dplyr,
     ggplot2,
     ggforce,
     rlang,
@@ -44,7 +45,6 @@ Imports:
     methods
 Suggests:
     BiocStyle,
-    dplyr,
     ggnewscale,
     knitr,
     patchwork,
