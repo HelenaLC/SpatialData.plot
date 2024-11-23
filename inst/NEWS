@@ -1,0 +1,68 @@
+changes in version 0.99.17
+
+- rewrite of points and labels plotting, including 
+  documented examples and support for tables
+- setup 'basilisk' environment to use 'pip'
+  for 'spatialdata' and 'spatialdata-io'
+
+changes in version 0.99.16
+
+- added draft for transformations (tbc)
+- added methods for table handling following draft from PR #74
+  - 'get/setTable' for adding/getting tables
+  - 'valTable' to retrieve data from an existing table
+
+changes in version 0.99.15
+
+- added methods for coordinate transormation handling, namely:
+  'rmvCT()' for removal and 'addCT()' for adding/appending
+- major rewrite of 'ImageArray' plotting & bounding box 'query'
+- added vignettes demos of bounding box queries & multiscale plotting
+
+changes in version 0.99.14
+
+- added unit tests for image plotting, element & object handling
+- element-wise and object-wide subsetting à la `[`
+- fixed multiscales plotting
+
+changes in version 0.99.13
+
+- added 'do_tx_to_ext()' to align spatial elements within Py
+- fixed problem with 'basilisk' environment
+- added more validity checks
+
+changes in version 0.99.12
+
+- complete authors list in DESCRIPTION and vignette
+- include more information on elements in show method
+- basic vignette sections on data representation, handling etc.
+- added 'ggforce' dependency for visualizing circular shapes
+
+changes in version 0.99.11
+
+- in 'readSpatialData()', provide option to specify 
+  TRUE/FALSE/index/character to control reading
+
+changes in version 0.99.10
+
+- add support for multiscales in 'ImageArray's
+  including show method to display available scales
+
+changes in version 0.99.9
+
+- add 'basilisk'-based interface to Python's 'spatialdata-io'
+  to support readers across platforms & writing to .zarr 
+
+changes in version 0.99.8
+
+- updated show method to include information on coordinate systems
+
+changes in version 0.99.7
+
+- added utility '.coord2graph()' in coord.R to represent
+  element-coordinate system relationships as graph
+
+changes in version 0.99.6
+
+- option to read 'table' using 'anndataR' instead 
+  of 'anndata+zellkonverter' through 'basilisk'
