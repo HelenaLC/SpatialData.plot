@@ -51,7 +51,7 @@ Suggests:
     Rgraphviz,
     testthat
 remotes:
-    HelenaLC/SpatialData@wo_plot
+    HelenaLC/SpatialData
 biocViews: 
     Spatial,
     SingleCell,
@@ -66,4 +66,3 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 URL: https://github.com/HelenaLC/SpatialData.plot
 BugReports: https://github.com/HelenaLC/SpatialData.plot/issues
-LazyData: true
