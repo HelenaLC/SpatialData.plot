@@ -33,34 +33,34 @@ Authors@R: c(
         email="louise.deconinck@gmail.com",
         comment=c(ORCID="0000-0001-8100-6823")))
 Imports:
+    BiocGenerics,
     DelayedArray,
     dplyr,
     ggplot2,
     ggforce,
+    methods,
     rlang,
     sf,
     S4Vectors,
-    SingleCellExperiment,
-    BiocGenerics,
-    methods
+    SingleCellExperiment
 Suggests:
     BiocStyle,
     ggnewscale,
     knitr,
+    magick,
     patchwork,
     Rgraphviz,
-    testthat,
-    magick
+    testthat
 remotes:
     HelenaLC/SpatialData@wo_plot
 biocViews: 
+    Spatial,
+    SingleCell,
     Visualization,
     Infrastructure, 
     ImmunoOncology, 
     GeneExpression, 
-    Transcriptomics, 
-    SingleCell,
-    Spatial
+    Transcriptomics
 License: Artistic-2.0
 RoxygenNote: 7.3.2
 Encoding: UTF-8
