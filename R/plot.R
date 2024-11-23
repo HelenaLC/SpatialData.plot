@@ -29,6 +29,9 @@ NULL
 #' @importFrom grDevices col2rgb
 .str_is_col <- \(x) !inherits(tryCatch(error=\(e) e, col2rgb(x)), "error")
 
+#' @importFrom ggplot2 
+#'   coord_equal theme_bw theme 
+#'   element_blank element_text element_line
 .theme <- list(
     coord_equal(), theme_bw(), theme(
         panel.grid=element_blank(),
@@ -40,6 +43,7 @@ NULL
 )
 
 #' @rdname plotImage
+#' @importFrom ggplot2 ggplot scale_y_reverse
 #' @export
 plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme 
 
@@ -77,7 +81,10 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
     list(w=wh[, 1], h=wh[, 2])
 }
 
-#' @import ggplot2
+#' @importFrom ggplot2 
+#'   scale_x_continuous
+#'   scale_x_continuous
+#'   annotation_raster
 .gg_i <- \(x, w, h, dpi) list(
     scale_x_continuous(limits=w), scale_y_reverse(limits=rev(h)),
     annotation_raster(x, w[2],w[1], -h[1],-h[2], interpolate=FALSE))

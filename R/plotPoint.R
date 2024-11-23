@@ -33,6 +33,9 @@ NULL
 #' @importFrom methods is
 #' @importFrom grDevices hcl.colors
 #' @importFrom SingleCellExperiment int_metadata
+#' @importFrom ggplot2 
+#'   geom_point scale_color_gradientn
+#'   aes theme guides guide_legend scale_type
 .gg_p <- \(x, c, s, a, ...) {
     dots <- list(...)
     i <- dots$i

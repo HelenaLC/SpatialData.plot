@@ -32,6 +32,7 @@ NULL
 
 #' @rdname plotShape
 #' @importFrom sf st_as_sf st_coordinates st_geometry_type
+#' @importFrom ggplot2 aes theme scale_type geom_polygon
 #' @importFrom ggforce geom_circle
 #' @importFrom utils tail
 #' @export

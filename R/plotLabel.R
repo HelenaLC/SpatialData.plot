@@ -36,6 +36,9 @@ NULL
 #' @importFrom S4Vectors metadata
 #' @importFrom rlang .data
 #' @importFrom methods as
+#' @importFrom ggplot2 
+#'   scale_fill_manual scale_fill_gradientn
+#'   aes geom_tile theme unit guides guide_legend
 #' @export
 setMethod("plotLabel", "SpatialData", \(x, i=1, c=NULL, 
     a=0.5, pal=c("red", "green"), nan=NA, assay=1) {
