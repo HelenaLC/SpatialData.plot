@@ -37,6 +37,7 @@ NULL
 #' @importFrom utils tail
 #' @export
 setMethod("plotShape", "SpatialData", \(x, i=1, c=NULL, f="white", s="radius", a=0.2, assay=1) {
+    if (is.numeric(i)) i <- shapeNames(x)[i]
     df <- data(shape(x, i))
     df <- st_as_sf(df)
     xy <- st_coordinates(df)
@@ -44,7 +45,6 @@ setMethod("plotShape", "SpatialData", \(x, i=1, c=NULL, f="white", s="radius", a
     typ <- as.character(typ[1])
     aes <- aes(.data[["x"]], .data[["y"]])
     dot <- list(fill=f, alpha=a)
-    # TODO: tables support
     # TODO: need separate plotting for different types of shapes
     switch(typ,
         # POINT means circle
@@ -52,12 +52,6 @@ setMethod("plotShape", "SpatialData", \(x, i=1, c=NULL, f="white", s="radius", a
             names(xs) <- xs <- setdiff(names(df), "geometry")
             df <- data.frame(xy, lapply(xs, \(.) df[[.]]))
             names(df) <- c("x", "y", xs)
-            if (.str_is_col(c)) {
-                dot$col <- c
-            } else if (is.character(c)) {
-                if (!c %in% names(df)) stop("invalid 'c'")
-                aes$colour <- aes(.data[[c]])[[1]]
-            }
             if (is.numeric(s)) {
                 geo <- geom_point
                 dot$size <- s
@@ -67,6 +61,18 @@ setMethod("plotShape", "SpatialData", \(x, i=1, c=NULL, f="white", s="radius", a
                 aes$y0 <- df$y
                 aes$r <- aes(.data[[s]])[[1]]
             } else stop("invalid 's'")
+            if (.str_is_col(c)) {
+                dot$col <- c
+            } else if (is.character(c)) {
+                if (c %in% names(df)) {
+                    aes$colour <- aes(.data[[c]])[[1]]
+                } else {
+                    df[[c]] <- valTable(x, i, c, assay=assay)
+                    if (scale_type(df[[c]]) == "discrete")
+                        df[[c]] <- factor(df[[c]])
+                    aes$colour <- aes(.data[[c]])[[1]]
+                }
+            } else stop("invalid 'c'")
         },{
             geo <- geom_polygon
             df <- data.frame(xy)
