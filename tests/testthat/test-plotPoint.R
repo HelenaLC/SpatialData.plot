@@ -40,8 +40,7 @@ test_that("plotPoint(),SpatialData", {
     .test <- \(p, t) {
         expect_s3_class(p, "ggplot")
         df <- p$layers[[1]]$data
-        ik <- meta(t)$instance_key
-        cs <- match(df[[ik]], t[[ik]])
+        cs <- match(df[[.instance_key(t)]], .instance_ids(t))
         expect_identical(df[[.]], t[[.]][cs])
         expect_is(p$layers[[1]]$mapping$colour, "quosure")
     }
@@ -66,4 +65,3 @@ test_that("plotPoint(),PointFrame", {
     # invalid
     expect_error(plotPoint(y, c="."))
 })
-
