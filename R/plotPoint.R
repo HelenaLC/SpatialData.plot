@@ -56,8 +56,8 @@ NULL
             if (is.null(ik)) stop("missing 'instance_key' in 'table' annotating 'i'")
             stopifnot(length(c) == 1, is.character(c))
             t <- table(x, hasTable(x, i, name=TRUE))
-            md <- int_metadata(t)$spatialdata_attrs
-            idx <- match(df[[ik]], t[[md$instance_key]])
+            ik <- .instance_key(t)
+            idx <- match(df[[ik]], int_colData(t)[[ik]])
             df[[c]] <- valTable(x, i, c, assay=assay)[idx]
             aes$colour <- aes(.data[[c]])[[1]]
         } 
@@ -88,7 +88,7 @@ NULL
 #' @rdname plotPoint
 #' @export
 setMethod("plotPoint", "SpatialData", \(x, i=1, c=NULL, s=1, a=1, assay=1) {
-    ik <- meta(point(x, i))$spatialdata_attrs$instance_key
+    ik <- .instance_key(point(x, i))
     .gg_p(x, c, s, a, i=i, ik=ik, assay=assay)
 })
 

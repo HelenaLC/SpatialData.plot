@@ -83,12 +83,19 @@ wrap_plots(nrow=1, lapply(seq(3), \(.)
 
 ```{r plotLabel, fig.width=8, fig.height=3.5}
 i <- "blobs_labels"
+t <- getTable(x, i)
+t$id <- sample(letters, ncol(t))
+table(x) <- t
+
 p <- plotSpatialData()
 pal_d <- hcl.colors(10, "Spectral")
 pal_c <- hcl.colors(9, "Inferno")[-9]
+
 a <- p + plotLabel(x, i) # simple binary image
-b <- p + plotLabel(x, i, "instance_id", pal=pal_d) # 'colData'
-c <- p + plotLabel(x, i, "channel_1_sum", pal=pal_c) # 'assay'
+b <- p + plotLabel(x, i, "id", pal=pal_d) # 'colData'
+c <- p + plotLabel(x, i, "channel_1_sum", pal=pal_c) + 
+    theme(legend.key.width=unit(1, "lines")) # 'assay'
+
 (a | b | c) + 
     plot_layout(guides="collect") & 
     theme(legend.position="bottom")
@@ -229,6 +236,48 @@ wrap_plots(nrow=1, lapply(seq(3), \(.)
     plotSpatialData() + plotImage(x, .) + 
     plotLabel(x, ., "Cluster", pal=pal))) +
     plot_layout(guides="collect")
+```
+
+# Masking
+
+Back to blobs...
+
+```{r read-mask}
+x <- file.path("extdata", "blobs.zarr")
+x <- system.file(x, package="SpatialData")
+x <- readSpatialData(x, tables=FALSE)
+```
+
+```{r plot-mask-one, fig.width=8, fig.height=3.5}
+i <- "blobs_circles"
+x <- mask(x, "blobs_points", i)
+(t <- getTable(x, i))
+p <- plotSpatialData() + 
+    plotPoint(x, c="genes") +
+    scale_color_manual(values=c("tomato", "cornflowerblue")) +
+    new_scale_color()
+lapply(names(c <- c(a="red", b="blue")), \(.)
+    p + plotShape(x, i, c=paste0("gene_", .)) + 
+        scale_color_gradient2(
+            low="grey", high=c[.],
+            limits=c(0, 8), n.breaks=5)) |>
+    wrap_plots() + plot_layout(guides="collect")
+```
+
+```{r plot-mask-two, fig.width=8, fig.height=3.5}
+# compute channel-wise means
+i <- "blobs_labels"
+x <- mask(x, "blobs_image", i, fun=mean)
+(t <- getTable(x, i))
+# visualize side-by-side
+ps <- lapply(paste(seq_len(3)), \(.) 
+    plotSpatialData() + plotLabel(x, i, .) + 
+    ggtitle(paste("channel", ., "sum"))) 
+wrap_plots(ps, nrow=1) & theme(
+    legend.position="bottom", 
+    legend.title=element_blank(),
+    legend.key.width=unit(1, "lines"),
+    legend.key.height=unit(0.5, "lines"))
 ```
 
 # Session info
