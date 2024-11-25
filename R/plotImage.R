@@ -36,8 +36,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 # merge image channels
 #' @noRd
 .manage_channels <- \(a, ch, c=NULL){
-  default_colors <- c("red", "green", "blue", "gray", "cyan", "magenta", "yellow")
-  if(length(ch) > length(default_colors) && is.null(c))
+  if(length(ch) > length(.DEFAULT_COLORS) && is.null(c))
     stop("You can only choose at most seven default colors!")
   if(!is.null(c) || (is.null(c) && length(ch) > 1)) {
     if(is.null(c))
@@ -57,12 +56,19 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 }
 
 # check if an image is rgb or not
+#' @importFrom SpatialData getZarrArrayPath
+#' @noRd
+.get_image_dtype <- \(a){
+  zarray_spec <- Rarr::zarr_overview(getZarrArrayPath(a), 
+                                     as_data_frame = TRUE)
+  zarray_spec$data_type
+}
+
+# check if an image is rgb or not
 #' @noRd
 .normalize_image_array <- \(a, dt){
-  # TODO: add more cases from other data types
-  if (dt == "uint8") a <- a/255
-  else if(dt == "uint16") a <- a/65535
-  else if(dt == "uint32") a <- a/4294967295
+  dt <- .get_image_dtype(a)
+  if(dt %in% names(.DTYPE_MAX_VALUES)) a <- a/.DTYPE_MAX_VALUES[[dt]]
   else if(max(a) > 1){
     for(i in 1:dim(a)[1])
       a[i,,] <- a[i,,]/max(a[i,,])
@@ -71,24 +77,16 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 }
 
 # check if an image is rgb or not
+# NOTE: some rgb channels are named as 0:2
 #' @noRd
 .is.rgb <- \(x){
   if(!is.null(md <- x@meta))
     labels <- md[[2]]$channels$label
   if(length(labels) == 3)
-    if(all(labels == c("r", "g", "b")) || all(labels == seq(0,2))) {
+    if(all(labels %in% c("r", "g", "b")) || all(labels %in% seq(0,2))) {
       return(TRUE)
     }
   return(FALSE)
-}
-
-# check if an image is rgb or not
-#' @importFrom SpatialData getZarrArrayPath
-#' @noRd
-.get_image_dtype <- \(a){
-  zarray_spec <- Rarr::zarr_overview(getZarrArrayPath(a), 
-                                     as_data_frame = TRUE)
-  zarray_spec$data_type
 }
 
 channelNames <- function(x){
@@ -134,7 +132,6 @@ channelNames <- function(x){
 .df_i <- \(x, k=NULL, ch=NULL, c=NULL) {
   a <- .get_plot_data(x, k)
   ch_i <- .ch_ind(x, ch)
-  dt <- .get_image_dtype(a)
   if(!.is.rgb(x))
     a <- a[ch_i,,,drop = FALSE]
   a <- realize(as(a, "DelayedArray"))
