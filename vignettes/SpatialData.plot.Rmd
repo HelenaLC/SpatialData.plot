@@ -253,7 +253,8 @@ pa <- unzip_spd_demo(
 Getting channel names for the image
 
 ```{r mcmicro-channels}
-channelNames(image(x,1))
+# TODO: add this to SpatialData as an ImageArray method
+# channelNames(image(x,1))
 ```
 
 Plotting with multiple image channels.
@@ -278,7 +279,6 @@ Plotting with multiple image channels.
 
 ```{r steinbock-plot}
 plotSpatialData() + plotImage(x, 1, ch = c(0,1,2), c = c("blue", "cyan", "yellow"))
-# plotSpatialData() + plotImage(x, 1, ch = c(0,1,2), c = c("blue", "cyan", "yellow"))
 ```
 
 # Masking

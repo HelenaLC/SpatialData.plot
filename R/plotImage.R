@@ -41,7 +41,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
     stop("You can only choose at most seven default colors!")
   if(!is.null(c) || (is.null(c) && length(ch) > 1)) {
     if(is.null(c))
-      c <- default_colors[1:length(ch)] 
+      c <- .DEFAULT_COLORS[1:length(ch)] 
     c <- col2rgb(c)/255
     a_new <- array(0, dim = c(3,dim(a)[-1]))
     for(i in 1:dim(a)[1]){
@@ -58,6 +58,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 
 # check if an image is rgb or not
 #' @importFrom SpatialData getZarrArrayPath
+#' @importFrom Rarr zarr_overview
 #' @noRd
 .get_image_dtype <- \(a){
   zarray_spec <- Rarr::zarr_overview(getZarrArrayPath(a), 
@@ -91,8 +92,6 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
   return(FALSE)
 }
 
-#' get channel names
-#' @export
 channelNames <- function(x){
   if(!is.null(md <- attr(x, "meta")))
     return(md[[2]]$channels$label)
