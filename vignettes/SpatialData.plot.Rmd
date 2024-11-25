@@ -249,6 +249,7 @@ pa <- unzip_spd_demo(
     dest=td, source="biocOSN")
 (x <- readSpatialData(pa))
 ```
+
 Getting channel names for the image
 
 ```{r mcmicro-channels}
