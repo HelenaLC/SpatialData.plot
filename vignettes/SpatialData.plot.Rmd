@@ -250,17 +250,18 @@ pa <- unzip_spd_demo(
 (x <- readSpatialData(pa, anndataR=FALSE))
 ```
 
-Getting channel names for the image
+Getting channel names for the image:
 
 ```{r mcmicro-channels}
-# TODO: add this to SpatialData as an ImageArray method
-# channelNames(image(x,1))
+channels(image(x))
 ```
 
-Plotting with multiple image channels.
+Plotting with multiple image channels:
 
 ```{r mcmicro-plot}
-plotSpatialData() + plotImage(x, 1, ch = c("DNA_6", "ELANE", "CD57"), c = c("blue", "cyan", "yellow"))
+plotSpatialData() + plotImage(x,
+    ch=c("DNA_6", "CD45", "CD57"), 
+    c=c("blue", "cyan", "yellow"))
 ```
 
 ## IMC (Steinbock)
@@ -272,13 +273,16 @@ dir.create(td <- tempfile())
 pa <- unzip_spd_demo(
     zipname="steinbock_io.zip", 
     dest=td, source="biocOSN")
-(x <- readSpatialData(pa, anndataR=FALSE))
+x <- readSpatialData(pa, anndataR=FALSE)
 ```
 
 Plotting with multiple image channels.
 
 ```{r steinbock-plot}
-plotSpatialData() + plotImage(x, 1, ch = c(0,1,2), c = c("blue", "cyan", "yellow"))
+plotSpatialData() + plotImage(x, 
+    i="Patient3_003_image",
+    ch=c(6, 22, 39),
+    c=c("blue", "cyan", "yellow"))
 ```
 
 # Masking
