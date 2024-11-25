@@ -238,6 +238,53 @@ wrap_plots(nrow=1, lapply(seq(3), \(.)
     plot_layout(guides="collect")
 ```
 
+## CyCIF (MCMICRO)
+
+Small lung adenocarcinoma, 250 MB; 1 image, 2 labels, 2 tables.
+
+```{r mcmicro-read}
+dir.create(td <- tempfile())
+pa <- unzip_spd_demo(
+    zipname="mcmicro_io.zip", 
+    dest=td, source="biocOSN")
+(x <- readSpatialData(pa, anndataR=FALSE))
+```
+
+Getting channel names for the image:
+
+```{r mcmicro-channels}
+channels(image(x))
+```
+
+Plotting with multiple image channels:
+
+```{r mcmicro-plot}
+plotSpatialData() + plotImage(x,
+    ch=c("DNA_6", "CD45", "CD57"), 
+    c=c("blue", "cyan", "yellow"))
+```
+
+## IMC (Steinbock)
+
+4 different cancers (SCCHN, BCC, NSCLC, CRC), 820 MB; 14 images, 14 labels, 1 table.
+
+```{r steinbock-read}
+dir.create(td <- tempfile())
+pa <- unzip_spd_demo(
+    zipname="steinbock_io.zip", 
+    dest=td, source="biocOSN")
+x <- readSpatialData(pa, anndataR=FALSE)
+```
+
+Plotting with multiple image channels.
+
+```{r steinbock-plot}
+plotSpatialData() + plotImage(x, 
+    i="Patient3_003_image",
+    ch=c(6, 22, 39),
+    c=c("blue", "cyan", "yellow"))
+```
+
 # Masking
 
 Back to blobs...
