@@ -247,7 +247,7 @@ dir.create(td <- tempfile())
 pa <- unzip_spd_demo(
     zipname="mcmicro_io.zip", 
     dest=td, source="biocOSN")
-(x <- readSpatialData(pa))
+(x <- readSpatialData(pa, anndataR=FALSE))
 ```
 
 Getting channel names for the image
@@ -272,7 +272,7 @@ dir.create(td <- tempfile())
 pa <- unzip_spd_demo(
     zipname="steinbock_io.zip", 
     dest=td, source="biocOSN")
-(x <- readSpatialData(pa))
+(x <- readSpatialData(pa, anndataR=FALSE))
 ```
 
 Plotting with multiple image channels.
