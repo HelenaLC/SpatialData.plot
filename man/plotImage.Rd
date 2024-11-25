@@ -8,7 +8,16 @@
 \usage{
 plotSpatialData()
 
-\S4method{plotImage}{SpatialData}(x, i = 1, j = 1, k = NULL, ch = NULL, c = NULL)
+\S4method{plotImage}{SpatialData}(
+  x,
+  i = 1,
+  j = 1,
+  k = NULL,
+  ch = NULL,
+  c = NULL,
+  lim = NULL,
+  sat = NULL
+)
 }
 \arguments{
 \item{x}{\code{\link{SpatialData}} object.}
@@ -25,7 +34,14 @@ scale in order to minimize memory-usage and blurring for a target size of
 the first channel(s) available); use \code{channels()} to see 
 which channels are available for a given \code{ImageArray}}
 
-\item{c}{plotting aesthetics; color}
+\item{c}{character vector; colors to use for each channel.}
+
+\item{lim}{list of length-2 (non-negative) numeric vectors; 
+contrast limits for each channel - defaults to [0, 1] for all.}
+
+\item{sat}{(non-negative) numeric vector; 
+saturation of each channel - defaults to 1 for all
+(note: \code{sat=2} is equivalent to \code{lim=c(0, 0.5)})}
 }
 \value{
 ggplot
