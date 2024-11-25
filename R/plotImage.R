@@ -33,7 +33,8 @@ NULL
 #' @export
 plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme 
 
-# merge image channels
+# merge/manage image channels
+# if no colors and channels defined, return the first channel
 #' @noRd
 .manage_channels <- \(a, ch, c=NULL){
   if(length(ch) > length(.DEFAULT_COLORS) && is.null(c))
@@ -61,13 +62,14 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 .get_image_dtype <- \(a){
   zarray_spec <- Rarr::zarr_overview(getZarrArrayPath(a), 
                                      as_data_frame = TRUE)
-  zarray_spec$data_type
+  if("data_type" %in% names(zarray_spec))
+    return(zarray_spec$data_type)
+  return(NULL)
 }
 
-# check if an image is rgb or not
+# normalize the image data given its data type
 #' @noRd
 .normalize_image_array <- \(a, dt){
-  dt <- .get_image_dtype(a)
   if(dt %in% names(.DTYPE_MAX_VALUES)) a <- a/.DTYPE_MAX_VALUES[[dt]]
   else if(max(a) > 1){
     for(i in 1:dim(a)[1])
@@ -89,8 +91,10 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
   return(FALSE)
 }
 
+#' get channel names
+#' @export
 channelNames <- function(x){
-  if(!is.null(md <- x@meta))
+  if(!is.null(md <- attr(x, "meta")))
     return(md[[2]]$channels$label)
   return(NULL)
 }
@@ -102,12 +106,12 @@ channelNames <- function(x){
     return(1)
   lbs <- channelNames(x)
   if(all(ch %in% lbs)){
-    return(which(lbs %in% ch))
+    return(match(ch,lbs))
   } else if(!any(ch %in% lbs)){
-    message("Some channels are not found, picking first one!")
+    warning("Some channels are not found, picking first one!")
     return(1)
   } else {
-    message("Channels are not found, picking first one!")
+    warning("Channels are not found, picking first one!")
     return(1)
   }
   return(NULL)
@@ -134,6 +138,7 @@ channelNames <- function(x){
   ch_i <- .ch_ind(x, ch)
   if(!.is.rgb(x))
     a <- a[ch_i,,,drop = FALSE]
+  dt <- .get_image_dtype(a)
   a <- realize(as(a, "DelayedArray"))
   a <- .normalize_image_array(a, dt)
   if(!.is.rgb(x))
