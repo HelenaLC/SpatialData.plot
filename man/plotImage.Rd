@@ -21,7 +21,9 @@ plotSpatialData()
 scale in order to minimize memory-usage and blurring for a target size of 
 800 x 800px; use Inf to plot the lowest resolution available.}
 
-\item{ch}{the image channels to be used for plotting (default: first channel)}
+\item{ch}{image channel(s) to be used for plotting (defaults to 
+the first channel(s) available); use \code{channels()} to see 
+which channels are available for a given \code{ImageArray}}
 
 \item{c}{plotting aesthetics; color}
 }
