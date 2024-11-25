@@ -10,6 +10,11 @@
 #' @param k index of the scale of an image; by default (NULL), will auto-select 
 #'   scale in order to minimize memory-usage and blurring for a target size of 
 #'   800 x 800px; use Inf to plot the lowest resolution available.
+#' @param ch image channel(s) to be used for plotting (defaults to 
+#'   the first channel(s) available); use \code{channels()} to see 
+#'   which channels are available for a given \code{ImageArray} 
+#'   
+#' @param c plotting aesthetics; color 
 #'
 #' @return ggplot
 #'
@@ -31,6 +36,86 @@ NULL
 #' @export
 plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme 
 
+# merge/manage image channels
+# if no colors and channels defined, return the first channel
+#' @importFrom grDevices col2rgb
+#' @noRd
+.manage_channels <- \(a, ch, c=NULL){
+    if (length(ch) > (n <- length(.DEFAULT_COLORS)) && is.null(c))
+        stop("Only ", n, " default colors available, but",
+            length(ch), " are needed; please specify 'c'")
+    if (!is.null(c) || (is.null(c) && length(ch) > 1)) {
+        if (is.null(c)) c <- .DEFAULT_COLORS[seq_along(ch)] 
+        c <- col2rgb(c)/255
+        b <- array(0, dim=c(3, dim(a)[-1]))
+        for (i in seq_len(dim(a)[1])) {
+            b[1,,] <- b[1,,,drop=FALSE] + a[i,,,drop=FALSE]*c[1,i]
+            b[2,,] <- b[2,,,drop=FALSE] + a[i,,,drop=FALSE]*c[2,i]
+            b[3,,] <- b[3,,,drop=FALSE] + a[i,,,drop=FALSE]*c[3,i]
+        }
+        a <- pmin(b, 1)
+    } else {
+        a <- a[rep(1, 3), , ]
+    }
+    return(a)
+}
+
+# check if an image is rgb or not
+#' @importFrom SpatialData getZarrArrayPath
+#' @importFrom Rarr zarr_overview
+#' @noRd
+.get_image_dtype <- \(a) {
+    pa <- getZarrArrayPath(a)
+    df <- zarr_overview(pa, as_data_frame=TRUE)
+    if (!is.null(dt <- df$data_type)) return(dt)
+}
+
+# normalize the image data given its data type
+#' @noRd
+.normalize_image_array <- \(a, dt){
+  if (dt %in% names(.DTYPE_MAX_VALUES)) {
+      a <- a/.DTYPE_MAX_VALUES[dt]
+  } else if (max(a) > 1) {
+      for (i in seq_len(dim(a)[1])) 
+          a[i,,] <- a[i,,]/max(a[i,,])
+  }
+  return(a)
+}
+
+# check if an image is RGB or not
+# (NOTE: some RGB channels are named 0, 1, 2)
+#' @importFrom methods is
+#' @noRd
+.is_rgb <- \(x) {
+    if (is(x, "ImageArray") &&
+        !is.null(md <- meta(x)))
+        x <- md$omero$channels$label
+    if (!is.vector(x)) stop("invalid 'x'")
+    is_len <- length(x) == 3
+    is_012 <- setequal(x, seq(0, 2))
+    is_rgb <- setequal(x, c("r", "g", "b"))
+    return(is_len && (is_012 || is_rgb))
+}
+  
+# check if channels are indices or channel names
+#' @importFrom SpatialData channels
+#' @noRd
+.ch_idx <- \(x, ch) {
+    if (is.null(ch))
+        return(1)
+    lbs <- channels(x)
+    if (all(ch %in% lbs)) {
+        return(match(ch, lbs))
+    } else if (!any(ch %in% lbs)) {
+        warning("Couldn't find some channels; picking first one(s)!")
+        return(1)
+    } else {
+        warning("Couldn't find channels; picking first one(s)!")
+        return(1)
+    }
+    return(NULL)
+}
+
 .guess_scale <- \(x, w, h) {
     n <- length(dim(x))
     i <- ifelse(n == 3, -1, TRUE)
@@ -47,14 +132,17 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 #' @importFrom methods as
 #' @importFrom grDevices rgb
 #' @importFrom DelayedArray realize
-.df_i <- \(x, k=NULL) {
+.df_i <- \(x, k=NULL, ch=NULL, c=NULL) {
     a <- .get_plot_data(x, k)
-    a <- if (dim(a)[1] == 1) a[rep(1,3),,] else a
+    ch_i <- .ch_idx(x, ch)
+    if (!.is_rgb(x))
+        a <- a[ch_i, , , drop=FALSE]
+    dt <- .get_image_dtype(a)
     a <- realize(as(a, "DelayedArray"))
-    img <- rgb(
-        maxColorValue=max(a),
-        c(a[1,,]), c(a[2,,]), c(a[3,,]))
-    array(img, dim(a)[-1])
+    a <- .normalize_image_array(a, dt)
+    if (!.is_rgb(x))
+        a <- .manage_channels(a, ch_i, c)
+    apply(a, c(2, 3), \(.) do.call(rgb, as.list(.))) 
 }
 
 .get_wh <- \(x, i, j) {
@@ -75,13 +163,13 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 
 #' @rdname plotImage
 #' @export
-setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL) {
-    if (is.numeric(i)) 
+setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL) {
+    if (is.numeric(i))
         i <- imageNames(x)[i]
     y <- image(x, i)
-    if (is.numeric(j)) 
+    if (is.numeric(j))
         j <- CTname(y)[j]
-    df <- .df_i(y, k)
+    df <- .df_i(y, k, ch, c)
     wh <- .get_wh(x, i, j)
     .gg_i(df, wh$w, wh$h)
 })
