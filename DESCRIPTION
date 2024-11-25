@@ -41,7 +41,8 @@ Imports:
     rlang,
     sf,
     S4Vectors,
-    SingleCellExperiment
+    SingleCellExperiment,
+    Rarr
 Suggests:
     BiocStyle,
     ggnewscale,

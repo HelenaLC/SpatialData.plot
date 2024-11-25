@@ -34,3 +34,14 @@
         axis.text=element_text(color="grey"),
         axis.ticks=element_line(color="grey"))
 )
+
+# default colors (from ImageJ/Fiji)
+.DEFAULT_COLORS <- c("red", "green", "blue", "gray", "cyan", "magenta", "yellow")
+
+# image data type factors (max values)
+# TODO: add more cases from other data types
+# https://doc.embedded-wizard.de/uint-type
+.DTYPE_MAX_VALUES <- list("uint8" = 255,
+                          "uint16" = 65535,
+                          "uint32" = 4294967295,
+                          "uint64" = 2^64 - 1)

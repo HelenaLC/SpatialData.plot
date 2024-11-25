@@ -8,7 +8,7 @@
 \usage{
 plotSpatialData()
 
-\S4method{plotImage}{SpatialData}(x, i = 1, j = 1, k = NULL)
+\S4method{plotImage}{SpatialData}(x, i = 1, j = 1, k = NULL, ch = NULL, c = NULL)
 }
 \arguments{
 \item{x}{\code{\link{SpatialData}} object.}
@@ -20,6 +20,10 @@ plotSpatialData()
 \item{k}{index of the scale of an image; by default (NULL), will auto-select 
 scale in order to minimize memory-usage and blurring for a target size of 
 800 x 800px; use Inf to plot the lowest resolution available.}
+
+\item{ch}{the image channels to be used for plotting (default: first channel)}
+
+\item{c}{plotting aesthetics; color}
 }
 \value{
 ggplot
