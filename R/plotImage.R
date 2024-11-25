@@ -12,9 +12,13 @@
 #'   800 x 800px; use Inf to plot the lowest resolution available.
 #' @param ch image channel(s) to be used for plotting (defaults to 
 #'   the first channel(s) available); use \code{channels()} to see 
-#'   which channels are available for a given \code{ImageArray} 
-#'   
-#' @param c plotting aesthetics; color 
+#'   which channels are available for a given \code{ImageArray}
+#' @param c character vector; colors to use for each channel. 
+#' @param lim list of length-2 (non-negative) numeric vectors; 
+#'   contrast limits for each channel - defaults to [0, 1] for all.
+#' @param sat (non-negative) numeric vector; 
+#'   saturation of each channel - defaults to 1 for all
+#'   (note: \code{sat=2} is equivalent to \code{lim=c(0, 0.5)})
 #'
 #' @return ggplot
 #'
@@ -40,7 +44,9 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 # if no colors and channels defined, return the first channel
 #' @importFrom grDevices col2rgb
 #' @noRd
-.manage_channels <- \(a, ch, c=NULL){
+.manage_channels <- \(a, ch, c=NULL, lim=NULL, sat=NULL) {
+    if (is.null(lim)) lim <- replicate(dim(a)[1], c(0, 1), FALSE)
+    if (is.null(sat)) sat <- rep(1, dim(a)[1])
     if (length(ch) > (n <- length(.DEFAULT_COLORS)) && is.null(c))
         stop("Only ", n, " default colors available, but",
             length(ch), " are needed; please specify 'c'")
@@ -49,9 +55,12 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
         c <- col2rgb(c)/255
         b <- array(0, dim=c(3, dim(a)[-1]))
         for (i in seq_len(dim(a)[1])) {
-            b[1,,] <- b[1,,,drop=FALSE] + a[i,,,drop=FALSE]*c[1,i]
-            b[2,,] <- b[2,,,drop=FALSE] + a[i,,,drop=FALSE]*c[2,i]
-            b[3,,] <- b[3,,,drop=FALSE] + a[i,,,drop=FALSE]*c[3,i]
+            b[1,,] <- b[1,,,drop=FALSE] + a[i,,,drop=FALSE]*c[1,i]*(1/lim[[i]][2])*sat[i]
+            b[2,,] <- b[2,,,drop=FALSE] + a[i,,,drop=FALSE]*c[2,i]*(1/lim[[i]][2])*sat[i]
+            b[3,,] <- b[3,,,drop=FALSE] + a[i,,,drop=FALSE]*c[3,i]*(1/lim[[i]][2])*sat[i]
+            b[1,,][b[1,,] < lim[[i]][1]] <- 0
+            b[2,,][b[2,,] < lim[[i]][1]] <- 0
+            b[3,,][b[3,,] < lim[[i]][1]] <- 0
         }
         a <- pmin(b, 1)
     } else {
@@ -72,13 +81,14 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 
 # normalize the image data given its data type
 #' @noRd
-.normalize_image_array <- \(a, dt){
-  if (dt %in% names(.DTYPE_MAX_VALUES)) {
-      a <- a/.DTYPE_MAX_VALUES[dt]
-  } else if (max(a) > 1) {
-      for (i in seq_len(dim(a)[1])) 
-          a[i,,] <- a[i,,]/max(a[i,,])
-  }
+.normalize_image_array <- \(a, dt) {
+    d <- dim(a)[1]
+    if (dt %in% names(.DTYPE_MAX_VALUES)) {
+        a <- a / .DTYPE_MAX_VALUES[dt]
+    } else if (max(a) > 1) {
+        for (i in seq_len(d))
+            a[i,,] <- a[i,,] / max(a[i,,])
+    }
   return(a)
 }
 
@@ -132,7 +142,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 #' @importFrom methods as
 #' @importFrom grDevices rgb
 #' @importFrom DelayedArray realize
-.df_i <- \(x, k=NULL, ch=NULL, c=NULL) {
+.df_i <- \(x, k=NULL, ch=NULL, c=NULL, lim=NULL, sat=NULL) {
     a <- .get_plot_data(x, k)
     ch_i <- .ch_idx(x, ch)
     if (!.is_rgb(x))
@@ -141,7 +151,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
     a <- realize(as(a, "DelayedArray"))
     a <- .normalize_image_array(a, dt)
     if (!.is_rgb(x))
-        a <- .manage_channels(a, ch_i, c)
+        a <- .manage_channels(a, ch_i, c, lim, sat)
     apply(a, c(2, 3), \(.) do.call(rgb, as.list(.))) 
 }
 
@@ -163,13 +173,13 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 
 #' @rdname plotImage
 #' @export
-setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL) {
+setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, lim=NULL, sat=NULL) {
     if (is.numeric(i))
         i <- imageNames(x)[i]
     y <- image(x, i)
     if (is.numeric(j))
         j <- CTname(y)[j]
-    df <- .df_i(y, k, ch, c)
+    df <- .df_i(y, k, ch, c, lim, sat)
     wh <- .get_wh(x, i, j)
     .gg_i(df, wh$w, wh$h)
 })
