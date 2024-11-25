@@ -24,8 +24,15 @@
 #' # simple binary image
 #' p + plotLabel(x, i)
 #' 
+#' # mock up some extra data
+#' t <- getTable(x, i)
+#' t$id <- sample(letters, ncol(t))
+#' table(x) <- t
+#' 
 #' # coloring by 'colData'
-#' p + plotLabel(x, i, "instance_id")
+#' n <- length(unique(t$id))
+#' pal <- hcl.colors(n, "Spectral")
+#' p + plotLabel(x, i, "id", pal=pal)
 #' 
 #' # coloring by 'assay' data
 #' p + plotLabel(x, i, "channel_1_sum")
@@ -50,10 +57,10 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, c=NULL,
     if (!is.null(c)) {
         stopifnot(length(c) == 1, is.character(c))
         t <- table(x, hasTable(x, i, name=TRUE))
-        md <- int_metadata(t)$spatialdata_attrs
-        idx <- match(df$z, t[[md$instance_key]])
+        ik <- .instance_key(t)
+        idx <- match(df$z, int_colData(t)[[ik]])
         df$z <- valTable(x, i, c, assay=assay)[idx]
-        if (c == md$instance_key) df$z <- factor(df$z)
+        if (c == ik) df$z <- factor(df$z)
         aes$fill <- aes(.data[["z"]])[[1]]
         switch(scale_type(df$z), 
             discrete={

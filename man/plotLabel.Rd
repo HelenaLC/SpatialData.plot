@@ -48,8 +48,15 @@ p <- plotSpatialData()
 # simple binary image
 p + plotLabel(x, i)
 
+# mock up some extra data
+t <- getTable(x, i)
+t$id <- sample(letters, ncol(t))
+table(x) <- t
+
 # coloring by 'colData'
-p + plotLabel(x, i, "instance_id")
+n <- length(unique(t$id))
+pal <- hcl.colors(n, "Spectral")
+p + plotLabel(x, i, "id", pal=pal)
 
 # coloring by 'assay' data
 p + plotLabel(x, i, "channel_1_sum")
