@@ -276,32 +276,27 @@ pa <- unzip_spd_demo(
 x <- readSpatialData(pa, anndataR=FALSE)
 ```
 
-Plotting with multiple image channels.
+### channels
 
-```{r steinbock-plot}
+```{r steinbock-ch}
 plotSpatialData() + plotImage(x,
     i="Patient3_003_image",
     ch=c(6, 22, 39),
     c=c("blue", "cyan", "yellow"))
 ```
 
-### aesthetics
+### contrasts
 
-```{r saturation, fig.width=9, fig.height=3}
-p <- plotSpatialData()
+```{r steinbock-cl, fig.width=9, fig.height=3}
 i <- image(x, "Patient3_003_image")
 image(x, "crop") <- i[, 200:400, 200:400]
-lapply(c(1, 0.7, 0.4), \(.) {
-    p + plotImage(x, "crop", sat=c(1.4, 1.2, .), 
-        ch=c(6, 22, 39), c=c("blue", "cyan", "yellow"))
-}) |> wrap_plots(nrow=1)
-```
-
-```{r contrasts, fig.width=9, fig.height=3}
-lapply(list(c(0, 1), c(0.2, 1), c(0, 0.8)), \(.) {
-    p + plotImage(x, "crop", 
-        lim=list(c(0, 1), c(0, 1), .),
-        ch=c(6, 22, 39), c=c("blue", "cyan", "yellow"))
+lapply(list(c(0.2, 1), c(0, 0.8), c(0, 1.2)), \(.) {
+    plotSpatialData() + plotImage(x, 
+        i="crop", 
+        ch=c(6, 22, 39), 
+        cl=list(1, 1, .),
+        c=c("blue", "cyan", "yellow")) +
+        ggtitle(sprintf("[%s, %s]", .[1], .[2]))
 }) |> wrap_plots(nrow=1)
 ```
 

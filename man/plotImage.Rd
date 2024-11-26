@@ -8,16 +8,7 @@
 \usage{
 plotSpatialData()
 
-\S4method{plotImage}{SpatialData}(
-  x,
-  i = 1,
-  j = 1,
-  k = NULL,
-  ch = NULL,
-  c = NULL,
-  lim = NULL,
-  sat = NULL
-)
+\S4method{plotImage}{SpatialData}(x, i = 1, j = 1, k = NULL, ch = NULL, c = NULL, cl = NULL)
 }
 \arguments{
 \item{x}{\code{\link{SpatialData}} object.}
@@ -36,12 +27,10 @@ which channels are available for a given \code{ImageArray}}
 
 \item{c}{character vector; colors to use for each channel.}
 
-\item{lim}{list of length-2 (non-negative) numeric vectors; 
-contrast limits for each channel - defaults to [0, 1] for all.}
-
-\item{sat}{(non-negative) numeric vector; 
-saturation of each channel - defaults to 1 for all
-(note: \code{sat=2} is equivalent to \code{lim=c(0, 0.5)})}
+\item{cl}{list of length-2 numeric vectors (non-negative, increasing); 
+specifies channel-wise contrast limits - defaults to [0, 1] for all 
+(ignored when \code{image(x, i)} is an RGB image; 
+for convenience, any NULL = [0, 1], and n = [0, n]).}
 }
 \value{
 ggplot
