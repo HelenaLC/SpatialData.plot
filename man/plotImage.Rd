@@ -48,4 +48,12 @@ ms <- lapply(seq(3), \(.)
   plotImage(x, i=2, k=.))
 patchwork::wrap_plots(ms)
 
+# custom colors
+cmy <- c("cyan", "magenta", "yellow")
+plotSpatialData() + plotImage(x, c=cmy)
+
+# contrast limits
+plotSpatialData() + plotImage(x, c=cmy, 
+  cl=list(c(0.2,1), c(0,0.8), c(0,1)))
+
 }
