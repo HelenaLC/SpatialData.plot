@@ -1,6 +1,7 @@
 changes in version 0.99.2
 
-- in 'plotImage', added support to visualize channels of choice
+- in 'plotImage', added support to visualize channels of choice,
+  as well as 'cl' argument to control constrast limits
 - updated vignette to include corresponding examples
 
 changes in version 0.99.1
