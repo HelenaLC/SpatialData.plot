@@ -98,7 +98,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 #' @importFrom SpatialData getZarrArrayPath
 #' @importFrom Rarr zarr_overview
 #' @noRd
-.get_image_dtype <- \(a) {
+.get_img_dt <- \(a) {
     pa <- getZarrArrayPath(a)
     df <- zarr_overview(pa, as_data_frame=TRUE)
     if (!is.null(dt <- df$data_type)) return(dt)
@@ -106,7 +106,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 
 # normalize the image data given its data type
 #' @noRd
-.normalize_image_array <- \(a, dt) {
+.norm_ia <- \(a, dt) {
     d <- dim(a)[1]
     if (dt %in% names(.DTYPE_MAX_VALUES)) {
         a <- a / .DTYPE_MAX_VALUES[dt]
@@ -159,7 +159,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
     which.min(d)
 }
 
-.get_plot_data <- \(x, k=NULL, w=800, h=800) {
+.get_img_data <- \(x, k=NULL, w=800, h=800) {
     if (!is.null(k)) return(data(x, k))
     data(x, .guess_scale(x, w, h))
 }
@@ -168,15 +168,17 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 #' @importFrom grDevices rgb
 #' @importFrom DelayedArray realize
 .df_i <- \(x, k=NULL, ch=NULL, c=NULL, cl=NULL) {
-    a <- .get_plot_data(x, k)
-    ch_i <- .ch_idx(x, ch)
+    a <- .get_img_data(x, k)
+    ch <- .ch_idx(x, ch)
     if (!.is_rgb(x))
-        a <- a[ch_i, , , drop=FALSE]
-    dt <- .get_image_dtype(a)
-    a <- realize(as(a, "DelayedArray"))
-    a <- .normalize_image_array(a, dt)
-    if (!.is_rgb(x))
-        a <- .chs2rgb(a, ch_i, c, cl)
+        a <- a[ch, , , drop=FALSE]
+    dt <- .get_img_dt(a)
+    a <- as(a, "DelayedArray")
+    a <- .norm_ia(realize(a), dt)
+    # enter when image isn't RGB already, either
+    # custom colors or contrasts are specified
+    if (!.is_rgb(x) || !is.null(c) || !is.null(cl))
+        a <- .chs2rgb(a, ch, c, cl)
     apply(a, c(2, 3), \(.) do.call(rgb, as.list(.))) 
 }
 
