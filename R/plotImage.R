@@ -12,12 +12,9 @@
 #'   800 x 800px; use Inf to plot the lowest resolution available.
 #' @param ch image channel(s) to be used for plotting (defaults to 
 #'   the first channel(s) available); use \code{channels()} to see 
-#'   which channels are available for a given \code{ImageArray}
-#' @param c character vector; colors to use for each channel. 
-#' @param cl list of length-2 numeric vectors (non-negative, increasing); 
-#'   specifies channel-wise contrast limits - defaults to [0, 1] for all 
-#'   (ignored when \code{image(x, i)} is an RGB image; 
-#'   for convenience, any NULL = [0, 1], and n = [0, n]).
+#'   which channels are available for a given \code{ImageArray} 
+#'   
+#' @param c plotting aesthetics; color 
 #'
 #' @return ggplot
 #'
@@ -31,14 +28,6 @@
 #'   plotImage(x, i=2, k=.))
 #' patchwork::wrap_plots(ms)
 #' 
-#' # custom colors
-#' cmy <- c("cyan", "magenta", "yellow")
-#' plotSpatialData() + plotImage(x, c=cmy)
-#' 
-#' # contrast limits
-#' plotSpatialData() + plotImage(x, c=cmy, 
-#'   cl=list(c(0.2,1), c(0,0.8), c(0,1)))
-#' 
 #' @import SpatialData
 NULL
 
@@ -47,37 +36,11 @@ NULL
 #' @export
 plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme 
 
-.check_cl <- \(cl, d) {
-    if (is.null(cl)) {
-        # default to [0, 1] for all channels
-        cl <- replicate(d, c(0, 1), FALSE)
-    } else {
-        # should be a list with as many elements as channels
-        if (!is.list(cl)) stop("'cl' should be a list")
-        if (length(cl) != d) stop("'cl' should be of length ", d)
-        for (. in seq_len(d)) {
-            # replace NULL by [0, 1] & n by [0, n]
-            if (is.null(cl[[.]])) cl[[.]] <- c(0, 1)
-            if (length(cl[[.]]) == 1) {
-                if (cl[[.]] < 0) stop("scalar 'cl' can't be < 0")
-                cl[[.]] <- c(0, cl[[.]])
-            }
-        }
-        # elements should be length-2, numeric, non-negative, increasing
-        .f <- \(.) length(.) == 2 && is.numeric(.) && all(. >= 0) && .[2] > .[1]
-        if (!all(vapply(cl, .f, logical(1))))
-            stop("elements of 'cl' should be length-2,",
-                " non-negative, increasing numeric vectors")
-    }
-    return(cl)
-}
-
 # merge/manage image channels
 # if no colors and channels defined, return the first channel
 #' @importFrom grDevices col2rgb
 #' @noRd
-.chs2rgb <- \(a, ch, c=NULL, cl=NULL) {
-    cl <- .check_cl(cl, d <- dim(a)[1])
+.manage_channels <- \(a, ch, c=NULL){
     if (length(ch) > (n <- length(.DEFAULT_COLORS)) && is.null(c))
         stop("Only ", n, " default colors available, but",
             length(ch), " are needed; please specify 'c'")
@@ -85,15 +48,10 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
         if (is.null(c)) c <- .DEFAULT_COLORS[seq_along(ch)] 
         c <- col2rgb(c)/255
         b <- array(0, dim=c(3, dim(a)[-1]))
-        for (i in seq_len(d)) {
-            for (j in seq_len(3)) {
-                rgb <- a[i,,,drop=FALSE]*c[j,i]
-                # apply upper contrast lim.
-                rgb <- rgb*(1/cl[[i]][2]) 
-                b[j,,] <- b[j,,,drop=FALSE] + rgb
-                # apply lower contrast lim.
-                b[j,,][b[j,,] < cl[[i]][1]] <- 0
-            }
+        for (i in seq_len(dim(a)[1])) {
+            b[1,,] <- b[1,,,drop=FALSE] + a[i,,,drop=FALSE]*c[1,i]
+            b[2,,] <- b[2,,,drop=FALSE] + a[i,,,drop=FALSE]*c[2,i]
+            b[3,,] <- b[3,,,drop=FALSE] + a[i,,,drop=FALSE]*c[3,i]
         }
         a <- pmin(b, 1)
     } else {
@@ -106,7 +64,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 #' @importFrom SpatialData getZarrArrayPath
 #' @importFrom Rarr zarr_overview
 #' @noRd
-.get_img_dt <- \(a) {
+.get_image_dtype <- \(a) {
     pa <- getZarrArrayPath(a)
     df <- zarr_overview(pa, as_data_frame=TRUE)
     if (!is.null(dt <- df$data_type)) return(dt)
@@ -114,14 +72,13 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 
 # normalize the image data given its data type
 #' @noRd
-.norm_ia <- \(a, dt) {
-    d <- dim(a)[1]
-    if (dt %in% names(.DTYPE_MAX_VALUES)) {
-        a <- a / .DTYPE_MAX_VALUES[dt]
-    } else if (max(a) > 1) {
-        for (i in seq_len(d))
-            a[i,,] <- a[i,,] / max(a[i,,])
-    }
+.normalize_image_array <- \(a, dt){
+  if (dt %in% names(.DTYPE_MAX_VALUES)) {
+      a <- a/.DTYPE_MAX_VALUES[dt]
+  } else if (max(a) > 1) {
+      for (i in seq_len(dim(a)[1])) 
+          a[i,,] <- a[i,,]/max(a[i,,])
+  }
   return(a)
 }
 
@@ -167,7 +124,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
     which.min(d)
 }
 
-.get_img_data <- \(x, k=NULL, w=800, h=800) {
+.get_plot_data <- \(x, k=NULL, w=800, h=800) {
     if (!is.null(k)) return(data(x, k))
     data(x, .guess_scale(x, w, h))
 }
@@ -175,18 +132,16 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 #' @importFrom methods as
 #' @importFrom grDevices rgb
 #' @importFrom DelayedArray realize
-.df_i <- \(x, k=NULL, ch=NULL, c=NULL, cl=NULL) {
-    a <- .get_img_data(x, k)
-    ch <- .ch_idx(x, ch)
+.df_i <- \(x, k=NULL, ch=NULL, c=NULL) {
+    a <- .get_plot_data(x, k)
+    ch_i <- .ch_idx(x, ch)
     if (!.is_rgb(x))
-        a <- a[ch, , , drop=FALSE]
-    dt <- .get_img_dt(a)
-    a <- as(a, "DelayedArray")
-    a <- .norm_ia(realize(a), dt)
-    # enter when image isn't RGB already, either
-    # custom colors or contrasts are specified
-    if (!.is_rgb(x) || !is.null(c) || !is.null(cl))
-        a <- .chs2rgb(a, ch, c, cl)
+        a <- a[ch_i, , , drop=FALSE]
+    dt <- .get_image_dtype(a)
+    a <- realize(as(a, "DelayedArray"))
+    a <- .normalize_image_array(a, dt)
+    if (!.is_rgb(x))
+        a <- .manage_channels(a, ch_i, c)
     apply(a, c(2, 3), \(.) do.call(rgb, as.list(.))) 
 }
 
@@ -208,13 +163,13 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 
 #' @rdname plotImage
 #' @export
-setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl=NULL) {
+setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL) {
     if (is.numeric(i))
         i <- imageNames(x)[i]
     y <- image(x, i)
     if (is.numeric(j))
         j <- CTname(y)[j]
-    df <- .df_i(y, k, ch, c, cl)
+    df <- .df_i(y, k, ch, c)
     wh <- .get_wh(x, i, j)
     .gg_i(df, wh$w, wh$h)
 })

@@ -8,7 +8,7 @@
 \usage{
 plotSpatialData()
 
-\S4method{plotImage}{SpatialData}(x, i = 1, j = 1, k = NULL, ch = NULL, c = NULL, cl = NULL)
+\S4method{plotImage}{SpatialData}(x, i = 1, j = 1, k = NULL, ch = NULL, c = NULL)
 }
 \arguments{
 \item{x}{\code{\link{SpatialData}} object.}
@@ -25,12 +25,7 @@ scale in order to minimize memory-usage and blurring for a target size of
 the first channel(s) available); use \code{channels()} to see 
 which channels are available for a given \code{ImageArray}}
 
-\item{c}{character vector; colors to use for each channel.}
-
-\item{cl}{list of length-2 numeric vectors (non-negative, increasing); 
-specifies channel-wise contrast limits - defaults to [0, 1] for all 
-(ignored when \code{image(x, i)} is an RGB image; 
-for convenience, any NULL = [0, 1], and n = [0, n]).}
+\item{c}{plotting aesthetics; color}
 }
 \value{
 ggplot
@@ -47,13 +42,5 @@ ms <- lapply(seq(3), \(.)
   plotSpatialData() +
   plotImage(x, i=2, k=.))
 patchwork::wrap_plots(ms)
-
-# custom colors
-cmy <- c("cyan", "magenta", "yellow")
-plotSpatialData() + plotImage(x, c=cmy)
-
-# contrast limits
-plotSpatialData() + plotImage(x, c=cmy, 
-  cl=list(c(0.2,1), c(0,0.8), c(0,1)))
 
 }

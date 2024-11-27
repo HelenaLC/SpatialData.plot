@@ -276,28 +276,13 @@ pa <- unzip_spd_demo(
 x <- readSpatialData(pa, anndataR=FALSE)
 ```
 
-### channels
+Plotting with multiple image channels.
 
-```{r steinbock-ch}
-plotSpatialData() + plotImage(x,
+```{r steinbock-plot}
+plotSpatialData() + plotImage(x, 
     i="Patient3_003_image",
     ch=c(6, 22, 39),
     c=c("blue", "cyan", "yellow"))
-```
-
-### contrasts
-
-```{r steinbock-cl, fig.width=9, fig.height=3}
-i <- image(x, "Patient3_003_image")
-image(x, "crop") <- i[, 200:400, 200:400]
-lapply(list(c(0.2, 1), c(0, 0.8), c(0, 1.2)), \(.) {
-    plotSpatialData() + plotImage(x, 
-        i="crop", 
-        ch=c(6, 22, 39), 
-        cl=list(1, 1, .),
-        c=c("blue", "cyan", "yellow")) +
-        ggtitle(sprintf("[%s, %s]", .[1], .[2]))
-}) |> wrap_plots(nrow=1)
 ```
 
 # Masking
