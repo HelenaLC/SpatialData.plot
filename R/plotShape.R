@@ -67,7 +67,14 @@ setMethod("plotShape", "SpatialData", \(x, i=1, c=NULL, f="white", s="radius", a
                 if (c %in% names(df)) {
                     aes$colour <- aes(.data[[c]])[[1]]
                 } else {
-                    df[[c]] <- valTable(x, i, c, assay=assay)
+                    t <- getTable(x, i)
+                    md <- int_metadata(t)
+                    md <- md$spatialdata_attrs
+                    ik <- md$instance_key
+                    val <- valTable(x, i, c, assay=assay)
+                    idx <- match(df[[ik]], names(val))
+                    df[[c]] <- val[idx]
+                    #df[[c]] <- valTable(x, i, c, assay=assay)
                     if (scale_type(df[[c]]) == "discrete")
                         df[[c]] <- factor(df[[c]])
                     aes$colour <- aes(.data[[c]])[[1]]
@@ -93,7 +100,13 @@ setMethod("plotShape", "SpatialData", \(x, i=1, c=NULL, f="white", s="radius", a
             } else if (.str_is_col(c)) {
                 dot$colour <- c
             } else if (is.character(c)) {
-                df[[c]] <- valTable(x, i, c, assay=assay)
+                t <- getTable(x, i)
+                md <- int_metadata(t)
+                md <- md$spatialdata_attrs
+                ik <- md$instance_key
+                val <- valTable(x, i, c, assay=assay)
+                idx <- match(df[[c]][[ik]], names(val))
+                df[[c]] <- val[idx]
                 if (scale_type(df[[c]]) == "discrete")
                     df[[c]] <- factor(df[[c]])
                 aes$colour <- aes(.data[[c]])[[1]]
