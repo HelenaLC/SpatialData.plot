@@ -17,7 +17,6 @@ vignette: |
   %\VignetteEncoding{UTF-8}
 ---
 
-
 # Introduction
 
 In this vignette we explore how shape and point data in Xenium and
@@ -26,6 +25,7 @@ can be retrieved from a Bioconductor bucket and cached in
 BiocFileCache, using utilities in SpatialData package.
 
 The xenium examples are:
+
 ```{r lkx, message=FALSE}
 library(SpatialData)
 available_10x_xen_zips()
@@ -45,7 +45,7 @@ dir.create(td <- tempfile())
 unzip(pa, exdir=td)
 # read & write to .zarr w/ 'spatialdata-io'
 target <- tempfile()
-nn = use_sdio("xenium", srcdir=td, dest=target) # returns NULL
+nn <- use_sdio("xenium", srcdir=td, dest=target) # returns NULL
 # read into R
 (br2fov <- readSpatialData(target))
 library(SpatialData.plot)
@@ -75,7 +75,7 @@ pa <- path_to_10x_xen_demo("Xenium_V1_human_Lung_2fov_outs.zip")
 dir.create(td <- tempfile())
 unzip(pa, exdir=td)
 target <- tempfile()
-nn = use_sdio("xenium", srcdir=td, dest=target) # returns NULL
+nn <- use_sdio("xenium", srcdir=td, dest=target) # returns NULL
 (lu2fov <- readSpatialData(target))
 plotSpatialData() + plotImage(lu2fov)
 ```
@@ -92,11 +92,9 @@ In this demo, we show how to take advantage of
 size information in the shape data on cells.
 
 ```{r lkmerf}
-tf = tempfile()
-dir.create(tf)
-pa = unzip_merfish_demo(tf)
-pa
-merf = readSpatialData(pa)
-merfs = SpatialData.plot:::.shapes2sf(merf, "cells")
+dir.create(tf <- tempfile())
+(pa <- unzip_merfish_demo(tf))
+merf <- readSpatialData(pa)
+merfs <- SpatialData.plot:::.shapes2sf(merf, "cells")
 ggplot(merfs) + geom_sf(colour="gray", size=merfs$radius/20)
 ```
