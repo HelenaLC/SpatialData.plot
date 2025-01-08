@@ -53,6 +53,7 @@ Suggests:
     testthat
 remotes:
     HelenaLC/SpatialData
+    HelenaLC/SpatialData.data
 biocViews: 
     Spatial,
     SingleCell,

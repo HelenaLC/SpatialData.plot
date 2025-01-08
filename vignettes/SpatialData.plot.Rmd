@@ -26,6 +26,7 @@ library(ggplot2)
 library(patchwork)
 library(ggnewscale)
 library(SpatialData)
+library(SpatialData.data)
 library(SpatialData.plot)
 library(SingleCellExperiment)
 ```
