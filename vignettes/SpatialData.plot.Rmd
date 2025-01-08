@@ -176,17 +176,17 @@ pa <- unzip_spd_demo(
 
 There are only `r length(SpatialData::shape(x, "cells"))` cells, but 
 `r format(length(SpatialData::point(x, "single_molecule")), big.mark=",")` 
-molecules, so that we downsample a random subset of 2,000 for visualization:
+molecules, so that we downsample a random subset of 1,000 for visualization:
 
 ```{r merfish-plot}
-# downsample 2,000 points
+# downsample 1,000 points
 n <- length(p <- point(x))
 q <- p[sample(n, 1e3)]
-(point(x, "2k") <- q)
+(point(x, "1k") <- q)
 # layered visualization
 plotSpatialData() +
     plotImage(x) +
-    plotPoint(x, i="2k", c="cell_type", s=0.2) +
+    plotPoint(x, i="1k", c="cell_type", s=0.2) +
     new_scale_color() +
     plotShape(x, i="anatomical") +
     scale_color_manual(values=hcl.colors(6, "Spectral")) 
