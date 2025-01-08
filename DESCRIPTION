@@ -52,7 +52,7 @@ Suggests:
     Rgraphviz,
     testthat
 remotes:
-    HelenaLC/SpatialData
+    HelenaLC/SpatialData,
     HelenaLC/SpatialData.data
 biocViews: 
     Spatial,
