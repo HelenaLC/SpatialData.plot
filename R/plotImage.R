@@ -132,7 +132,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 .is_rgb <- \(x) {
     if (is(x, "ImageArray") &&
         !is.null(md <- meta(x)))
-        x <- md$omero$channels$label
+        x <- channels(x)
     if (!is.vector(x)) stop("invalid 'x'")
     is_len <- length(x) == 3
     is_012 <- setequal(x, seq(0, 2))
@@ -202,12 +202,15 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 #'   scale_x_continuous
 #'   scale_x_continuous
 #'   annotation_raster
-.gg_i <- \(x, w, h, nms, c) list(
-    scale_color_identity(NULL, guide="legend", labels=nms),
-    geom_point(aes(col=c), data.frame(c), x=0, y=0, alpha=0),
-    guides(col=guide_legend(override.aes=list(alpha=1, size=2))),
-    scale_x_continuous(limits=w), scale_y_reverse(limits=rev(h)),
-    annotation_raster(x, w[2],w[1], -h[1],-h[2], interpolate=FALSE))
+.gg_i <- \(x, w, h, pal=NULL) {
+    lgd <- if (!is.null(pal)) list(
+        guides(col=guide_legend(override.aes=list(alpha=1, size=2))),
+        scale_color_identity(NULL, guide="legend", labels=names(pal)),
+        geom_point(aes(col=foo), data.frame(foo=pal), x=0, y=0, alpha=0))
+    list(lgd,
+        scale_x_continuous(limits=w), scale_y_reverse(limits=rev(h)),
+        annotation_raster(x, w[2],w[1], -h[1],-h[2], interpolate=FALSE))
+}
 
 #' @rdname plotImage
 #' @export
@@ -219,7 +222,10 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
         j <- CTname(y)[j]
     df <- .df_i(y, k, ch, c, cl)
     wh <- .get_wh(x, i, j)
-    nms <- channels(y)[idx <- .ch_idx(y, ch)]
-    pal <- if (is.null(c)) .DEFAULT_COLORS else c
-    .gg_i(df, wh$w, wh$h, nms, pal[seq_along(idx)])
+    pal <- if (!.is_rgb(y)) {
+        pal <- if (is.null(c)) .DEFAULT_COLORS else c
+        nms <- channels(y)[idx <- .ch_idx(y, ch)]
+        setNames(pal[seq_along(idx)], nms)
+    }
+    .gg_i(df, wh$w, wh$h, pal)
 })
