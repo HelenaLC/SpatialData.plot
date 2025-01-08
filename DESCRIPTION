@@ -50,6 +50,7 @@ Suggests:
     magick,
     patchwork,
     Rgraphviz,
+    SpatialData.data,
     testthat
 remotes:
     HelenaLC/SpatialData,
