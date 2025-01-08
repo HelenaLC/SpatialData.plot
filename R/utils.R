@@ -29,6 +29,7 @@
     coord_equal(), theme_bw(), theme(
         panel.grid=element_blank(),
         legend.key=element_blank(),
+        legend.key.size=unit(0, "lines"),
         legend.background=element_blank(),
         plot.title=element_text(hjust=0.5),
         axis.text=element_text(color="grey"),

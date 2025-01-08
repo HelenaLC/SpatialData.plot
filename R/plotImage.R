@@ -202,7 +202,10 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 #'   scale_x_continuous
 #'   scale_x_continuous
 #'   annotation_raster
-.gg_i <- \(x, w, h, dpi) list(
+.gg_i <- \(x, w, h, nms, c) list(
+    scale_color_identity(NULL, guide="legend", labels=nms),
+    geom_point(aes(col=c), data.frame(c), x=0, y=0, alpha=0),
+    guides(col=guide_legend(override.aes=list(alpha=1, size=2))),
     scale_x_continuous(limits=w), scale_y_reverse(limits=rev(h)),
     annotation_raster(x, w[2],w[1], -h[1],-h[2], interpolate=FALSE))
 
@@ -216,5 +219,7 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
         j <- CTname(y)[j]
     df <- .df_i(y, k, ch, c, cl)
     wh <- .get_wh(x, i, j)
-    .gg_i(df, wh$w, wh$h)
+    nms <- channels(y)[idx <- .ch_idx(y, ch)]
+    pal <- if (is.null(c)) .DEFAULT_COLORS else c
+    .gg_i(df, wh$w, wh$h, nms, pal[seq_along(idx)])
 })
