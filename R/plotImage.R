@@ -222,7 +222,7 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
         j <- CTname(y)[j]
     df <- .df_i(y, k, ch, c, cl)
     wh <- .get_wh(x, i, j)
-    pal <- if (!.is_rgb(y)) {
+    pal <- if (!.is_rgb(y) && dim(y)[1] > 1) {
         pal <- if (is.null(c)) .DEFAULT_COLORS else c
         nms <- channels(y)[idx <- .ch_idx(y, ch)]
         setNames(pal[seq_along(idx)], nms)

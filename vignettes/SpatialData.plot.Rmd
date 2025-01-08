@@ -186,6 +186,7 @@ q <- p[sample(n, 1e3)]
 # layered visualization
 plotSpatialData() +
     plotImage(x) +
+    new_scale_color() +
     plotPoint(x, i="1k", c="cell_type", s=0.2) +
     new_scale_color() +
     plotShape(x, i="anatomical") +
