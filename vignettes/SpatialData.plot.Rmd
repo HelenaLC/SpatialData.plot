@@ -235,7 +235,7 @@ pa <- unzip_spd_demo(
 ```{r mibitof-plot, fig.width=10, fig.height=3}
 pal <- hcl.colors(8, "Spectral")
 wrap_plots(nrow=1, lapply(seq(3), \(.)
-    plotSpatialData() + plotImage(x, .) + 
+    plotSpatialData() + plotImage(x, .) +
     plotLabel(x, ., "Cluster", pal=pal))) +
     plot_layout(guides="collect")
 ```
@@ -263,7 +263,8 @@ Plotting with multiple image channels:
 ```{r mcmicro-plot}
 plotSpatialData() + plotImage(x,
     ch=c("DNA_6", "CD45", "CD57"), 
-    c=c("blue", "cyan", "yellow"))
+    c=c("blue", "cyan", "yellow"),
+    cl=list(NULL, c(0, 0.1), NULL))
 ```
 
 ## IMC (Steinbock)
@@ -299,7 +300,7 @@ lapply(list(c(0.2, 1), c(0, 0.8), c(0, 1.2)), \(.) {
         cl=list(1, 1, .),
         c=c("blue", "cyan", "yellow")) +
         ggtitle(sprintf("[%s, %s]", .[1], .[2]))
-}) |> wrap_plots(nrow=1)
+}) |> wrap_plots(nrow=1) + plot_layout(guides="collect")
 ```
 
 # Masking
@@ -331,6 +332,7 @@ lapply(names(c <- c(a="red", b="blue")), \(.)
 ```{r plot-mask-two, fig.width=8, fig.height=3.5}
 # compute channel-wise means
 i <- "blobs_labels"
+table(x) <- NULL
 x <- mask(x, "blobs_image", i, fun=mean)
 (t <- getTable(x, i))
 # visualize side-by-side
