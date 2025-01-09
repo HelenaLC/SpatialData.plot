@@ -199,6 +199,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 }
 
 #' @importFrom ggplot2 
+#'   scale_color_identity
 #'   scale_x_continuous
 #'   scale_x_continuous
 #'   annotation_raster
@@ -206,7 +207,7 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
     lgd <- if (!is.null(pal)) list(
         guides(col=guide_legend(override.aes=list(alpha=1, size=2))),
         scale_color_identity(NULL, guide="legend", labels=names(pal)),
-        geom_point(aes(col=foo), data.frame(foo=pal), x=0, y=0, alpha=0))
+        geom_point(aes(col=.data$foo), data.frame(foo=pal), x=0, y=0, alpha=0))
     list(lgd,
         scale_x_continuous(limits=w), scale_y_reverse(limits=rev(h)),
         annotation_raster(x, w[2],w[1], -h[1],-h[2], interpolate=FALSE))
@@ -223,9 +224,9 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
     df <- .df_i(y, k, ch, c, cl)
     wh <- .get_wh(x, i, j)
     pal <- if (!.is_rgb(y) && dim(y)[1] > 1) {
-        pal <- if (is.null(c)) .DEFAULT_COLORS else c
         nms <- channels(y)[idx <- .ch_idx(y, ch)]
-        setNames(pal[seq_along(idx)], nms)
+        pal <- if (is.null(c)) .DEFAULT_COLORS else c
+        pal <- pal[seq_along(idx)]; names(pal) <- nms; pal
     }
     .gg_i(df, wh$w, wh$h, pal)
 })
