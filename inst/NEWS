@@ -1,3 +1,8 @@
+changes in version 0.99.3
+
+- in 'plotImage', render discrete color 
+  legend for multi-channel (non-RGB) images
+
 changes in version 0.99.2
 
 - in 'plotImage', added support to visualize channels of choice,
