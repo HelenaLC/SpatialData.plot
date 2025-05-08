@@ -45,13 +45,13 @@ NULL
 #' @importFrom methods as
 #' @importFrom ggplot2 
 #'   scale_fill_manual scale_fill_gradientn
-#'   aes geom_tile theme unit guides guide_legend
+#'   aes geom_raster theme unit guides guide_legend
 #' @export
 setMethod("plotLabel", "SpatialData", \(x, i=1, c=NULL, 
     a=0.5, pal=c("red", "green"), nan=NA, assay=1) {
     if (is.numeric(i)) i <- labelNames(x)[i]
     i <- match.arg(i, labelNames(x))
-    y <- as.matrix(as(data(label(x, i)), "DelayedArray"))
+    y <- as.matrix(.get_multiscale_data(label(x, i)))
     df <- data.frame(x=c(col(y)), y=c(row(y)), z=c(y))
     aes <- aes(.data[["x"]], .data[["y"]])
     if (!is.null(c)) {
@@ -81,5 +81,5 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, c=NULL,
             theme(legend.position="none"),
             scale_fill_manual(NULL, values=pal))
     }
-    list(thm, do.call(geom_tile, list(data=df, mapping=aes, alpha=a)))
+    list(thm, do.call(geom_raster, list(data=df, mapping=aes, alpha=a)))
 })
