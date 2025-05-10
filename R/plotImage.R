@@ -103,11 +103,11 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 }
 
 # check if an image is rgb or not
-#' @importFrom SpatialData getZarrArrayPath
+#' @importFrom DelayedArray path
 #' @importFrom Rarr zarr_overview
 #' @noRd
 .get_img_dt <- \(a) {
-    pa <- getZarrArrayPath(a)
+    pa <- DelayedArray::path(a)
     df <- zarr_overview(pa, as_data_frame=TRUE)
     if (!is.null(dt <- df$data_type)) return(dt)
 }
