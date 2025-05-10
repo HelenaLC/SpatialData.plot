@@ -3,6 +3,9 @@
 #' 
 #' @param x \code{SpatialData} object.
 #' @param i character string or index; the label element to plot.
+#' @param k index of the scale of an image; by default (NULL), will auto-select 
+#'   scale in order to minimize memory-usage and blurring for a target size of 
+#'   800 x 800px; use Inf to plot the lowest resolution available.
 #' @param c the default, NULL, gives a binary image of whether or not 
 #'   a given pixel is non-zero; alternatively, a character string specifying
 #'   a \code{colData} column or row name in a \code{table} annotating \code{i}.
@@ -47,11 +50,11 @@ NULL
 #'   scale_fill_manual scale_fill_gradientn
 #'   aes geom_raster theme unit guides guide_legend
 #' @export
-setMethod("plotLabel", "SpatialData", \(x, i=1, c=NULL, 
+setMethod("plotLabel", "SpatialData", \(x, i=1, k=NULL, c=NULL, 
     a=0.5, pal=c("red", "green"), nan=NA, assay=1) {
     if (is.numeric(i)) i <- labelNames(x)[i]
     i <- match.arg(i, labelNames(x))
-    y <- as.matrix(.get_multiscale_data(label(x, i)))
+    y <- as.matrix(.get_multiscale_data(label(x, i), k))
     df <- data.frame(x=c(col(y)), y=c(row(y)), z=c(y))
     aes <- aes(.data[["x"]], .data[["y"]])
     if (!is.null(c)) {

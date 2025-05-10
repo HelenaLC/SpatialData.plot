@@ -66,6 +66,5 @@ test_that("plotLabel()", {
     expect_identical(q$layers[[1]]$aes_params$alpha, a)
     expect_error(show(plotSpatialData() + plotLabel(x, i, a=".....")))
     expect_error(show(plotSpatialData() + plotLabel(x, i, a=c(1, 2))))
-    # TODO: use 'annotation_raster'
-    # TODO: multiscale plotting
+    # TODO: should we use 'annotation_raster' ?
 })

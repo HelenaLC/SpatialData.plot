@@ -8,6 +8,7 @@
 \S4method{plotLabel}{SpatialData}(
   x,
   i = 1,
+  k = NULL,
   c = NULL,
   a = 0.5,
   pal = c("red", "green"),
@@ -19,6 +20,10 @@
 \item{x}{\code{SpatialData} object.}
 
 \item{i}{character string or index; the label element to plot.}
+
+\item{k}{index of the scale of an image; by default (NULL), will auto-select 
+scale in order to minimize memory-usage and blurring for a target size of 
+800 x 800px; use Inf to plot the lowest resolution available.}
 
 \item{c}{the default, NULL, gives a binary image of whether or not 
 a given pixel is non-zero; alternatively, a character string specifying
