@@ -8,6 +8,7 @@
 \S4method{plotLabel}{SpatialData}(
   x,
   i = 1,
+  j = 1,
   k = NULL,
   c = NULL,
   a = 0.5,
@@ -20,6 +21,8 @@
 \item{x}{\code{SpatialData} object.}
 
 \item{i}{character string or index; the label element to plot.}
+
+\item{j}{name of target coordinate system.}
 
 \item{k}{index of the scale of an image; by default (NULL), will auto-select 
 scale in order to minimize memory-usage and blurring for a target size of 

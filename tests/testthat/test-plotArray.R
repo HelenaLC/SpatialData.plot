@@ -61,6 +61,9 @@ test_that("plotLabel()", {
     expect_s3_class(q, "ggplot")
     expect_equal(q$coordinates$ratio, 1)
     expect_is(q$layers[[1]]$mapping$fill, "quosure")
+    # multiscale
+    y <- label(x, "blobs_multiscale_labels")
+    y <- y[,seq_len(32)] # same thing but different
     # alpha
     q <- p + plotLabel(x, i, a=a <- runif(1))
     expect_identical(q$layers[[1]]$aes_params$alpha, a)

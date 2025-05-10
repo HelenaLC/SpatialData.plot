@@ -3,6 +3,7 @@
 #' 
 #' @param x \code{SpatialData} object.
 #' @param i character string or index; the label element to plot.
+#' @param j name of target coordinate system. 
 #' @param k index of the scale of an image; by default (NULL), will auto-select 
 #'   scale in order to minimize memory-usage and blurring for a target size of 
 #'   800 x 800px; use Inf to plot the lowest resolution available.
@@ -50,12 +51,18 @@ NULL
 #'   scale_fill_manual scale_fill_gradientn
 #'   aes geom_raster theme unit guides guide_legend
 #' @export
-setMethod("plotLabel", "SpatialData", \(x, i=1, k=NULL, c=NULL, 
+setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL, 
     a=0.5, pal=c("red", "green"), nan=NA, assay=1) {
     if (is.numeric(i)) i <- labelNames(x)[i]
     i <- match.arg(i, labelNames(x))
-    y <- as.matrix(.get_multiscale_data(label(x, i), k))
-    df <- data.frame(x=c(col(y)), y=c(row(y)), z=c(y))
+    y <- label(x, i)
+    ym <- as.matrix(.get_multiscale_data(label(x, i), k))
+    df <- data.frame(x=c(col(ym)), y=c(row(ym)), z=c(ym))
+    # transformation
+    if (is.numeric(j))
+      j <- CTname(y)[j]
+    ts <- CTpath(x, i, j)
+    df[,c("x", "y")] <- .trans_xy(df[,c("x", "y")], ts)
     aes <- aes(.data[["x"]], .data[["y"]])
     if (!is.null(c)) {
         stopifnot(length(c) == 1, is.character(c))

@@ -168,7 +168,7 @@ Such labels could be morphological regions annotated by pathologists.
 
 ```{r merfish-read}
 dir.create(td <- tempfile())
-pa <- unzip_spd_demo(
+pa <- SpatialData.data:::.unzip_spd_demo(
     zipname="merfish.zarr.zip", 
     dest=td, source="biocOSN")
 (x <- readSpatialData(pa, anndataR=FALSE))
@@ -207,7 +207,7 @@ Mouse intestine, 1GB; 4 image resolutions and 3 shapes at 2, 8, and 16 $\mu$m.
 
 ```{r visiumhd-read}
 dir.create(td <- tempfile())
-pa <- unzip_spd_demo(
+pa <- SpatialData.data:::.unzip_spd_demo(
     zipname="visium_hd_3.0.0_io.zip", 
     dest=td, source="biocOSN")
 (x <- readSpatialData(pa, images=4, shapes=3, tables=FALSE))
@@ -226,7 +226,7 @@ Colorectal carcinoma, 25 MB; no shapes, no points.
 
 ```{r mibitof-read}
 dir.create(td <- tempfile())
-pa <- unzip_spd_demo(
+pa <- SpatialData.data:::.unzip_spd_demo(
     zipname="mibitof.zip", 
     dest=td, source="biocOSN")
 (x <- readSpatialData(pa, anndataR=FALSE))
@@ -246,7 +246,7 @@ Small lung adenocarcinoma, 250 MB; 1 image, 2 labels, 2 tables.
 
 ```{r mcmicro-read}
 dir.create(td <- tempfile())
-pa <- unzip_spd_demo(
+pa <- SpatialData.data:::.unzip_spd_demo(
     zipname="mcmicro_io.zip", 
     dest=td, source="biocOSN")
 (x <- readSpatialData(pa, anndataR=FALSE))
@@ -273,7 +273,7 @@ plotSpatialData() + plotImage(x,
 
 ```{r steinbock-read}
 dir.create(td <- tempfile())
-pa <- unzip_spd_demo(
+pa <- SpatialData.data:::.unzip_spd_demo(
     zipname="steinbock_io.zip", 
     dest=td, source="biocOSN")
 x <- readSpatialData(pa, anndataR=FALSE)
