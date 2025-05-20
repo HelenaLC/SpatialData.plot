@@ -35,8 +35,10 @@
 #' 
 #' # coloring by 'colData'
 #' n <- length(unique(t$id))
-#' pal <- hcl.colors(n, "Spectral")
-#' p + plotLabel(x, i, "id", pal=pal)
+#' # TODO: did a small fix to color scheme below, will fix example later
+#' # pal <- hcl.colors(n, "Spectral")
+#' pal_d <- hcl.colors(10, "Spectral")
+#' p + plotLabel(x, i, "id", pal=pal_d)
 #' 
 #' # coloring by 'assay' data
 #' p + plotLabel(x, i, "channel_1_sum")

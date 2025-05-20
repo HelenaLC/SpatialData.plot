@@ -56,8 +56,7 @@ test_that(".check_cl", {
 })
 
 dir.create(td <- tempfile())
-pa <- unzip_spd_demo(zipname="steinbock_io.zip", dest=td, source="biocOSN")
-x <- readSpatialData(pa, images=1, labels=FALSE, points=FALSE, shapes=FALSE, tables=FALSE)
+(x <- SpatialData.data::MulticancerSteinbock())
 a <- data(image(x)[seq_len(3), seq_len(100), seq_len(100)], 1)
 
 test_that(".get_img_dt", {
