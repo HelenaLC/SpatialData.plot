@@ -81,24 +81,27 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
     if (length(ch) > (n <- length(.DEFAULT_COLORS)) && is.null(c))
         stop("Only ", n, " default colors available, but",
             length(ch), " are needed; please specify 'c'")
-    if (!is.null(c) || (is.null(c) && length(ch) > 1)) {
-        if (is.null(c)) c <- .DEFAULT_COLORS[seq_along(ch)] 
-        c <- col2rgb(c)/255
-        b <- array(0, dim=c(3, dim(a)[-1]))
-        for (i in seq_len(d)) {
-            for (j in seq_len(3)) {
-                rgb <- a[i,,,drop=FALSE]*c[j,i]
-                # apply upper contrast lim.
-                rgb <- rgb*(1/cl[[i]][2]) 
-                b[j,,] <- b[j,,,drop=FALSE] + rgb
-                # apply lower contrast lim.
-                b[j,,][b[j,,] < cl[[i]][1]] <- 0
-            }
-        }
-        a <- pmin(b, 1)
-    } else {
-        a <- a[rep(1, 3), , ]
+    if (length(ch) == 1) a <- a[rep(1, 3), , ]
+    if (is.null(c)) {
+        c <- .DEFAULT_COLORS[seq_along(ch)] 
+    } else if (length(c) < length(ch)) {
+        stop("not enough colors supplied; need ", length(ch))
+    } else if (length(ch) < length(c)) {
+        warning("too many colors supplied; using first ", length(ch))
     }
+    c <- col2rgb(c)/255
+    b <- array(0, dim=c(3, dim(a)[-1]))
+    for (i in seq_len(d)) {
+        for (j in seq_len(3)) {
+            rgb <- a[i,,,drop=FALSE]*c[j,i]
+            # apply upper contrast lim.
+            rgb <- rgb*(1/cl[[i]][2]) 
+            b[j,,] <- b[j,,,drop=FALSE] + rgb
+            # apply lower contrast lim.
+            b[j,,][b[j,,] < cl[[i]][1]] <- 0
+        }
+    }
+    a <- pmin(b, 1)
     return(a)
 }
 
@@ -115,14 +118,13 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
 # normalize the image data given its data type
 #' @noRd
 .norm_ia <- \(a, dt) {
-    d <- dim(a)[1]
     if (dt %in% names(.DTYPE_MAX_VALUES)) {
         a <- a / .DTYPE_MAX_VALUES[dt]
     } else if (max(a) > 1) {
-        for (i in seq_len(d))
+        for (i in seq_len(dim(a)[1]))
             a[i,,] <- a[i,,] / max(a[i,,])
     }
-  return(a)
+    return(a)
 }
 
 # check if an image is RGB or not
