@@ -70,9 +70,15 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
         stopifnot(length(c) == 1, is.character(c))
         t <- table(x, hasTable(x, i, name=TRUE))
         ik <- .instance_key(t)
+        # TODO: search ik in both internal and regular colData for now
+        # thus perhaps update, SpatialData::valTable instead
         # idx <- match(df$z, int_colData(t)[[ik]])
-        idx <- match(df$z, 
-                     valTable(x, i, ik, assay=assay))
+        if(ik %in% names(int_colData(t))){
+          coldata <- int_colData(t)[[ik]]
+        } else {
+          coldata <- colData(t)[[ik]]
+        }
+        idx <- match(df$z, coldata)
         df$z <- valTable(x, i, c, assay=assay)[idx]
         if (c == ik) df$z <- factor(df$z)
         aes$fill <- aes(.data[["z"]])[[1]]
