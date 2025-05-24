@@ -38,10 +38,10 @@
 #' # TODO: did a small fix to color scheme below, will fix example later
 #' # pal <- hcl.colors(n, "Spectral")
 #' pal_d <- hcl.colors(10, "Spectral")
-#' p + plotLabel(x, i, "id", pal=pal_d)
+#' p + plotLabel(x, i, c = "id", pal=pal_d)
 #' 
 #' # coloring by 'assay' data
-#' p + plotLabel(x, i, "channel_1_sum")
+#' p + plotLabel(x, i, c = "channel_1_sum")
 NULL
 
 #' @rdname plotLabel
@@ -52,6 +52,7 @@ NULL
 #' @importFrom ggplot2 
 #'   scale_fill_manual scale_fill_gradientn
 #'   aes geom_raster theme unit guides guide_legend
+#' @importFrom SingleCellExperiment colData
 #' @export
 setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL, 
     a=0.5, pal=c("red", "green"), nan=NA, assay=1) {
