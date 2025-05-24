@@ -22,11 +22,11 @@ test_that(".guess_scale", {
             dim <- lapply(c(6, 3), \(.) c(3, rep(., 2))), \(.) 
             array(sample(seq_len(255), prod(.), replace=TRUE), dim=.)))
     # manual scale
-    expect_identical(.get_img_data(img, k=1), lys[[1]]) 
-    expect_identical(.get_img_data(img, k=2), lys[[2]])
+    expect_identical(.get_multiscale_data(img, k=1), lys[[1]]) 
+    expect_identical(.get_multiscale_data(img, k=2), lys[[2]])
     # automatic scale
-    expect_identical(.get_img_data(img, k=NULL, w=5, h=7), lys[[1]]) 
-    expect_identical(.get_img_data(img, k=NULL, w=2, h=2), lys[[2]])
+    expect_identical(.get_multiscale_data(img, k=NULL, w=5, h=7), lys[[1]]) 
+    expect_identical(.get_multiscale_data(img, k=NULL, w=2, h=2), lys[[2]])
 })
 
 test_that("plotImage()", {
@@ -61,11 +61,13 @@ test_that("plotLabel()", {
     expect_s3_class(q, "ggplot")
     expect_equal(q$coordinates$ratio, 1)
     expect_is(q$layers[[1]]$mapping$fill, "quosure")
+    # multiscale
+    y <- label(x, "blobs_multiscale_labels")
+    y <- y[,seq_len(32)] # same thing but different
     # alpha
     q <- p + plotLabel(x, i, a=a <- runif(1))
     expect_identical(q$layers[[1]]$aes_params$alpha, a)
     expect_error(show(plotSpatialData() + plotLabel(x, i, a=".....")))
     expect_error(show(plotSpatialData() + plotLabel(x, i, a=c(1, 2))))
-    # TODO: use 'annotation_raster'
-    # TODO: multiscale plotting
+    # TODO: should we use 'annotation_raster' ?
 })

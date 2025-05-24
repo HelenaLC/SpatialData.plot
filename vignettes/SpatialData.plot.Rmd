@@ -93,8 +93,8 @@ pal_d <- hcl.colors(10, "Spectral")
 pal_c <- hcl.colors(9, "Inferno")[-9]
 
 a <- p + plotLabel(x, i) # simple binary image
-b <- p + plotLabel(x, i, "id", pal=pal_d) # 'colData'
-c <- p + plotLabel(x, i, "channel_1_sum", pal=pal_c) + 
+b <- p + plotLabel(x, i, c = "id", pal=pal_d) # 'colData'
+c <- p + plotLabel(x, i, c = "channel_1_sum", pal=pal_c) + 
     theme(legend.key.width=unit(1, "lines")) # 'assay'
 
 (a | b | c) + 
@@ -224,7 +224,7 @@ Colorectal carcinoma, 25 MB; no shapes, no points.
 pal <- hcl.colors(8, "Spectral")
 wrap_plots(nrow=1, lapply(seq(3), \(.)
     plotSpatialData() + plotImage(x, .) +
-    plotLabel(x, ., "Cluster", pal=pal))) +
+    plotLabel(x, ., c = "Cluster", pal=pal))) +
     plot_layout(guides="collect")
 ```
 
@@ -317,7 +317,7 @@ x <- mask(x, "blobs_image", i, fun=mean)
 (t <- getTable(x, i))
 # visualize side-by-side
 ps <- lapply(paste(seq_len(3)), \(.) 
-    plotSpatialData() + plotLabel(x, i, .) + 
+    plotSpatialData() + plotLabel(x, i, c = .) + 
     ggtitle(paste("channel", ., "sum"))) 
 wrap_plots(ps, nrow=1) & theme(
     legend.position="bottom", 

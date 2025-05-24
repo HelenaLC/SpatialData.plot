@@ -3,6 +3,10 @@
 #' 
 #' @param x \code{SpatialData} object.
 #' @param i character string or index; the label element to plot.
+#' @param j name of target coordinate system. 
+#' @param k index of the scale of an image; by default (NULL), will auto-select 
+#'   scale in order to minimize memory-usage and blurring for a target size of 
+#'   800 x 800px; use Inf to plot the lowest resolution available.
 #' @param c the default, NULL, gives a binary image of whether or not 
 #'   a given pixel is non-zero; alternatively, a character string specifying
 #'   a \code{colData} column or row name in a \code{table} annotating \code{i}.
@@ -34,10 +38,10 @@
 #' # TODO: did a small fix to color scheme below, will fix example later
 #' # pal <- hcl.colors(n, "Spectral")
 #' pal_d <- hcl.colors(10, "Spectral")
-#' p + plotLabel(x, i, "id", pal=pal_d)
+#' p + plotLabel(x, i, c = "id", pal=pal_d)
 #' 
 #' # coloring by 'assay' data
-#' p + plotLabel(x, i, "channel_1_sum")
+#' p + plotLabel(x, i, c = "channel_1_sum")
 NULL
 
 #' @rdname plotLabel
@@ -47,20 +51,35 @@ NULL
 #' @importFrom methods as
 #' @importFrom ggplot2 
 #'   scale_fill_manual scale_fill_gradientn
-#'   aes geom_tile theme unit guides guide_legend
+#'   aes geom_raster theme unit guides guide_legend
+#' @importFrom SingleCellExperiment colData
 #' @export
-setMethod("plotLabel", "SpatialData", \(x, i=1, c=NULL, 
+setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL, 
     a=0.5, pal=c("red", "green"), nan=NA, assay=1) {
     if (is.numeric(i)) i <- labelNames(x)[i]
     i <- match.arg(i, labelNames(x))
-    y <- as.matrix(as(data(label(x, i)), "DelayedArray"))
-    df <- data.frame(x=c(col(y)), y=c(row(y)), z=c(y))
+    y <- label(x, i)
+    ym <- as.matrix(.get_multiscale_data(label(x, i), k))
+    df <- data.frame(x=c(col(ym)), y=c(row(ym)), z=c(ym))
+    # transformation
+    if (is.numeric(j))
+      j <- CTname(y)[j]
+    ts <- CTpath(x, i, j)
+    df[,c("x", "y")] <- .trans_xy(df[,c("x", "y")], ts)
     aes <- aes(.data[["x"]], .data[["y"]])
     if (!is.null(c)) {
         stopifnot(length(c) == 1, is.character(c))
         t <- table(x, hasTable(x, i, name=TRUE))
         ik <- .instance_key(t)
-        idx <- match(df$z, int_colData(t)[[ik]])
+        # TODO: search ik in both internal and regular colData for now
+        # thus perhaps update, SpatialData::valTable instead
+        # idx <- match(df$z, int_colData(t)[[ik]])
+        if(ik %in% names(int_colData(t))){
+          coldata <- int_colData(t)[[ik]]
+        } else {
+          coldata <- colData(t)[[ik]]
+        }
+        idx <- match(df$z, coldata)
         df$z <- valTable(x, i, c, assay=assay)[idx]
         if (c == ik) df$z <- factor(df$z)
         aes$fill <- aes(.data[["z"]])[[1]]
@@ -83,5 +102,5 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, c=NULL,
             theme(legend.position="none"),
             scale_fill_manual(NULL, values=pal))
     }
-    list(thm, do.call(geom_tile, list(data=df, mapping=aes, alpha=a)))
+    list(thm, do.call(geom_raster, list(data=df, mapping=aes, alpha=a)))
 })

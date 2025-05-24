@@ -8,6 +8,8 @@
 \S4method{plotLabel}{SpatialData}(
   x,
   i = 1,
+  j = 1,
+  k = NULL,
   c = NULL,
   a = 0.5,
   pal = c("red", "green"),
@@ -19,6 +21,12 @@
 \item{x}{\code{SpatialData} object.}
 
 \item{i}{character string or index; the label element to plot.}
+
+\item{j}{name of target coordinate system.}
+
+\item{k}{index of the scale of an image; by default (NULL), will auto-select 
+scale in order to minimize memory-usage and blurring for a target size of 
+800 x 800px; use Inf to plot the lowest resolution available.}
 
 \item{c}{the default, NULL, gives a binary image of whether or not 
 a given pixel is non-zero; alternatively, a character string specifying
@@ -58,8 +66,8 @@ n <- length(unique(t$id))
 # TODO: did a small fix to color scheme below, will fix example later
 # pal <- hcl.colors(n, "Spectral")
 pal_d <- hcl.colors(10, "Spectral")
-p + plotLabel(x, i, "id", pal=pal_d)
+p + plotLabel(x, i, c = "id", pal=pal_d)
 
 # coloring by 'assay' data
-p + plotLabel(x, i, "channel_1_sum")
+p + plotLabel(x, i, c = "channel_1_sum")
 }

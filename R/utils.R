@@ -46,3 +46,18 @@
                        "uint16" = 65535,
                        "uint32" = 4294967295,
                        "uint64" = 2^64 - 1)
+
+# guess scale of image or label
+.guess_scale <- \(x, w, h) {
+  n <- length(dim(x))
+  i <- ifelse(n == 3, -1, TRUE)
+  d <- vapply(x@data, dim, numeric(n))
+  d <- apply(d, 2, \(.) sum(abs(.[i]-c(h, w))))
+  which.min(d)
+}
+
+# get multiscale
+.get_multiscale_data <- \(x, k=NULL, w=800, h=800) {
+  if (!is.null(k)) return(data(x, k))
+  data(x, .guess_scale(x, w, h))
+}

@@ -159,24 +159,11 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
     return(NULL)
 }
 
-.guess_scale <- \(x, w, h) {
-    n <- length(dim(x))
-    i <- ifelse(n == 3, -1, TRUE)
-    d <- vapply(x@data, dim, numeric(n))
-    d <- apply(d, 2, \(.) sum(abs(.[i]-c(h, w))))
-    which.min(d)
-}
-
-.get_img_data <- \(x, k=NULL, w=800, h=800) {
-    if (!is.null(k)) return(data(x, k))
-    data(x, .guess_scale(x, w, h))
-}
-
 #' @importFrom methods as
 #' @importFrom grDevices rgb
 #' @importFrom DelayedArray realize
 .df_i <- \(x, k=NULL, ch=NULL, c=NULL, cl=NULL) {
-    a <- .get_img_data(x, k)
+    a <- .get_multiscale_data(x, k)
     ch <- .ch_idx(x, ch)
     if (!.is_rgb(x))
         a <- a[ch, , , drop=FALSE]
