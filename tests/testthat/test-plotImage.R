@@ -56,7 +56,11 @@ test_that(".check_cl", {
 })
 
 dir.create(td <- tempfile())
+<<<<<<< HEAD
 (x <- SpatialData.data::MulticancerSteinbock())
+=======
+x <- MulticancerSteinbock(target=td)
+>>>>>>> 6e0c491 (update SpatialData.data retrieval)
 a <- data(image(x)[seq_len(3), seq_len(100), seq_len(100)], 1)
 
 test_that(".get_img_dt", {
