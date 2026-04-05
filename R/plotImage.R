@@ -102,15 +102,23 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
     return(a)
 }
 
+<<<<<<< HEAD
 # check if an image is rgb or not
 #' @importFrom DelayedArray path
+=======
+>>>>>>> 6313628 (+ZarrArray)
 #' @importFrom Rarr zarr_overview
+#' @importFrom ZarrArray path
 #' @noRd
+<<<<<<< HEAD
 .get_img_dt <- \(a) {
     pa <- DelayedArray::path(a)
     df <- zarr_overview(pa, as_data_frame=TRUE)
     if (!is.null(dt <- df$data_type)) return(dt)
 }
+=======
+.get_img_dt <- \(a) zarr_overview(path(a), as_data_frame=TRUE)$data_type
+>>>>>>> 6313628 (+ZarrArray)
 
 # normalize the image data given its data type
 #' @noRd
@@ -197,7 +205,8 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
         geom_point(aes(col=.data$foo), data.frame(foo=pal), x=0, y=0, alpha=0))
     list(lgd,
         scale_x_continuous(limits=w), scale_y_reverse(limits=rev(h)),
-        annotation_raster(x, w[2],w[1], -h[1],-h[2], interpolate=FALSE))
+        #annotation_raster(x, w[2],w[1], -h[1],-h[2], interpolate=FALSE))
+        annotation_raster(x, w[2],w[1], h[2],h[1], interpolate=FALSE))
 }
 
 #' @rdname plotImage
@@ -211,7 +220,7 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
     df <- .df_i(y, k, ch, c, cl)
     wh <- .get_wh(x, i, j)
     pal <- if (!.is_rgb(y) && dim(y)[1] > 1) {
-        nms <- channels(y)[idx <- .ch_idx(y, ch)]
+        nms <- unlist(channels(y))[idx <- .ch_idx(y, ch)]
         pal <- if (is.null(c)) .DEFAULT_COLORS else c
         pal <- pal[seq_along(idx)]; names(pal) <- nms; pal
     }
