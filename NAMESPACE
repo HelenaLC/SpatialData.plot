@@ -17,6 +17,10 @@ importFrom(SingleCellExperiment,colData)
 importFrom(SingleCellExperiment,int_colData)
 importFrom(SingleCellExperiment,int_metadata)
 importFrom(SpatialData,channels)
+<<<<<<< HEAD
+=======
+importFrom(ZarrArray,path)
+>>>>>>> c6dea0a (+ZarrArray)
 importFrom(dplyr,mutate)
 importFrom(dplyr,select)
 importFrom(ggforce,geom_circle)
