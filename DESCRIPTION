@@ -1,7 +1,7 @@
 Package: SpatialData.plot
 Title: SpatialData visualization
 Depends: R (>= 4.4), SpatialData
-Version: 0.99.3
+Version: 0.99.4
 Description: Visualization suit for 'SpatialData' (R). Current functionality 
     includes handling of multiscale 'images', visualizing 'labels', 'points', 
     and 'shapes'. For the latter, POINT, POLYGON, and MULTIPOLYGON geometries 
@@ -42,7 +42,8 @@ Imports:
     sf,
     S4Vectors,
     SingleCellExperiment,
-    Rarr
+    Rarr,
+    ZarrArray
 Suggests:
     BiocStyle,
     ggnewscale,
@@ -64,7 +65,7 @@ biocViews:
     GeneExpression, 
     Transcriptomics
 License: Artistic-2.0
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8
 VignetteBuilder: knitr
 URL: https://github.com/HelenaLC/SpatialData.plot
