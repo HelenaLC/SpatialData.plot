@@ -102,23 +102,10 @@ plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme
     return(a)
 }
 
-<<<<<<< HEAD
-# check if an image is rgb or not
-#' @importFrom DelayedArray path
-=======
->>>>>>> 6313628 (+ZarrArray)
 #' @importFrom Rarr zarr_overview
 #' @importFrom ZarrArray path
 #' @noRd
-<<<<<<< HEAD
-.get_img_dt <- \(a) {
-    pa <- DelayedArray::path(a)
-    df <- zarr_overview(pa, as_data_frame=TRUE)
-    if (!is.null(dt <- df$data_type)) return(dt)
-}
-=======
 .get_img_dt <- \(a) zarr_overview(path(a), as_data_frame=TRUE)$data_type
->>>>>>> 6313628 (+ZarrArray)
 
 # normalize the image data given its data type
 #' @noRd
