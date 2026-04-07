@@ -53,9 +53,10 @@ Suggests:
     Rgraphviz,
     SpatialData.data,
     testthat
-remotes:
+Remotes:
     HelenaLC/SpatialData,
-    HelenaLC/SpatialData.data
+    HelenaLC/SpatialData.data,
+    Bioconductor/ZarrArray
 biocViews: 
     Spatial,
     SingleCell,
