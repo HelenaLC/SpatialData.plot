@@ -235,11 +235,6 @@ wrap_plots(nrow=1, lapply(seq(3), \(.)
 Small lung adenocarcinoma, 250 MB; 1 image, 2 labels, 2 tables.
 
 ```{r mcmicro-read}
-# dir.create(td <- tempfile())
-# pa <- SpatialData.data:::.unzip_spd_demo(
-#     zipname="mcmicro_io.zip", 
-#     dest=td, source="biocOSN")
-# (x <- readSpatialData(pa, anndataR=FALSE))
 x <- LungAdenocarcinomaMCMICRO()
 ```
 
@@ -263,11 +258,6 @@ plotSpatialData() + plotImage(x,
 4 different cancers (SCCHN, BCC, NSCLC, CRC), 820 MB; 14 images, 14 labels, 1 table.
 
 ```{r steinbock-read}
-# dir.create(td <- tempfile())
-# pa <- SpatialData.data:::.unzip_spd_demo(
-#     zipname="steinbock_io.zip", 
-#     dest=td, source="biocOSN")
-# x <- readSpatialData(pa, anndataR=TRUE)
 x <- MulticancerSteinbock()
 ```
 
