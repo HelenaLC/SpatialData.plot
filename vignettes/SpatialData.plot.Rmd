@@ -105,7 +105,7 @@ c <- p + plotLabel(x, i, c = "channel_1_sum", pal=pal_c) +
 
 ### Points
 
-```{r plotPoint, fig.width=8, fig.height=2.5}
+```{r plotPoint, eval=FALSE, fig.width=8, fig.height=2.5}
 i <- "blobs_points"
 p <- plotSpatialData()
 # mock up a 'table'
@@ -114,7 +114,7 @@ f <- list(
   letters=\(n) sample(letters, n, TRUE))
 y <- setTable(x, i, f)
 # demo. viz. capabilities
-a <- p + plotPoint(y, i) # simple dots
+a <- p + plotPoint(y, i)
 b <- p + plotPoint(y, i, "letters") # discrete coloring
 c <- p + plotPoint(y, i, "numbers") # continuous coloring
 a | b | c
@@ -168,9 +168,7 @@ Such labels could be morphological regions annotated by pathologists.
 
 ```{r merfish-read}
 dir.create(td <- tempfile())
-pa <- SpatialData.data:::.unzip_spd_demo(
-    zipname="merfish.zarr.zip", 
-    dest=td, source="biocOSN")
+pa <- get_demo_SDdata("merfish")
 (x <- readSpatialData(pa, anndataR=TRUE))
 ```
 
@@ -185,12 +183,16 @@ q <- p[sample(n, 1e3)]
 (point(x, "1k") <- q)
 # layered visualization
 plotSpatialData() +
-    plotImage(x) +
+    plotImage(x, c="white") +
     new_scale_color() +
     plotPoint(x, i="1k", c="cell_type", s=0.2) +
     new_scale_color() +
     plotShape(x, i="anatomical") +
     scale_color_manual(values=hcl.colors(6, "Spectral")) 
+```
+
+```{r include=FALSE}
+knitr::opts_chunk$set(eval=FALSE)
 ```
 
 ```{r merfish-box}

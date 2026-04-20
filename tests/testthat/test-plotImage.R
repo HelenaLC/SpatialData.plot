@@ -59,17 +59,9 @@ dir.create(td <- tempfile())
 x <- MulticancerSteinbock(target=td)
 a <- data(image(x)[seq_len(3), seq_len(100), seq_len(100)], 1)
 
-test_that(".get_img_dt", {
-    da <- (za <- data(image(x)))[1,,]
-    dt_za <- .get_img_dt(za) # from 'ZarrArray'
-    dt_da <- .get_img_dt(da) # from 'DelayedArray'
-    expect_is(dt_za, "character")
-    expect_identical(dt_za, dt_da)
-})
-
 test_that(".norm_ia", {
     # valid data type
-    dt <- .get_img_dt(a)
+    dt <- data_type(a)
     b <- .norm_ia(realize(a), dt)
     expect_equal(
         apply(b, 1, range), 
@@ -82,7 +74,7 @@ test_that(".norm_ia", {
 })
 
 test_that(".chs2rgb", {
-    dt <- .get_img_dt(a)
+    dt <- data_type(a)
     ch <- seq_len(d <- dim(a)[1])
     a <- .norm_ia(realize(a), dt)
     # no colors, no contrasts

@@ -6,9 +6,9 @@
 \alias{plotPoint,PointFrame-method}
 \title{\code{SpatialData} point viz.}
 \usage{
-\S4method{plotPoint}{SpatialData}(x, i = 1, c = NULL, s = 1, a = 1, assay = 1)
+\S4method{plotPoint}{SpatialData}(x, i = 1, j = 1, c = NULL, s = 1, a = 1, assay = 1, f = NULL)
 
-\S4method{plotPoint}{PointFrame}(x, c = NULL, s = 1, a = 1)
+\S4method{plotPoint}{PointFrame}(x, j = 1, c = NULL, s = 1, a = 1, f = NULL)
 }
 \arguments{
 \item{x}{\code{SpatialData} object or \code{PointFrame}.}

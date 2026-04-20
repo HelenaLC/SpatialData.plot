@@ -33,13 +33,15 @@ NULL
 #' @rdname plotShape
 #' @importFrom sf st_as_sf st_coordinates st_geometry_type
 #' @importFrom ggplot2 aes theme scale_type geom_polygon
+#' @importFrom SpatialData transform
 #' @importFrom ggforce geom_circle
 #' @importFrom utils tail
 #' @export
-setMethod("plotShape", "SpatialData", \(x, i=1, c=NULL, f="white", s="radius", a=0.2, assay=1) {
+setMethod("plotShape", "SpatialData", \(x, i=1, j=1, c=NULL, f="white", s="radius", a=0.2, assay=1) {
     if (is.numeric(i)) i <- shapeNames(x)[i]
-    df <- data(shape(x, i))
-    df <- st_as_sf(df)
+    y <- shape(x, i)
+    y <- SpatialData::transform(y, j)
+    df <- st_as_sf(data(y))
     xy <- st_coordinates(df)
     typ <- st_geometry_type(df)
     typ <- as.character(typ[1])

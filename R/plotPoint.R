@@ -32,21 +32,25 @@ NULL
 
 #' @importFrom methods is
 #' @importFrom grDevices hcl.colors
+#' @importFrom SpatialData transform
 #' @importFrom SingleCellExperiment int_metadata
 #' @importFrom ggplot2 
 #'   geom_point scale_color_gradientn
 #'   aes theme guides guide_legend scale_type
-.gg_p <- \(x, c, s, a, ...) {
+.gg_p <- \(x, j, c, s, a, f=NULL, ...) {
     dots <- list(...)
     i <- dots$i
     ik <- dots$ik
     assay <- dots$assay
     pf <- is(x, "PointFrame")
     y <- if (pf) x else point(x, i)
+    # transformation
+    y <- SpatialData::transform(y, j)
     df <- as.data.frame(data(y))
     aes <- aes(.data[["x"]], .data[["y"]])
     dot <- list()
     if (!is.null(c)) {
+        if (!is.null(f)) df[[c]] <- f(df[[c]])
         if (c %in% names(df)) {
             aes$colour <- aes(.data[[c]])[[1]]
         } else if (.str_is_col(c)) {
@@ -85,15 +89,16 @@ NULL
     )
 }
 
-#' @rdname plotPoint
 #' @export
-setMethod("plotPoint", "SpatialData", \(x, i=1, c=NULL, s=1, a=1, assay=1) {
-    ik <- .instance_key(point(x, i))
-    .gg_p(x, c, s, a, i=i, ik=ik, assay=assay)
+#' @rdname plotPoint
+#' @importFrom SpatialData instance_key
+setMethod("plotPoint", "SpatialData", \(x, i=1, j=1, c=NULL, s=1, a=1, assay=1, f=NULL) {
+    ik <- instance_key(point(x, i))
+    .gg_p(x, j, c, s, a, i=i, ik=ik, assay=assay, f=f)
 })
 
 #' @rdname plotPoint
 #' @export
-setMethod("plotPoint", "PointFrame", \(x, c=NULL, s=1, a=1) {
-    plotSpatialData() + .gg_p(x, c, s, a)
+setMethod("plotPoint", "PointFrame", \(x, j=1, c=NULL, s=1, a=1, f=NULL) {
+    plotSpatialData() + .gg_p(x, j, c, s, a, f)
 })

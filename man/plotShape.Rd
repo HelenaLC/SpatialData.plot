@@ -5,7 +5,16 @@
 \alias{plotShape,SpatialData-method}
 \title{\code{SpatialData} shape viz.}
 \usage{
-\S4method{plotShape}{SpatialData}(x, i = 1, c = NULL, f = "white", s = "radius", a = 0.2, assay = 1)
+\S4method{plotShape}{SpatialData}(
+  x,
+  i = 1,
+  j = 1,
+  c = NULL,
+  f = "white",
+  s = "radius",
+  a = 0.2,
+  assay = 1
+)
 }
 \arguments{
 \item{x}{\code{SpatialData} object.}
