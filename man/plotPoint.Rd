@@ -8,19 +8,12 @@
 \usage{
 \S4method{plotPoint}{SpatialData}(x, i = 1, j = 1, c = NULL, s = 1, a = 1, assay = 1, f = NULL)
 
-\S4method{plotPoint}{PointFrame}(x, j = 1, c = NULL, s = 1, a = 1, f = NULL)
+\S4method{plotPoint}{PointFrame}(x, j = 1, ...)
 }
 \arguments{
 \item{x}{\code{SpatialData} object or \code{PointFrame}.}
 
 \item{i}{character string or index; the label element to plot.}
-
-\item{c}{character string giving a color; alternatively, may specify a
-\code{colData} column or row name in a \code{table} annotating \code{i}.}
-
-\item{s}{scalar numeric; size value passed to \code{geom_point}.}
-
-\item{a}{scalar numeric in [0, 1]; alpha value passed to \code{geom_point}.}
 
 \item{assay}{character string; in case of \code{c} denoting a row name,
 specifies which \code{assay} data to use (see \code{\link{valTable}})

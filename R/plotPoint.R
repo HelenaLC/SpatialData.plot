@@ -3,10 +3,6 @@
 #' 
 #' @param x \code{SpatialData} object or \code{PointFrame}.
 #' @param i character string or index; the label element to plot.
-#' @param c character string giving a color; alternatively, may specify a
-#'   \code{colData} column or row name in a \code{table} annotating \code{i}.
-#' @param s scalar numeric; size value passed to \code{geom_point}.
-#' @param a scalar numeric in [0, 1]; alpha value passed to \code{geom_point}.
 #' @param assay character string; in case of \code{c} denoting a row name,
 #'   specifies which \code{assay} data to use (see \code{\link{valTable}})
 #'   (ignored when \code{x} is a \code{PointFrame}).
@@ -32,60 +28,42 @@ NULL
 
 #' @importFrom methods is
 #' @importFrom grDevices hcl.colors
-#' @importFrom SpatialData transform
 #' @importFrom SingleCellExperiment int_metadata
 #' @importFrom ggplot2 
 #'   geom_point scale_color_gradientn
 #'   aes theme guides guide_legend scale_type
-.gg_p <- \(x, j, c, s, a, f=NULL, ...) {
-    dots <- list(...)
-    i <- dots$i
-    ik <- dots$ik
-    assay <- dots$assay
+.gg_p <- \(x, j, ...) {
+    dot <- list(...)
+    i <- dot$i
+    ik <- dot$ik
+    assay <- dot$assay
     pf <- is(x, "PointFrame")
     y <- if (pf) x else point(x, i)
     # transformation
-    y <- SpatialData::transform(y, j)
+    #y <- SpatialData::transform(y, j)
     df <- as.data.frame(data(y))
     aes <- aes(.data[["x"]], .data[["y"]])
-    dot <- list()
-    if (!is.null(c)) {
-        if (!is.null(f)) df[[c]] <- f(df[[c]])
-        if (c %in% names(df)) {
-            aes$colour <- aes(.data[[c]])[[1]]
-        } else if (.str_is_col(c)) {
-            dot$colour <- c
-        } else {
-            if (pf) stop("can't color by 'table' data when 'x' is a 'PointFrame'")
-            if (is.null(ik)) stop("missing 'instance_key' in 'table' annotating 'i'")
-            stopifnot(length(c) == 1, is.character(c))
-            t <- table(x, hasTable(x, i, name=TRUE))
-            ik <- .instance_key(t)
-            idx <- match(df[[ik]], int_colData(t)[[ik]])
-            df[[c]] <- valTable(x, i, c, assay=assay)[idx]
-            aes$colour <- aes(.data[[c]])[[1]]
-        } 
-        lgd <- if (c %in% names(df)) scale_type(df[[c]]) else "none"
-    } else lgd <- "none"
-    if (is.character(s)) {
-        if (s %in% names(df)) {
-            aes$size <- aes(.data[[s]])[[1]]
-        }
-    } else if (is.numeric(s)) {
-        dot$size <- s
-    }
-    dot$alpha <- a
+    for (arg in names(dot)) {
+                val <- dot[[arg]]
+                if (is.character(val)) {
+                    z <- tryCatch(
+                        error=\(e) NULL,
+                        valTable(x, i, val, assay=assay))
+                    if (!is.null(z)) {
+                        fd <- data.frame(z)
+                        names(fd) <- val
+                        df <- cbind(df, fd)
+                    }
+                    if (val %in% names(df)) {
+                        if (scale_type(df[[arg]]) == "discrete")
+                            df[[val]] <- factor(df[[arg]])
+                        aes[[arg]] <- aes(.data[[val]])[[1]]
+                        dot[[arg]] <- NULL
+                    }
+                }
+            }
     list(
-        do.call(geom_point, c(list(data=df, mapping=aes), dot)), 
-        if (lgd == "discrete") list(
-            theme(legend.key.size=unit(0, "lines")),
-            guides(col=guide_legend(override.aes=list(alpha=1, size=2)))
-        ) else list(
-            theme(
-                legend.key.width=unit(0.5, "lines"),
-                legend.key.height=unit(1, "lines")),
-            scale_color_gradientn(colors=rev(hcl.colors(11, "Rocket")))
-        )
+        do.call(geom_point, c(list(data=df, mapping=aes), dot))
     )
 }
 
@@ -94,11 +72,11 @@ NULL
 #' @importFrom SpatialData instance_key
 setMethod("plotPoint", "SpatialData", \(x, i=1, j=1, c=NULL, s=1, a=1, assay=1, f=NULL) {
     ik <- instance_key(point(x, i))
-    .gg_p(x, j, c, s, a, i=i, ik=ik, assay=assay, f=f)
+    .gg_p(x, j, ...)
 })
 
 #' @rdname plotPoint
 #' @export
-setMethod("plotPoint", "PointFrame", \(x, j=1, c=NULL, s=1, a=1, f=NULL) {
-    plotSpatialData() + .gg_p(x, j, c, s, a, f)
+setMethod("plotPoint", "PointFrame", \(x, j=1, ...) {
+    .gg_p(x, j, ...)
 })
