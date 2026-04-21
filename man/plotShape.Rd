@@ -5,31 +5,22 @@
 \alias{plotShape,SpatialData-method}
 \title{\code{SpatialData} shape viz.}
 \usage{
-\S4method{plotShape}{SpatialData}(
-  x,
-  i = 1,
-  j = 1,
-  c = NULL,
-  f = "white",
-  s = "radius",
-  a = 0.2,
-  assay = 1
-)
+\S4method{plotShape}{SpatialData}(x, i = 1, j = 1, s = "radius", assay = 1, ...)
 }
 \arguments{
 \item{x}{\code{SpatialData} object.}
 
 \item{i}{character string or index; the label element to plot.}
 
-\item{c}{the default, NULL, gives a binary image of whether or not 
+\item{assay}{character string; in case of \code{c} denoting a row name,
+specifies which \code{assay} data to use (see \code{\link{valTable}}).}
+
+\item{c}{the default, NULL, gives a binary image of whether or not
 a given pixel is non-zero; alternatively, a character string specifying
 a \code{colData} column or row name in a \code{table} annotating \code{i}.}
 
 \item{f, s, a}{used to control plotting aesthetics;
 fill, size, alpha value passed to \code{geom_polygon}.}
-
-\item{assay}{character string; in case of \code{c} denoting a row name,
-specifies which \code{assay} data to use (see \code{\link{valTable}}).}
 }
 \description{
 \code{SpatialData} shape viz.
@@ -37,7 +28,7 @@ specifies which \code{assay} data to use (see \code{\link{valTable}}).}
 \examples{
 x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="SpatialData")
-x <- readSpatialData(x, anndataR=FALSE)
+x <- readSpatialData(x, anndataR=TRUE)
 
 p <- plotSpatialData()
 a <- p + plotShape(x, "blobs_polygons")
@@ -46,7 +37,7 @@ c <- p + plotShape(x, "blobs_circles")
 patchwork::wrap_plots(a, b, c)
 
 # layered
-p + 
+p +
   plotShape(x, "blobs_circles", f="pink") +
   plotShape(x, "blobs_polygons", c="red")
 

@@ -45,7 +45,7 @@ NULL
 #' @rdname plotImage
 #' @importFrom ggplot2 ggplot scale_y_reverse
 #' @export
-plotSpatialData <- \() ggplot() + scale_y_reverse() + .theme 
+plotSpatialData <- \() ggplot() + .theme 
 
 .check_cl <- \(cl, d) {
     if (is.null(cl)) {
