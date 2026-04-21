@@ -86,28 +86,31 @@ plotSpatialData <- \() ggplot() + .theme
 #' @importFrom grDevices col2rgb
 #' @noRd
 .prep_ia <- \(a, c=NULL, cl=NULL) {
-    d <- dim(a)[1]
+    dims <- dim(a)[1]
     if (is.null(c)) {
         c <- .DEFAULT_COLORS
         n <- length(c)
-        if (n < d) stop(
+        if (n < dims) stop(
             "Only ", n, " default colors available, ",
-            "but", d, " are needed; please specify 'c'")
+            "but", dims, " are needed; please specify 'c'")
     }
-    cl <- if (is.null(cl)) .calc_cl(a) else .check_cl(cl, d)
-    b <- array(0, dim=c(3, dim(a)[-1]))
-    if (d == 1) a <- a[rep(1, 3),,]
-    c <- col2rgb(c)/255
-    for (i in seq_len(d)) {
-        for (j in seq_len(3)) {
-            .b <- a[i,,,drop=FALSE]*c[j,i]
-            .b <- .b*(1/cl[[i]][2]) 
-            b[j,,] <- b[j,,,drop=FALSE] + .b
-            b[j,,][b[j,,] < cl[[i]][1]] <- 0
-        }
+    cl <- if (is.null(cl)) .calc_cl(a) else .check_cl(cl, dims)
+    colors_rgb <- col2rgb(c)/255
+    rgb_array <- array(0, dim = c(dim(a)[1], 3, dim(a)[2]*dim(a)[3]))   # [d, 3, H*W]
+    for (i in seq_len(dims)) {
+        ch <- a[i,,] * (1/cl[[i]][2])
+        ch[ch < cl[[i]][1]] <- 0
+        rgb_array[i, , ] <- outer(colors_rgb[, i], ch)
+#        rgb_array[, i, , ] <- rgb_array[, i, , ] / cl[[i]][2]
+#        rgb_array[, i, , ][rgb_array[, i, , ] < cl[[i]][1]] <- 0
     }
-    a <- pmin(b, 1)
-    apply(a, c(2, 3), \(.) do.call(rgb, as.list(.)))
+    flat_img <- colMeans(rgb_array)                  # collapse channels -> [3, H*W]
+    flat_img <- pmin(flat_img, 1)
+    
+    flat_img |> 
+        t() |> 
+        rgb() |> 
+        matrix(nrow=dim(a)[2], ncol=dim(a)[3])
 }
 
 # normalize the image data given its data type
@@ -164,10 +167,10 @@ plotSpatialData <- \() ggplot() + .theme
 .df_i <- \(x, k=NULL, ch=NULL, c=NULL, cl=NULL) {
     a <- .get_multiscale_data(x, k)
     a <- a[.ch_idx(x, ch),,,drop=FALSE]
-    if (is(a, "ZarrArray"))
-        a <- as(a, "DelayedArray")
-    if (is(a, "DelayedArray"))
-        a <- realize(a)
+    # if (is(a, "ZarrArray"))
+    #     a <- as(a, "DelayedArray")
+    # if (is(a, "DelayedArray"))
+    #     a <- realize(a)
     a <- .norm_ia(a, data_type(x))
     a <- .prep_ia(a, c, cl)
 }
