@@ -95,21 +95,18 @@ plotSpatialData <- \() ggplot() + .theme
             "but", dims, " are needed; please specify 'c'")
     }
     cl <- if (is.null(cl)) .calc_cl(a) else .check_cl(cl, dims)
-    colors_rgb <- col2rgb(c)/255
+    colors_rgb <- col2rgb(c)
     rgb_array <- array(0, dim = c(dim(a)[1], 3, dim(a)[2]*dim(a)[3]))   # [d, 3, H*W]
     for (i in seq_len(dims)) {
         ch <- a[i,,] * (1/cl[[i]][2])
         ch[ch < cl[[i]][1]] <- 0
         rgb_array[i, , ] <- outer(colors_rgb[, i], ch)
-#        rgb_array[, i, , ] <- rgb_array[, i, , ] / cl[[i]][2]
-#        rgb_array[, i, , ][rgb_array[, i, , ] < cl[[i]][1]] <- 0
     }
     flat_img <- colMeans(rgb_array)                  # collapse channels -> [3, H*W]
-    flat_img <- pmin(flat_img, 1)
-    
+    flat_img <- pmin(flat_img, 255)
     flat_img |> 
         t() |> 
-        rgb() |> 
+        farver::encode_colour() |> 
         matrix(nrow=dim(a)[2], ncol=dim(a)[3])
 }
 
@@ -161,7 +158,6 @@ plotSpatialData <- \() ggplot() + .theme
 }
 
 #' @importFrom methods as
-#' @importFrom grDevices rgb
 #' @importFrom DelayedArray realize
 #' @importFrom SpatialData data_type
 .df_i <- \(x, k=NULL, ch=NULL, c=NULL, cl=NULL) {

@@ -35,6 +35,7 @@ Authors@R: c(
 Imports:
     DelayedArray,
     dplyr,
+    farver,
     ggplot2,
     ggforce,
     methods,
