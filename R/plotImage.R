@@ -57,7 +57,8 @@ plotSpatialData <- \() ggplot() + .theme
         if (length(cl) != d) stop("'cl' should be of length ", d)
         for (. in seq_len(d)) {
             # replace NULL by [0, 1] & n by [0, n]
-            if (is.null(cl[[.]])) cl[[.]] <- c(0, 1)
+            # TODO: use the percentile approach here as well
+            cl[[.]] <- cl[[.]] %||% c(0, 1)
             if (length(cl[[.]]) == 1) {
                 if (cl[[.]] < 0) stop("scalar 'cl' can't be < 0")
                 cl[[.]] <- c(0, cl[[.]])
