@@ -75,12 +75,11 @@ plotSpatialData <- \() ggplot() + .theme
     return(cl)
 }
 
+#' @importFrom MatrixGenerics rowQuantiles
 .calc_cl <- \(a) {
-    # FIXME: It would be great if MatrixGenerics::rowQuantiles() supported 
-    # DelayedArrays, so we can keep the lazy representation.
-    . <- apply(simplify=FALSE, a, 1, \(.) 
-    quantile(., c(0.05, 0.95)))
-    if (dim(a)[1] == 1) rep(., 3) else .
+    qs <- MatrixGenerics::rowQuantiles(a, probs=c(0.05, 0.95))
+    # returns a matrix [n_channels × 2]; convert to list of length-2 vectors
+    asplit(qs, 1, drop = TRUE)
 }
 
 # merge/manage image channels
@@ -96,7 +95,9 @@ plotSpatialData <- \() ggplot() + .theme
             "Only ", n, " default colors available, ",
             "but", dims, " are needed; please specify 'c'")
     }
-    cl <- if (is.null(cl)) .calc_cl(a) else .check_cl(cl, dims)
+    # linear_a is a reshaped to [d, H*W], where d is the number of channels
+    linear_a <- matrix(a, nrow=dims)
+    cl <- if (is.null(cl)) .calc_cl(linear_a) else .check_cl(cl, dims)
     cl_min <- vapply(cl, \(.) .[1], numeric(1))
     cl_max <- vapply(cl, \(.) .[2], numeric(1))
     colors_rgb <- col2rgb(c)

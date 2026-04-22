@@ -38,6 +38,7 @@ Imports:
     farver,
     ggplot2,
     ggforce,
+    MatrixGenerics,
     methods,
     rlang,
     sf,
