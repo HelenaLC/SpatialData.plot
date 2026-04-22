@@ -99,19 +99,17 @@ plotSpatialData <- \() ggplot() + .theme
             "Only ", n, " default colors available, ",
             "but", dims, " are needed; please specify 'c'")
     }
-    # linear_a is a reshaped to [d, H*W], where d is the number of channels
+    # linear_a is a reshaped to [d, H*W], where d is the number of channels.
+    # FIXME: Ideally, we would make sure linear_a is a DelayedArray as well,
+    # but it's not implemented yet AFAICT.
+    # Keep an eye on https://github.com/Bioconductor/DelayedArray/issues/47.
     linear_a <- matrix(a, nrow=dims)
     cl <- if (is.null(cl)) .calc_cl(linear_a) else .check_cl(cl, dims)
     cl_min <- vapply(cl, \(.) .[1], numeric(1))
     cl_max <- vapply(cl, \(.) .[2], numeric(1))
     colors_rgb <- col2rgb(c)
-    rgb_array <- array(0, dim = c(dim(a)[1], 3, dim(a)[2]*dim(a)[3]))   # [d, 3, H*W]
-    normed_a <- (a - cl_min) / (cl_max - cl_min)  # normalize by contrast limits
-    for (i in seq_len(dims)) {
-        rgb_array[i, , ] <- outer(colors_rgb[, i], normed_a[i, , ])
-    }
-    flat_img <- colMeans(rgb_array)                  # collapse channels -> [3, H*W]
-    flat_img <- pmin(flat_img, 255)
+    normed_a <- (t(linear_a) - cl_min) / (cl_max - cl_min)
+    flat_img <- tcrossprod(colors_rgb, normed_a) / dims
     flat_img |> 
         t() |> 
         farver::encode_colour() |> 
