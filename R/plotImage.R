@@ -48,10 +48,7 @@ NULL
 plotSpatialData <- \() ggplot() + .theme 
 
 .check_cl <- \(cl, d) {
-    if (is.null(cl)) {
-        # default to [0, 1] for all channels
-        cl <- replicate(d, c(0, 1), FALSE)
-    } else if (is.numeric(cl)) {
+    if (is.numeric(cl)) {
         stopifnot(length(cl) == 2, cl[2] > cl[1])
         cl <- rep(list(cl), d)
     } else {
