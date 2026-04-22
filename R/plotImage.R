@@ -76,8 +76,10 @@ plotSpatialData <- \() ggplot() + .theme
 }
 
 .calc_cl <- \(a) {
+    # FIXME: It would be great if MatrixGenerics::rowQuantiles() supported 
+    # DelayedArrays, so we can keep the lazy representation.
     . <- apply(simplify=FALSE, a, 1, \(.) 
-    quantile(as.vector(.), c(0.05, 0.95)))
+    quantile(., c(0.05, 0.95)))
     if (dim(a)[1] == 1) rep(., 3) else .
 }
 
@@ -95,12 +97,13 @@ plotSpatialData <- \() ggplot() + .theme
             "but", dims, " are needed; please specify 'c'")
     }
     cl <- if (is.null(cl)) .calc_cl(a) else .check_cl(cl, dims)
+    cl_min <- vapply(cl, \(.) .[1], numeric(1))
+    cl_max <- vapply(cl, \(.) .[2], numeric(1))
     colors_rgb <- col2rgb(c)
     rgb_array <- array(0, dim = c(dim(a)[1], 3, dim(a)[2]*dim(a)[3]))   # [d, 3, H*W]
+    normed_a <- (a - cl_min) / (cl_max - cl_min)  # normalize by contrast limits
     for (i in seq_len(dims)) {
-        ch <- a[i,,] * (1/cl[[i]][2])
-        ch[ch < cl[[i]][1]] <- 0
-        rgb_array[i, , ] <- outer(colors_rgb[, i], ch)
+        rgb_array[i, , ] <- outer(colors_rgb[, i], normed_a[i, , ])
     }
     flat_img <- colMeans(rgb_array)                  # collapse channels -> [3, H*W]
     flat_img <- pmin(flat_img, 255)
