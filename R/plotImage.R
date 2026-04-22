@@ -79,6 +79,10 @@ plotSpatialData <- \() ggplot() + .theme
 .calc_cl <- \(a) {
     qs <- MatrixGenerics::rowQuantiles(a, probs=c(0.05, 0.95))
     # returns a matrix [n_channels × 2]; convert to list of length-2 vectors
+    if (dim(a)[1] == 1) {
+        # if only one channel, return a list of length-1 with a length-2 vector
+        return(list(qs))
+    }
     asplit(qs, 1, drop = TRUE)
 }
 
