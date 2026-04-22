@@ -70,18 +70,13 @@ plotSpatialData <- \() ggplot() + .theme
             stop("elements of 'cl' should be length-2,",
                 " non-negative, increasing numeric vectors")
     }
+    cl <- do.call(rbind, cl)
     return(cl)
 }
 
 #' @importFrom MatrixGenerics rowQuantiles
 .calc_cl <- \(a) {
-    qs <- MatrixGenerics::rowQuantiles(a, probs=c(0.05, 0.95))
-    # returns a matrix [n_channels × 2]; convert to list of length-2 vectors
-    if (dim(a)[1] == 1) {
-        # if only one channel, return a list of length-1 with a length-2 vector
-        return(list(qs))
-    }
-    asplit(qs, 1, drop = TRUE)
+    MatrixGenerics::rowQuantiles(a, probs=c(0.05, 0.95))
 }
 
 # merge/manage image channels
@@ -103,10 +98,8 @@ plotSpatialData <- \() ggplot() + .theme
     # Keep an eye on https://github.com/Bioconductor/DelayedArray/issues/47.
     linear_a <- matrix(a, nrow=dims)
     cl <- if (is.null(cl)) .calc_cl(linear_a) else .check_cl(cl, dims)
-    cl_min <- vapply(cl, \(.) .[1], numeric(1))
-    cl_max <- vapply(cl, \(.) .[2], numeric(1))
     colors_rgb <- col2rgb(c)
-    normed_a <- (t(linear_a) - cl_min) / (cl_max - cl_min)
+    normed_a <- (t(linear_a) - cl[, 1]) / (cl[, 2] - cl[, 1])
     flat_img <- tcrossprod(colors_rgb, normed_a) / dims
     flat_img |> 
         t() |> 
