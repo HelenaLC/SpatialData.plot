@@ -48,10 +48,7 @@ NULL
 plotSpatialData <- \() ggplot() + .theme 
 
 .check_cl <- \(cl, d) {
-    if (is.null(cl)) {
-        # default to [0, 1] for all channels
-        cl <- replicate(d, c(0, 1), FALSE)
-    } else if (is.numeric(cl)) {
+    if (is.numeric(cl)) {
         stopifnot(length(cl) == 2, cl[2] > cl[1])
         cl <- rep(list(cl), d)
     } else {
@@ -60,7 +57,8 @@ plotSpatialData <- \() ggplot() + .theme
         if (length(cl) != d) stop("'cl' should be of length ", d)
         for (. in seq_len(d)) {
             # replace NULL by [0, 1] & n by [0, n]
-            if (is.null(cl[[.]])) cl[[.]] <- c(0, 1)
+            # TODO: use the percentile approach here as well
+            cl[[.]] <- cl[[.]] %||% c(0, 1)
             if (length(cl[[.]]) == 1) {
                 if (cl[[.]] < 0) stop("scalar 'cl' can't be < 0")
                 cl[[.]] <- c(0, cl[[.]])
@@ -72,13 +70,13 @@ plotSpatialData <- \() ggplot() + .theme
             stop("elements of 'cl' should be length-2,",
                 " non-negative, increasing numeric vectors")
     }
+    cl <- do.call(rbind, cl)
     return(cl)
 }
 
+#' @importFrom MatrixGenerics rowQuantiles
 .calc_cl <- \(a) {
-    . <- apply(simplify=FALSE, a, 1, \(.) 
-    quantile(as.vector(.), c(0.05, 0.95)))
-    if (dim(a)[1] == 1) rep(., 3) else .
+    MatrixGenerics::rowQuantiles(a, probs=c(0.05, 0.95))
 }
 
 # merge/manage image channels
@@ -86,28 +84,27 @@ plotSpatialData <- \() ggplot() + .theme
 #' @importFrom grDevices col2rgb
 #' @noRd
 .prep_ia <- \(a, c=NULL, cl=NULL) {
-    d <- dim(a)[1]
+    dims <- dim(a)[1]
     if (is.null(c)) {
         c <- .DEFAULT_COLORS
         n <- length(c)
-        if (n < d) stop(
+        if (n < dims) stop(
             "Only ", n, " default colors available, ",
-            "but", d, " are needed; please specify 'c'")
+            "but", dims, " are needed; please specify 'c'")
     }
-    cl <- if (is.null(cl)) .calc_cl(a) else .check_cl(cl, d)
-    b <- array(0, dim=c(3, dim(a)[-1]))
-    if (d == 1) a <- a[rep(1, 3),,]
-    c <- col2rgb(c)/255
-    for (i in seq_len(d)) {
-        for (j in seq_len(3)) {
-            .b <- a[i,,,drop=FALSE]*c[j,i]
-            .b <- .b*(1/cl[[i]][2]) 
-            b[j,,] <- b[j,,,drop=FALSE] + .b
-            b[j,,][b[j,,] < cl[[i]][1]] <- 0
-        }
-    }
-    a <- pmin(b, 1)
-    apply(a, c(2, 3), \(.) do.call(rgb, as.list(.)))
+    # linear_a is a reshaped to [d, H*W], where d is the number of channels.
+    # FIXME: Ideally, we would make sure linear_a is a DelayedArray as well,
+    # but it's not implemented yet AFAICT.
+    # Keep an eye on https://github.com/Bioconductor/DelayedArray/issues/47.
+    linear_a <- matrix(a, nrow=dims)
+    cl <- if (is.null(cl)) .calc_cl(linear_a) else .check_cl(cl, dims)
+    colors_rgb <- col2rgb(c)
+    normed_a <- (t(linear_a) - cl[, 1]) / (cl[, 2] - cl[, 1])
+    flat_img <- tcrossprod(colors_rgb, normed_a) / dims
+    flat_img |> 
+        t() |> 
+        farver::encode_colour() |> 
+        matrix(nrow=dim(a)[2], ncol=dim(a)[3])
 }
 
 # normalize the image data given its data type
@@ -158,16 +155,15 @@ plotSpatialData <- \() ggplot() + .theme
 }
 
 #' @importFrom methods as
-#' @importFrom grDevices rgb
 #' @importFrom DelayedArray realize
 #' @importFrom SpatialData data_type
 .df_i <- \(x, k=NULL, ch=NULL, c=NULL, cl=NULL) {
     a <- .get_multiscale_data(x, k)
     a <- a[.ch_idx(x, ch),,,drop=FALSE]
-    if (is(a, "ZarrArray"))
-        a <- as(a, "DelayedArray")
-    if (is(a, "DelayedArray"))
-        a <- realize(a)
+    # if (is(a, "ZarrArray"))
+    #     a <- as(a, "DelayedArray")
+    # if (is(a, "DelayedArray"))
+    #     a <- realize(a)
     a <- .norm_ia(a, data_type(x))
     a <- .prep_ia(a, c, cl)
 }

@@ -255,17 +255,19 @@ pa <- SpatialData.data:::.unzip_spd_demo(
 Getting channel names for the image:
 
 ```{r mcmicro-channels}
-channels(image(x))
+chs <- channels(image(x))
 ```
 
 Plotting with multiple image channels:
 
 ```{r mcmicro-plot}
 plotSpatialData() + plotImage(x,
-    ch=c("DNA_6", "CD45", "CD57"), 
-    c=c("blue", "cyan", "yellow"),
-    cl=list(NULL, c(0, 0.1), NULL))
+    ch=chs, 
+    c=grDevices::palette.colors(length(chs), palette = "Polychrome 36")
+)
 ```
+
+We can specify contrast limits for each channel via the `cl` argument, but if not provided, they will be automatically computed as the 5th and 95th percentiles of the pixel intensities for each channel.
 
 ## IMC (Steinbock)
 

@@ -35,8 +35,10 @@ Authors@R: c(
 Imports:
     DelayedArray,
     dplyr,
+    farver,
     ggplot2,
     ggforce,
+    MatrixGenerics,
     methods,
     rlang,
     sf,
@@ -53,7 +55,7 @@ Suggests:
     Rgraphviz,
     SpatialData.data,
     testthat
-remotes:
+Remotes:
     HelenaLC/SpatialData,
     HelenaLC/SpatialData.data
 biocViews: 
