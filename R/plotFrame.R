@@ -34,8 +34,8 @@
 #' p + plotPoint(x, i, colour="instance_id") # continuous
 NULL
 
+#' @importFrom sf st_as_sf st_coordinates st_geometry_type st_buffer
 #' @importFrom ggplot2 aes theme scale_type geom_sf coord_sf
-#' @importFrom sf st_as_sf st_coordinates st_geometry_type
 #' @importFrom SpatialData transform
 #' @importFrom ggforce geom_circle
 #' @importFrom utils tail
@@ -77,6 +77,8 @@ NULL
             }
         }
     }
+    if ("radius" %in% names(df))
+        df <- st_buffer(df, df$radius)
     list(
         do.call(geom_sf, c(list(data=df, mapping=aes), c(dot))),
         theme(legend.key.size=unit(0.5, "lines")),
