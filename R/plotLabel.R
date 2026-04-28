@@ -97,7 +97,6 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
                 theme(legend.key.size=unit(0.5, "lines")),
                 scale_fill_gradientn(c, colors=pal, na.value=nan)))
     } else {
-        thm <- guides(fill="none")
         aes$fill <- aes(.data$z != 0)[[1]]
         thm <- list(
             theme(legend.position="none"),
