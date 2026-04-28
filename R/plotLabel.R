@@ -50,7 +50,7 @@ NULL
 #' @importFrom methods as
 #' @importFrom ggplot2 
 #'   scale_fill_manual scale_fill_gradientn
-#'   aes geom_raster theme unit guides guide_legend
+#'   aes geom_tile theme unit guides guide_legend
 #' @importFrom SingleCellExperiment colData
 #' @export
 setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL, 
@@ -103,5 +103,5 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
             theme(legend.position="none"),
             scale_fill_manual(NULL, values=pal))
     }
-    list(thm, do.call(geom_raster, list(data=df, mapping=aes, alpha=a)))
+    list(thm, do.call(geom_tile, list(data=df, mapping=aes, alpha=a)))
 })
