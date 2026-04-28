@@ -46,8 +46,7 @@ specifies which \code{assay} data to use (see \code{\link{valTable}}).}
 \code{SpatialData} label viz.
 }
 \examples{
-x <- file.path("extdata", "blobs.zarr")
-x <- system.file(x, package="SpatialData")
+x <- system.file("extdata", "blobs.zarr", package="SpatialData")
 x <- readSpatialData(x)
 
 i <- "blobs_labels"
