@@ -86,7 +86,7 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
         aes$fill <- aes(.data[["z"]])[[1]]
         switch(scale_type(df$z), 
             discrete={
-                val <- sort(setdiff(unique(df$z), NA))
+                val <- sort(unique(df$z), na.last=NA))
                 pal <- colorRampPalette(pal)(length(val))
                 thm <- list(
                     theme(legend.key.size=unit(0.5, "lines")),
