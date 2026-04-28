@@ -1,3 +1,9 @@
+changes in version 0.99.4
+
+- bump R version dependecy
+- make use of some newly implemented SD utilities
+- rewrite of image visualization (speedup, auto-contrasting)
+
 changes in version 0.99.3
 
 - in 'plotImage', render discrete color 

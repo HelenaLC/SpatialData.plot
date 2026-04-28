@@ -6,9 +6,9 @@
 \alias{plotImage,SpatialData-method}
 \title{\code{SpatialData} image viz.}
 \usage{
-plotSpatialData()
-
 \S4method{plotImage}{SpatialData}(x, i = 1, j = 1, k = NULL, ch = NULL, c = NULL, cl = NULL)
+
+plotSpatialData()
 }
 \arguments{
 \item{x}{\code{\link{SpatialData}} object.}
@@ -53,7 +53,7 @@ cmy <- c("cyan", "magenta", "yellow")
 plotSpatialData() + plotImage(x, c=cmy)
 
 # contrast limits
-plotSpatialData() + plotImage(x, c=cmy, 
-  cl=list(c(0.2,1), c(0,0.8), c(0,1)))
+cl <- rep(list(c(0, 1/3)), 3)
+plotSpatialData() + plotImage(x, k=1, c=cmy, cl=cl)
 
 }

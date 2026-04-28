@@ -22,11 +22,9 @@
 #' @importFrom grDevices col2rgb
 .str_is_col <- \(x) !inherits(tryCatch(error=\(e) e, col2rgb(x)), "error")
 
-#' @importFrom ggplot2 
-#'   coord_equal theme_bw theme 
-#'   element_blank element_text element_line
+#' @importFrom ggplot2 theme_bw theme element_blank element_text element_line
 .theme <- list(
-    coord_equal(), theme_bw(), theme(
+    theme_bw(), theme(
         panel.grid=element_blank(),
         legend.key=element_blank(),
         legend.key.size=unit(0, "lines"),

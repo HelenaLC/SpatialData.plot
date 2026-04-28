@@ -20,7 +20,7 @@
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
 #' x <- system.file(x, package="SpatialData")
-#' x <- readSpatialData(x, anndataR=FALSE)
+#' x <- readSpatialData(x, anndataR=TRUE)
 #' 
 #' i <- "blobs_labels"
 #' p <- plotSpatialData()
@@ -35,13 +35,13 @@
 #' 
 #' # coloring by 'colData'
 #' n <- length(unique(t$id))
-#' # TODO: did a small fix to color scheme below, will fix example later
+#' 
 #' # pal <- hcl.colors(n, "Spectral")
 #' pal_d <- hcl.colors(10, "Spectral")
-#' p + plotLabel(x, i, c = "id", pal=pal_d)
+#' p + plotLabel(x, i, c="id", pal=pal_d)
 #' 
 #' # coloring by 'assay' data
-#' p + plotLabel(x, i, c = "channel_1_sum")
+#' p + plotLabel(x, i, c="channel_1_sum")
 NULL
 
 #' @rdname plotLabel
@@ -80,7 +80,7 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
           coldata <- colData(t)[[ik]]
         }
         idx <- match(df$z, coldata)
-        df$z <- valTable(x, i, c, assay=assay)[idx]
+        df$z <- getTable(x, i, c, assay=assay)[idx]
         if (c == ik) df$z <- factor(df$z)
         aes$fill <- aes(.data[["z"]])[[1]]
         switch(scale_type(df$z), 

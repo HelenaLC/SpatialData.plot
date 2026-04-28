@@ -36,16 +36,11 @@
 #' plotSpatialData() + plotImage(x, c=cmy)
 #' 
 #' # contrast limits
-#' plotSpatialData() + plotImage(x, c=cmy, 
-#'   cl=list(c(0.2,1), c(0,0.8), c(0,1)))
+#' cl <- rep(list(c(0, 1/3)), 3)
+#' plotSpatialData() + plotImage(x, k=1, c=cmy, cl=cl)
 #' 
 #' @import SpatialData
 NULL
-
-#' @rdname plotImage
-#' @importFrom ggplot2 ggplot scale_y_reverse
-#' @export
-plotSpatialData <- \() ggplot() + .theme 
 
 .check_cl <- \(cl, d) {
     if (is.numeric(cl)) {
@@ -74,37 +69,45 @@ plotSpatialData <- \() ggplot() + .theme
     return(cl)
 }
 
-#' @importFrom MatrixGenerics rowQuantiles
-.calc_cl <- \(a) {
-    MatrixGenerics::rowQuantiles(a, probs=c(0.05, 0.95))
-}
-
 # merge/manage image channels
 # if no colors and channels defined, return the first channel
+#' @importFrom MatrixGenerics rowQuantiles
 #' @importFrom grDevices col2rgb
 #' @noRd
 .prep_ia <- \(a, c=NULL, cl=NULL) {
-    dims <- dim(a)[1]
+    d <- dim(a)[1]
     if (is.null(c)) {
-        c <- .DEFAULT_COLORS
-        n <- length(c)
-        if (n < dims) stop(
-            "Only ", n, " default colors available, ",
-            "but", dims, " are needed; please specify 'c'")
+        if (d == 1) {
+            c <- "white"
+        } else {
+            c <- .DEFAULT_COLORS
+            n <- length(c)
+            if (n < d) stop(
+                "Only ", n, " default colors available, ",
+                "but", d, " are needed; please specify 'c'")
+            c <- c[seq_len(d)]
+        }
     }
     # linear_a is a reshaped to [d, H*W], where d is the number of channels.
     # FIXME: Ideally, we would make sure linear_a is a DelayedArray as well,
     # but it's not implemented yet AFAICT.
     # Keep an eye on https://github.com/Bioconductor/DelayedArray/issues/47.
-    linear_a <- matrix(a, nrow=dims)
-    cl <- if (is.null(cl)) .calc_cl(linear_a) else .check_cl(cl, dims)
+    linear_a <- matrix(a, nrow=d)
+    if (!is.null(cl)) {
+        cl <- .check_cl(cl, d)
+    } else {
+        qs <- MatrixGenerics::rowQuantiles
+        cl <- qs(linear_a, probs=c(0.05, 0.95))
+        cl <- matrix(cl, ncol=2)
+    }
     colors_rgb <- col2rgb(c)
     normed_a <- (t(linear_a) - cl[, 1]) / (cl[, 2] - cl[, 1])
-    flat_img <- tcrossprod(colors_rgb, normed_a) / dims
+    flat_img <- tcrossprod(colors_rgb, normed_a) / d
     flat_img |> 
         t() |> 
         farver::encode_colour() |> 
         matrix(nrow=dim(a)[2], ncol=dim(a)[3])
+        #matrix(nrow=dim(a)[3], ncol=dim(a)[2], byrow=TRUE)
 }
 
 # normalize the image data given its data type
@@ -160,39 +163,36 @@ plotSpatialData <- \() ggplot() + .theme
 .df_i <- \(x, k=NULL, ch=NULL, c=NULL, cl=NULL) {
     a <- .get_multiscale_data(x, k)
     a <- a[.ch_idx(x, ch),,,drop=FALSE]
-    # if (is(a, "ZarrArray"))
-    #     a <- as(a, "DelayedArray")
-    # if (is(a, "DelayedArray"))
-    #     a <- realize(a)
     a <- .norm_ia(a, data_type(x))
     a <- .prep_ia(a, c, cl)
 }
 
-.get_wh <- \(x, i, j) {
-    ds <- dim(data(image(x, i), 1))
-    ts <- CTpath(x, i, j)
-    if (is.null(wh <- metadata(image(x, i))$wh)) {
-        df <- data.frame(x=c(0, ds[3]), y=c(0, ds[2]))
-    } else {
+#' @importFrom SpatialData transform
+.get_wh <- \(x) {
+    wh <- metadata(x)$wh
+    if (!is.null(wh)) {
         df <- data.frame(x=wh[[1]], y=wh[[2]])
+    } else {
+        ds <- dim(data(x, 1))
+        df <- data.frame(x=c(0, ds[3]), y=c(0, ds[2]))
     }
-    #wh <- .trans_xy(wh, ts)
     list(w=df[, 1], h=df[, 2])
 }
 
-#' @importFrom ggplot2 
+#' @importFrom ggplot2 guides geom_point 
+#'   geom_blank annotation_raster 
 #'   scale_color_identity
 #'   scale_x_continuous
-#'   scale_x_continuous
-#'   annotation_raster
+#'   scale_y_reverse
 .gg_i <- \(x, w, h, pal=NULL) {
     l <- if (!is.null(names(pal))) list(
         guides(col=guide_legend(override.aes=list(alpha=1, size=2))),
         geom_point(aes(col=.data$foo), data.frame(foo=pal), x=0, y=0, alpha=0))
     list(l,
-        scale_x_continuous(limits=w), scale_y_reverse(limits=rev(h)),
-        annotation_raster(x, w[2],w[1], h[2],h[1], interpolate=FALSE),
-        scale_color_identity(NULL, guide="legend", breaks=pal, labels=names(pal)))
+        geom_blank(aes(x=x, y=y), data.frame(x=w, y=h)),
+        annotation_raster(x, w[1],w[2], h[2],h[1], interpolate=FALSE),
+        scale_color_identity(NULL, guide="legend", breaks=pal, labels=names(pal)),
+        ggnewscale::new_scale_color())
 }
 
 #' @rdname plotImage
@@ -203,8 +203,9 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
     y <- image(x, i)
     if (is.numeric(j))
         j <- CTname(y)[j]
+    y <- transform(y, j)
+    wh <- .get_wh(y)
     df <- .df_i(y, k, ch, c, cl)
-    wh <- .get_wh(x, i, j)
     pal <- if (is.null(c)) .DEFAULT_COLORS else c
     if (dim(y)[1] > 1) {
         nms <- unlist(channels(y))[idx <- .ch_idx(y, ch)]
@@ -212,3 +213,8 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
     }
     .gg_i(df, wh$w, wh$h, pal)
 })
+
+#' @export
+#' @rdname plotImage
+#' @importFrom ggplot2 ggplot scale_y_reverse coord_fixed
+plotSpatialData <- \() ggplot() + coord_fixed() + .theme 

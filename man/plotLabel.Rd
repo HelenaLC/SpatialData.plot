@@ -48,7 +48,7 @@ specifies which \code{assay} data to use (see \code{\link{valTable}}).}
 \examples{
 x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="SpatialData")
-x <- readSpatialData(x, anndataR=FALSE)
+x <- readSpatialData(x, anndataR=TRUE)
 
 i <- "blobs_labels"
 p <- plotSpatialData()
@@ -63,11 +63,11 @@ table(x) <- t
 
 # coloring by 'colData'
 n <- length(unique(t$id))
-# TODO: did a small fix to color scheme below, will fix example later
+
 # pal <- hcl.colors(n, "Spectral")
 pal_d <- hcl.colors(10, "Spectral")
-p + plotLabel(x, i, c = "id", pal=pal_d)
+p + plotLabel(x, i, c="id", pal=pal_d)
 
 # coloring by 'assay' data
-p + plotLabel(x, i, c = "channel_1_sum")
+p + plotLabel(x, i, c="channel_1_sum")
 }
