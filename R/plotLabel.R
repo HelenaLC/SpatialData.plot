@@ -59,8 +59,10 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
     if (is.numeric(i)) i <- labelNames(x)[i]
     i <- match.arg(i, labelNames(x))
     y <- label(x, i)
-    ym <- as.matrix(.get_multiscale_data(label(x, i), k))
-    df <- data.frame(x=c(col(ym)), y=c(row(ym)), z=c(ym))
+    ym <- .get_multiscale_data(label(x, i), k)
+    # Keep only indices != 0 since labels might be sparse and thus save memory by not plotting all pixels
+    idx <- BiocGenerics::which(ym != 0L, arr.ind=TRUE)
+    df <- data.frame(x=idx[,1L], y=idx[,2L], z=ym[idx])
     # transformation
     if (is.numeric(j))
       j <- CTname(y)[j]
