@@ -84,16 +84,16 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
         df$z <- getTable(x, i, c, assay=assay)[idx]
         if (c == ik) df$z <- factor(df$z)
         aes$fill <- aes(.data[["z"]])[[1]]
-        switch(scale_type(df$z), 
+        thm <- switch(scale_type(df$z), 
             discrete={
-                val <- sort(unique(df$z), na.last=NA))
+                val <- sort(unique(df$z), na.last=NA)
                 pal <- colorRampPalette(pal)(length(val))
-                thm <- list(
+                list(
                     theme(legend.key.size=unit(0.5, "lines")),
                     guides(fill=guide_legend(override.aes=list(alpha=1))),
                     scale_fill_manual(c, values=pal, breaks=val, na.value=nan))
             },
-            continuous=thm <- list(
+            continuous=list(
                 theme(legend.key.size=unit(0.5, "lines")),
                 scale_fill_gradientn(c, colors=pal, na.value=nan)))
     } else {
