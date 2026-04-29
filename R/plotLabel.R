@@ -18,8 +18,7 @@
 #' @param nan character string; color for missing values (hidden by default).
 #' 
 #' @examples
-#' x <- file.path("extdata", "blobs.zarr")
-#' x <- system.file(x, package="SpatialData")
+#' x <- system.file("extdata", "blobs.zarr", package="SpatialData")
 #' x <- readSpatialData(x, anndataR=TRUE)
 #' 
 #' i <- "blobs_labels"
@@ -51,7 +50,7 @@ NULL
 #' @importFrom methods as
 #' @importFrom ggplot2 
 #'   scale_fill_manual scale_fill_gradientn
-#'   aes geom_raster theme unit guides guide_legend
+#'   aes geom_tile theme unit guides guide_legend
 #' @importFrom SingleCellExperiment colData
 #' @export
 setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL, 
@@ -59,8 +58,10 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
     if (is.numeric(i)) i <- labelNames(x)[i]
     i <- match.arg(i, labelNames(x))
     y <- label(x, i)
-    ym <- as.matrix(.get_multiscale_data(label(x, i), k))
-    df <- data.frame(x=c(col(ym)), y=c(row(ym)), z=c(ym))
+    ym <- .get_multiscale_data(y, k)
+    # Keep only indices != 0 since labels might be sparse and thus save memory by not plotting all pixels
+    idx <- BiocGenerics::which(ym != 0L, arr.ind=TRUE)
+    df <- data.frame(x=idx[,1L], y=idx[,2L], z=ym[idx])
     # transformation
     if (is.numeric(j))
       j <- CTname(y)[j]
@@ -83,24 +84,23 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
         df$z <- getTable(x, i, c, assay=assay)[idx]
         if (c == ik) df$z <- factor(df$z)
         aes$fill <- aes(.data[["z"]])[[1]]
-        switch(scale_type(df$z), 
+        thm <- switch(scale_type(df$z), 
             discrete={
-                val <- sort(setdiff(unique(df$z), NA))
+                val <- sort(unique(df$z), na.last=NA)
                 pal <- colorRampPalette(pal)(length(val))
-                thm <- list(
+                list(
                     theme(legend.key.size=unit(0.5, "lines")),
                     guides(fill=guide_legend(override.aes=list(alpha=1))),
                     scale_fill_manual(c, values=pal, breaks=val, na.value=nan))
             },
-            continuous=thm <- list(
+            continuous=list(
                 theme(legend.key.size=unit(0.5, "lines")),
                 scale_fill_gradientn(c, colors=pal, na.value=nan)))
     } else {
-        thm <- guides(fill="none")
         aes$fill <- aes(.data$z != 0)[[1]]
         thm <- list(
             theme(legend.position="none"),
             scale_fill_manual(NULL, values=pal))
     }
-    list(thm, do.call(geom_raster, list(data=df, mapping=aes, alpha=a)))
+    list(thm, do.call(geom_tile, list(data=df, mapping=aes, alpha=a)))
 })
