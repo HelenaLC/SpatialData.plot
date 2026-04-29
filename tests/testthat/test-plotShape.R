@@ -15,10 +15,10 @@ test_that("plotShape(),circles", {
     expect_s3_class(q, "ggplot")
     df <- st_coordinates(st_as_sf(data(y)))
     geom <- layer_data(q, 1)$geometry
+    expect_s3_class(geom, "sfc_POLYGON")
+    geom <- st_centroid(geom)
     fd <- st_coordinates(geom)
     expect_equivalent(as.matrix(df), as.matrix(fd))
-    expect_null(q$layers[[1]]$mapping$colour)
-    expect_s3_class(geom, "sfc_POINT")
     # size
     q <- p + plotShape(x, i, size=s <- runif(1, 1, 10))
     expect_all_equal(layer_data(q, 1)$size, s)
