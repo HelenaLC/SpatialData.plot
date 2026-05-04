@@ -16,7 +16,7 @@ test_that("plotShape(),circles", {
     df <- st_coordinates(st_as_sf(data(y)))
     geom <- layer_data(q, 1)$geometry
     expect_s3_class(geom, "sfc_POLYGON")
-    geom <- st_centroid(geom)
+    geom <- sf::st_centroid(geom)
     fd <- st_coordinates(geom)
     expect_equivalent(as.matrix(df), as.matrix(fd))
     # size
