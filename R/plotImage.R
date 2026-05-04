@@ -211,7 +211,7 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
     }
     df <- .df_i(y, k, ch, c, cl)
     pal <- c %||% .DEFAULT_COLORS
-    if (dim(y)[1] > 1) {
+    if (dim(y)[1] > 1 && !.is_rgb(y)) {
         nms <- unlist(channels(y))[idx <- .ch_idx(y, ch)]
         pal <- pal[seq_along(idx)]; names(pal) <- nms
     }
