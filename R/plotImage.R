@@ -161,11 +161,6 @@ NULL
 #' @importFrom SpatialData data_type
 .df_i <- \(x, k=NULL, ch=NULL, c=NULL, cl=NULL) {
     a <- .get_multiscale_data(x, k)
-    if (.is_rgb(x)) {
-        # RGB: we plot everything by default and we don't normalize
-        ch <- ch %||% c("r", "g", "b")
-        cl <- cl %||% c(0, 1/3)
-    }
     a <- a[.ch_idx(x, ch),,,drop=FALSE]
     a <- .norm_ia(a, data_type(x))
     a <- .prep_ia(a, c, cl)
@@ -209,6 +204,11 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
         j <- CTname(y)[j]
     y <- transform(y, j)
     wh <- .get_wh(y)
+    if (.is_rgb(y)) {
+        # RGB: we plot everything by default and we don't normalize
+        ch <- ch %||% c("r", "g", "b")
+        cl <- cl %||% c(0, 1/3)
+    }
     df <- .df_i(y, k, ch, c, cl)
     pal <- if (is.null(c)) .DEFAULT_COLORS else c
     if (dim(y)[1] > 1) {
