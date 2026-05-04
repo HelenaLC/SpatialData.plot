@@ -142,7 +142,6 @@ NULL
 #' @importFrom SpatialData channels
 #' @noRd
 .ch_idx <- \(x, ch) {
-    if (.is_rgb(x)) return(seq_len(3))
     if (is.null(ch)) return(1)
     lbs <- channels(x)
     if (all(ch %in% lbs)) {
@@ -162,6 +161,11 @@ NULL
 #' @importFrom SpatialData data_type
 .df_i <- \(x, k=NULL, ch=NULL, c=NULL, cl=NULL) {
     a <- .get_multiscale_data(x, k)
+    if (.is_rgb(x)) {
+        # RGB: we plot everything by default and we don't normalize
+        ch <- ch %||% c("r", "g", "b")
+        cl <- cl %||% c(0, 1/3)
+    }
     a <- a[.ch_idx(x, ch),,,drop=FALSE]
     a <- .norm_ia(a, data_type(x))
     a <- .prep_ia(a, c, cl)
