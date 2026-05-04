@@ -50,7 +50,7 @@ are represented as `r BiocStyle::Biocpkg("SingleCellExperiment")` as tables.
 ```{r read-blobs}
 x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="SpatialData")
-(x <- readSpatialData(x, anndataR=TRUE))
+(x <- readSpatialData(x))
 ```
 
 # Visualization
@@ -169,7 +169,7 @@ Such labels could be morphological regions annotated by pathologists.
 ```{r merfish-read}
 dir.create(td <- tempfile())
 pa <- get_demo_SDdata("merfish")
-(x <- readSpatialData(pa, anndataR=TRUE))
+(x <- readSpatialData(pa))
 ```
 
 There are only `r length(SpatialData::shape(x, "cells"))` cells, but 
@@ -210,7 +210,7 @@ Mouse intestine, 1GB; 4 image resolutions and 3 shapes at 2, 8, and 16 $\mu$m.
 ```{r visiumhd-read, eval=FALSE}
 dir.create(td <- tempfile())
 pa <- MouseIntestineVisHD(target=td)
-(x <- readSpatialData(pa, images=4, shapes=3, anndataR=TRUE))
+(x <- readSpatialData(pa, images=4, shapes=3))
 ```
 
 ```{r visiumhd-plot, eval=FALSE}
@@ -229,7 +229,7 @@ dir.create(td <- tempfile())
 pa <- SpatialData.data:::.unzip_spd_demo(
     zipname="mibitof.zip", 
     dest=td, source="biocOSN")
-(x <- readSpatialData(pa, anndataR=TRUE))
+(x <- readSpatialData(pa))
 ```
 
 ```{r mibitof-plot, fig.width=10, fig.height=3}
@@ -249,7 +249,7 @@ dir.create(td <- tempfile())
 pa <- SpatialData.data:::.unzip_spd_demo(
     zipname="mcmicro_io.zip", 
     dest=td, source="biocOSN")
-(x <- readSpatialData(pa, anndataR=FALSE))
+(x <- readSpatialData(pa))
 ```
 
 Getting channel names for the image:
@@ -278,7 +278,7 @@ dir.create(td <- tempfile())
 pa <- SpatialData.data:::.unzip_spd_demo(
     zipname="steinbock_io.zip", 
     dest=td, source="biocOSN")
-x <- readSpatialData(pa, anndataR=TRUE)
+x <- readSpatialData(pa)
 ```
 
 ### channels
