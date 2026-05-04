@@ -185,7 +185,7 @@ q <- p[sample(n, 1e3)]
 plotSpatialData() +
     plotImage(x, c="white") +
     new_scale_color() +
-    plotPoint(x, i="1k", c="cell_type", s=0.2) +
+    plotPoint(x, i="1k", c="cell_type", size=0.2) +
     new_scale_color() +
     plotShape(x, i="anatomical") +
     scale_color_manual(values=hcl.colors(6, "Spectral")) 
