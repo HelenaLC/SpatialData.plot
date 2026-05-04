@@ -101,8 +101,8 @@ NULL
         cl <- matrix(cl, ncol=2)
     }
     colors_rgb <- col2rgb(c)
-    normed_a <- (t(linear_a) - cl[, 1]) / (cl[, 2] - cl[, 1])
-    flat_img <- tcrossprod(colors_rgb, normed_a) / d
+    normed_a <- (linear_a - cl[, 1]) / (cl[, 2] - cl[, 1])
+    flat_img <- (colors_rgb %*% normed_a) / d
     flat_img |> 
         t() |> 
         farver::encode_colour() |> 
