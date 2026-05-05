@@ -206,7 +206,7 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
     wh <- .get_wh(y)
     if (.is_rgb(y)) {
         # RGB: we plot everything by default and we don't normalize
-        ch <- ch %||% c("r", "g", "b")
+        ch <- ch %||% channels(y)
         cl <- cl %||% c(0, 1/3)
     }
     df <- .df_i(y, k, ch, c, cl)
