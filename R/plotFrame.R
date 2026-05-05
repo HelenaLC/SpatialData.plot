@@ -43,7 +43,7 @@ NULL
     if (is(y, "PointFrame")) {
         if (!is.null(key)) {
             fk <- feature_key(y)
-            y@data <- filter(data(y), .data[[fk]] %in% key)
+            y@data <- dplyr::filter(data(y), .data[[fk]] %in% key)
         }
     }
     if (is.finite(n)) {
