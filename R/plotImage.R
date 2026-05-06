@@ -163,6 +163,12 @@ NULL
     a <- .get_multiscale_data(x, k)
     a <- a[.ch_idx(x, ch),,,drop=FALSE]
     a <- .norm_ia(a, data_type(x))
+    # We later use `annotation_raster()`, which plots the array the same way it is printed,
+    # i.e., with the row 1 at the top, which doesn't match the rest of the ecosystem,
+    # so we mirror the image horizontally.
+    # FIXME: at some point, we would like to use `SpatialData::mirror()` directly in the 
+    # `plotImage()` for this but it's currently not lazy and super slow.
+    a <- a[, rev(seq_len(dim(a)[2])), , drop=FALSE]
     a <- .prep_ia(a, c, cl)
 }
 
