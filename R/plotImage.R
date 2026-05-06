@@ -222,3 +222,7 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
 #' @rdname plotImage
 #' @importFrom ggplot2 ggplot scale_y_reverse coord_fixed
 plotSpatialData <- \() ggplot() + scale_y_reverse() + coord_fixed() + .theme 
+# `annotation_raster` plots the array the same way it is printed, i.e., with the
+# row 1 at the top, which means we need to flip the y-axis to have the correct axis labels.
+# We tried flipping the image itself but it means everything gets out of alignement if
+# the user sets `scale_y_reverse()` themselves.
