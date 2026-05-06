@@ -82,7 +82,7 @@ NULL
     list(
         do.call(geom_sf, c(list(data=df, mapping=aes), c(dot))),
         theme(legend.key.size=unit(0.5, "lines")),
-        coord_sf(expand=FALSE, reverse="y"))
+        coord_sf(expand=FALSE))
 }
 #' @export
 #' @rdname plotFrame
