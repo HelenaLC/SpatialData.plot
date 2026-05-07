@@ -66,8 +66,7 @@ plotLabel(
 ## Examples
 
 ``` r
-x <- file.path("extdata", "blobs.zarr")
-x <- system.file(x, package="SpatialData")
+x <- system.file("extdata", "blobs.zarr", package="SpatialData")
 x <- readSpatialData(x)
 
 i <- "blobs_labels"
@@ -88,12 +87,8 @@ n <- length(unique(t$id))
 # pal <- hcl.colors(n, "Spectral")
 pal_d <- hcl.colors(10, "Spectral")
 p + plotLabel(x, i, c="id", pal=pal_d)
-#> Warning: Removed 3324 rows containing missing values or values outside the scale range
-#> (`geom_raster()`).
 
 
 # coloring by 'assay' data
 p + plotLabel(x, i, c="channel_1_sum")
-#> Warning: Removed 3324 rows containing missing values or values outside the scale range
-#> (`geom_raster()`).
 ```
