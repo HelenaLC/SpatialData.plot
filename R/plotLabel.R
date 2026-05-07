@@ -48,9 +48,9 @@ NULL
 #' @importFrom S4Vectors metadata
 #' @importFrom rlang .data
 #' @importFrom methods as
-#' @importFrom ggplot2 
-#'   scale_fill_manual scale_fill_gradientn
-#'   aes geom_tile theme unit guides guide_legend
+#' @importFrom ggplot2 scale_fill_manual scale_fill_gradientn
+#' @importFrom ggplot2 aes theme unit guides guide_legend geom_tile
+#'   
 #' @importFrom SingleCellExperiment colData
 #' @export
 setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL, 
