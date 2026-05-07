@@ -178,11 +178,8 @@ NULL
     list(w=df[, 1], h=df[, 2])
 }
 
-#' @importFrom ggplot2 guides geom_point 
-#'   geom_blank annotation_raster 
-#'   scale_color_identity
-#'   scale_x_continuous
-#'   scale_y_reverse
+#' @importFrom ggplot2 guides geom_point geom_blank annotation_raster 
+#' @importFrom ggplot2 scale_color_identity scale_x_continuous scale_y_reverse
 .gg_i <- \(x, w, h, pal=NULL) {
     l <- if (!is.null(names(pal))) list(
         guides(col=guide_legend(override.aes=list(alpha=1, size=2))),
