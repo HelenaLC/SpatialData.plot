@@ -66,7 +66,8 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
   
     # Keep only indices != 0 since labels might be sparse and thus save memory by not plotting all pixels
     idx <- BiocGenerics::which(ym != 0L, arr.ind=TRUE)
-    df <- data.frame(x=idx[,1L], y=idx[,2L], z=ym[idx])
+    # All other SD elements are flipped when plotted. Let's keep the same convention here.
+    df <- data.frame(x=idx[,2L], y=idx[,1L], z=ym[idx])
     aes <- aes(.data[["x"]], .data[["y"]])
     if (!is.null(c)) {
         stopifnot(length(c) == 1, is.character(c))
