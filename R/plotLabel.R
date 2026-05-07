@@ -58,15 +58,15 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
     if (is.numeric(i)) i <- labelNames(x)[i]
     i <- match.arg(i, labelNames(x))
     y <- label(x, i)
-    ym <- .get_multiscale_data(y, k)
-    # Keep only indices != 0 since labels might be sparse and thus save memory by not plotting all pixels
-    idx <- BiocGenerics::which(ym != 0L, arr.ind=TRUE)
-    df <- data.frame(x=idx[,1L], y=idx[,2L], z=ym[idx])
     # transformation
     if (is.numeric(j))
       j <- CTname(y)[j]
-    ts <- CTpath(x, i, j)
-    df[,c("x", "y")] <- .trans_xy(df[,c("x", "y")], ts)
+    y <- transform(y, j)
+    ym <- .get_multiscale_data(y, k)
+  
+    # Keep only indices != 0 since labels might be sparse and thus save memory by not plotting all pixels
+    idx <- BiocGenerics::which(ym != 0L, arr.ind=TRUE)
+    df <- data.frame(x=idx[,1L], y=idx[,2L], z=ym[idx])
     aes <- aes(.data[["x"]], .data[["y"]])
     if (!is.null(c)) {
         stopifnot(length(c) == 1, is.character(c))
