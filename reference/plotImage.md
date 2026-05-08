@@ -62,16 +62,26 @@ x <- readSpatialData(x, tables=FALSE)
 ms <- lapply(seq(3), \(.) 
   plotSpatialData() +
   plotImage(x, i=2, k=.))
+#> Coordinate system already present.
+#> ℹ Adding new coordinate system, which will replace the existing one.
+#> Coordinate system already present.
+#> ℹ Adding new coordinate system, which will replace the existing one.
+#> Coordinate system already present.
+#> ℹ Adding new coordinate system, which will replace the existing one.
 patchwork::wrap_plots(ms)
 
 
 # custom colors
 cmy <- c("cyan", "magenta", "yellow")
 plotSpatialData() + plotImage(x, c=cmy)
+#> Coordinate system already present.
+#> ℹ Adding new coordinate system, which will replace the existing one.
 
 
 # contrast limits
 cl <- rep(list(c(0, 1/3)), 3)
 plotSpatialData() + plotImage(x, k=1, c=cmy, cl=cl)
+#> Coordinate system already present.
+#> ℹ Adding new coordinate system, which will replace the existing one.
 
 ```
