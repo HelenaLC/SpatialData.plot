@@ -54,7 +54,8 @@ Suggests:
     patchwork,
     Rgraphviz,
     SpatialData.data,
-    testthat
+    testthat,
+    vdiffr
 Remotes:
     HelenaLC/SpatialData,
     HelenaLC/SpatialData.data
