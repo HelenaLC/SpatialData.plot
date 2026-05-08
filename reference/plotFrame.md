@@ -37,8 +37,6 @@ x <- readSpatialData(x)
 
 # shapes
 p <- plotSpatialData()
-#> Coordinate system already present.
-#> ℹ Adding new coordinate system, which will replace the existing one.
 a <- p + plotShape(x, "blobs_polygons")
 #> Coordinate system already present.
 #> ℹ Adding new coordinate system, which will replace the existing one.
@@ -66,8 +64,6 @@ patchwork::wrap_plots(a, b)
 # points
 i <- "blobs_points"
 p <- plotSpatialData()
-#> Coordinate system already present.
-#> ℹ Adding new coordinate system, which will replace the existing one.
 p + plotPoint(x, i)                       # simple
 #> Coordinate system already present.
 #> ℹ Adding new coordinate system, which will replace the existing one.

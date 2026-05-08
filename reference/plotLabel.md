@@ -71,8 +71,6 @@ x <- readSpatialData(x)
 
 i <- "blobs_labels"
 p <- plotSpatialData()
-#> Coordinate system already present.
-#> ℹ Adding new coordinate system, which will replace the existing one.
 
 # simple binary image
 p + plotLabel(x, i)
