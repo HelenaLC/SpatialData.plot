@@ -1,6 +1,6 @@
 # `SpatialData.plot`
 
-> [DEMO](https://htmlpreview.github.io/?https://github.com/HelenaLC/SpatialData.plot/blob/main/vignettes/SpatialData.plot.html)
+> [DEMO](https://helenalc.github.io/SpatialData.plot/articles/SpatialData.plot.html)
 
 ```
 BiocManager::install("HelenaLC/SpatialData")
