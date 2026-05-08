@@ -19,8 +19,7 @@ test_that(".is_rgb()", {
     expect_error(.is_rgb(label(x, 1)))
 })
 
-test_that(".ch_idx()", { testthat::skip()
-    # TODO: fix this!
+test_that(".ch_idx()", {
     # get indices of channels
     expect_equal(.ch_idx(image(x,1), ch=c(2,0,1)), c(3,1,2))
     # return first if no matching channel
