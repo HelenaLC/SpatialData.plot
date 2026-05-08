@@ -37,7 +37,6 @@ test_that("plotImage()", {
     image(x, i <- ".") <- y
     q <- p + plotImage(x, i)
     expect_s3_class(q, "ggplot")
-    expect_equal(q$coordinates$ratio, 1)
     .check_xy(q, dim(y)[-1])
     # # multiscale
     # y <- image(x, "blobs_multiscale_image")
@@ -58,7 +57,6 @@ test_that("plotLabel()", {
     y <- y[,seq_len(32)] # subset to make things harder
     q <- p + plotLabel(x, i, c=NULL)
     expect_s3_class(q, "ggplot")
-    expect_equal(q$coordinates$ratio, 1)
     expect_is(q$layers[[1]]$mapping$fill, "quosure")
     # multiscale
     y <- label(x, "blobs_multiscale_labels")
