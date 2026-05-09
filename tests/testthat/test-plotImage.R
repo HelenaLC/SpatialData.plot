@@ -14,7 +14,7 @@ test_that(".is_rgb()", {
     expect_false(.is_rgb(c("r", "g", "g")))
     expect_true(.is_rgb(. <- c("r", "g", "b")))
     expect_true(.is_rgb(rev(.)))
-    # only works for 'ImageArray'
+    # only works for 'SpatialDataImage'
     expect_true(.is_rgb(image(x, 1)))
     expect_error(.is_rgb(label(x, 1)))
 })

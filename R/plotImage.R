@@ -12,7 +12,7 @@
 #'   800 x 800px; use Inf to plot the lowest resolution available.
 #' @param ch image channel(s) to be used for plotting (defaults to 
 #'   the first channel(s) available); use \code{channels()} to see 
-#'   which channels are available for a given \code{ImageArray}
+#'   which channels are available for a given \code{SpatialDataImage}
 #' @param c character vector; colors to use for each channel. 
 #' @param cl list of length-2 numeric vectors (non-negative, increasing); 
 #'   specifies channel-wise contrast limits - defaults to [0, 1] for all 
@@ -128,7 +128,7 @@ NULL
 #' @importFrom methods is
 #' @noRd
 .is_rgb <- \(x) {
-    if (is(x, "ImageArray") &&
+    if (is(x, "SpatialDataImage") &&
         !is.null(md <- meta(x)))
         x <- channels(x)
     if (!is.vector(x)) stop("invalid 'x'")

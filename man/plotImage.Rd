@@ -23,7 +23,7 @@ scale in order to minimize memory-usage and blurring for a target size of
 
 \item{ch}{image channel(s) to be used for plotting (defaults to 
 the first channel(s) available); use \code{channels()} to see 
-which channels are available for a given \code{ImageArray}}
+which channels are available for a given \code{SpatialDataImage}}
 
 \item{c}{character vector; colors to use for each channel.}
 
