@@ -1,6 +1,9 @@
 changes in version 0.99.6
 
 - renaming of 'SpatialData' classes
+- improved visualization of labels
+- fixed auto-contrasting for HnE images
+- fixed channel-merging for multi-plex images
 
 changes in version 0.99.5
 
