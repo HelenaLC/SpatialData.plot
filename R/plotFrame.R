@@ -44,7 +44,7 @@ NULL
     if (is(y, "SpatialDataPoint")) {
         if (!is.null(key)) {
             fk <- feature_key(y)
-            y@data <- dplyr::filter(data(y), .data[[fk]] %in% key)
+            y<- dplyr::filter(y, .data[[fk]] %in% key)
         }
     }
     if (is.finite(n)) {
@@ -73,11 +73,14 @@ NULL
             if (val %in% names(df)) {
                 if (scale_type(df[[arg]]) == "discrete")
                     df[[val]] <- factor(df[[arg]])
-                aes[[arg]] <- aes(.data[[val]])[[1]]
+                col <- match(arg, c("col", "color", "colour"))
+                .arg <- ifelse(!is.na(col), "colour", arg)
+                aes[[.arg]] <- aes(.data[[val]])[[1]]
                 dot[[arg]] <- NULL
             }
         }
     }
+    
     if ("radius" %in% names(df))
         df <- st_buffer(df, df$radius)
     list(

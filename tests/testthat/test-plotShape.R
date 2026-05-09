@@ -1,5 +1,7 @@
+require(sf, quietly=TRUE)
 require(ggplot2, quietly=TRUE)
 require(SpatialData, quietly=TRUE)
+
 x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="SpatialData")
 x <- readSpatialData(x, tables=FALSE)
@@ -40,7 +42,7 @@ test_that("plotShape(),polygons", {
     geom <- layer_data(q)$geometry
     expect_s3_class(q, "ggplot")
     df <- centroids(y)
-    fd <- st_coordinates(geom)
+    fd <- st_coordinates(st_centroid(geom))
     .f <- \(.) as.matrix(.[,c(1,2)])
     expect_equivalent(.f(df), .f(fd))
     expect_s3_class(geom, "sfc_POLYGON")
