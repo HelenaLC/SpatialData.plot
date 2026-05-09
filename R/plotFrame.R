@@ -64,7 +64,7 @@ NULL
         if (is.character(val)) {
             z <- tryCatch(
                 error=\(e) NULL,
-                getTable(x, i, val, assay=assay, drop=FALSE))
+                getTable(x, i, val, assay=assay))
             if (!is.null(z)) {
                 fd <- data.frame(z)
                 names(fd) <- val
