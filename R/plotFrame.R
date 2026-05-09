@@ -6,7 +6,7 @@
 #' @param i character string or index; the label element to plot.
 #' @param assay character string; in case of \code{c} denoting a row name,
 #'   specifies which \code{assay} data to use (see \code{\link{valTable}}).
-#'   (ignored when \code{x} is a \code{PointFrame}).
+#'   (ignored when \code{x} is a \code{SpatialDataPoint}).
 #'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
@@ -38,18 +38,19 @@ NULL
 #' @importFrom ggplot2 aes theme scale_type geom_sf coord_sf
 #' @importFrom SpatialData transform
 #' @importFrom ggforce geom_circle
+#' @importFrom methods is
 #' @importFrom utils tail
 .plot <- \(x, y, key=NULL, n=Inf, assay=1, i=1, ...) {
-    if (is(y, "PointFrame")) {
+    if (is(y, "SpatialDataPoint")) {
         if (!is.null(key)) {
             fk <- feature_key(y)
-            y@data <- dplyr::filter(data(y), .data[[fk]] %in% key)
+            y<- dplyr::filter(y, .data[[fk]] %in% key)
         }
     }
     if (is.finite(n)) {
         n <- min(length(y), n)
         y <- y[sample(length(y), n)]
-        if (is(y, "ShapeFrame")) {
+        if (is(y, "SpatialDataShape")) {
             shape(x, i) <- y
         } else {
             point(x, i) <- y
@@ -72,11 +73,14 @@ NULL
             if (val %in% names(df)) {
                 if (scale_type(df[[arg]]) == "discrete")
                     df[[val]] <- factor(df[[arg]])
-                aes[[arg]] <- aes(.data[[val]])[[1]]
+                col <- match(arg, c("col", "color", "colour"))
+                .arg <- ifelse(!is.na(col), "colour", arg)
+                aes[[.arg]] <- aes(.data[[val]])[[1]]
                 dot[[arg]] <- NULL
             }
         }
     }
+    
     if ("radius" %in% names(df))
         df <- st_buffer(df, df$radius)
     list(

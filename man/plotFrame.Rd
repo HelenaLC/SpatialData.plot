@@ -19,7 +19,7 @@
 
 \item{assay}{character string; in case of \code{c} denoting a row name,
 specifies which \code{assay} data to use (see \code{\link{valTable}}).
-(ignored when \code{x} is a \code{PointFrame}).}
+(ignored when \code{x} is a \code{SpatialDataPoint}).}
 }
 \description{
 \code{SpatialData} point/shape viz.

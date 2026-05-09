@@ -17,7 +17,7 @@ test_that("plotSpatialData()", {
 }
 
 test_that(".guess_scale", {
-    img <- ImageArray(
+    img <- SpatialDataImage(
         lys <- lapply(
             dim <- lapply(c(6, 3), \(.) c(3, rep(., 2))), \(.) 
             array(sample(seq_len(255), prod(.), replace=TRUE), dim=.)))
