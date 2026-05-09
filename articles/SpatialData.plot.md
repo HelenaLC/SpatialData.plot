@@ -77,7 +77,7 @@ Their show method includes the scales available for a given element:
 image(x, "blobs_image")
 ```
 
-    ## class:  ImageArray  
+    ## class:  SpatialDataImage  
     ## Scales (1): (3,64,64)
 
 ``` r
@@ -85,7 +85,7 @@ image(x, "blobs_image")
 image(x, "blobs_multiscale_image")
 ```
 
-    ## class:  ImageArray (MultiScale) 
+    ## class:  SpatialDataImage (MultiScale) 
     ## Scales (3): (3,64,64 3,32,32 3,16,16)
 
 Internally, multiscale `ImageArray`s are stored as a list of
@@ -244,7 +244,7 @@ q <- p[sample(n, 1e3)]
 (point(x, "1k") <- q)
 ```
 
-    ## class: PointFrame
+    ## class: SpatialDataPoint
     ## count: 1000 
     ## data(3): cell_type __null_dask_index__ geometry
 

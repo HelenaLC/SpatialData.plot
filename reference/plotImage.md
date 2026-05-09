@@ -35,7 +35,7 @@ plotSpatialData()
 
   image channel(s) to be used for plotting (defaults to the first
   channel(s) available); use `channels()` to see which channels are
-  available for a given `ImageArray`
+  available for a given `SpatialDataImage`
 
 - c:
 

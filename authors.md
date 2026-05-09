@@ -22,13 +22,13 @@ Source:
 [`DESCRIPTION`](https://github.com/HelenaLC/SpatialData.plot/blob/main/DESCRIPTION)
 
 Crowell H, Carey V, Dong Y, Manukyan A, Righelli D, Deconinck L (2026).
-*SpatialData.plot: SpatialData visualization*. R package version 0.99.5,
+*SpatialData.plot: SpatialData visualization*. R package version 0.99.6,
 <https://github.com/HelenaLC/SpatialData.plot>.
 
     @Manual{,
       title = {SpatialData.plot: SpatialData visualization},
       author = {Helena L. Crowell and Vince Carey and Yixing E. Dong and Artür Manukyan and Dario Righelli and Louise Deconinck},
       year = {2026},
-      note = {R package version 0.99.5},
+      note = {R package version 0.99.6},
       url = {https://github.com/HelenaLC/SpatialData.plot},
     }

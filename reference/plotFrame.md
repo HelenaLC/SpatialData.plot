@@ -26,7 +26,7 @@ plotPoint(x, i = 1, j = 1, ...)
 
   character string; in case of `c` denoting a row name, specifies which
   `assay` data to use (see `valTable`). (ignored when `x` is a
-  `PointFrame`).
+  `SpatialDataPoint`).
 
 ## Examples
 

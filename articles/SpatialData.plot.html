@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">SpatialData.plot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@ Dong</h4>
                                     <h4 data-toc-skip class="author">Vince
 Carey</h4>
                         
-            <h4 data-toc-skip class="date">May 08, 2026</h4>
+            <h4 data-toc-skip class="date">May 09, 2026</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HelenaLC/SpatialData.plot/blob/main/vignettes/SpatialData.plot.Rmd" class="external-link"><code>vignettes/SpatialData.plot.Rmd</code></a></small>
       <div class="d-none name"><code>SpatialData.plot.Rmd</code></div>
@@ -140,11 +140,11 @@ as tables.</p>
 given element:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"blobs_image"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## class:  ImageArray  </span></span>
+<pre><code><span><span class="co">## class:  SpatialDataImage  </span></span>
 <span><span class="co">## Scales (1): (3,64,64)</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"blobs_multiscale_image"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## class:  ImageArray (MultiScale) </span></span>
+<pre><code><span><span class="co">## class:  SpatialDataImage (MultiScale) </span></span>
 <span><span class="co">## Scales (3): (3,64,64 3,32,32 3,16,16)</span></span></code></pre>
 <p>Internally, multiscale <code>ImageArray</code>s are stored as a list
 of <code>ZarrArray</code>, e.g.:</p>
@@ -279,7 +279,7 @@ downsample a random subset of 1,000 for visualization:</p>
 <span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">point</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">q</span> <span class="op">&lt;-</span> <span class="va">p</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1e3</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="op">(</span><span class="fu">point</span><span class="op">(</span><span class="va">x</span>, <span class="st">"1k"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">q</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## class: PointFrame</span></span>
+<pre><code><span><span class="co">## class: SpatialDataPoint</span></span>
 <span><span class="co">## count: 1000 </span></span>
 <span><span class="co">## data(3): cell_type __null_dask_index__ geometry</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -344,7 +344,7 @@ downsample a random subset of 1,000 for visualization:</p>
 <span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/readSpatialData.html" class="external-link">readSpatialData</a></span><span class="op">(</span><span class="va">pa</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Getting channel names for the image:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">chs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/ImageArray.html" class="external-link">channels</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">chs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialDataImage.html" class="external-link">channels</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Plotting with multiple image channels:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotImage.html">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/plotImage.html">plotImage</a></span><span class="op">(</span><span class="va">x</span>,</span>
