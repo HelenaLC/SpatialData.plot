@@ -139,7 +139,7 @@ NULL
 }
   
 # check if channels are indices or channel names
-#' @importFrom SpatialData channels
+#' @importFrom spatialdataR channels
 #' @noRd
 .ch_idx <- \(x, ch) {
     if (is.null(ch)) return(1)
@@ -158,7 +158,7 @@ NULL
 
 #' @importFrom methods as
 #' @importFrom DelayedArray realize
-#' @importFrom SpatialData data_type
+#' @importFrom spatialdataR data_type
 .df_i <- \(x, k=NULL, ch=NULL, c=NULL, cl=NULL) {
     a <- .get_multiscale_data(x, k)
     a <- a[.ch_idx(x, ch),,,drop=FALSE]
@@ -166,7 +166,7 @@ NULL
     a <- .prep_ia(a, c, cl)
 }
 
-#' @importFrom SpatialData transform
+#' @importFrom spatialdataR transform
 .get_wh <- \(x) {
     wh <- metadata(x)$wh
     if (!is.null(wh)) {

@@ -36,7 +36,7 @@ NULL
 
 #' @importFrom sf st_as_sf st_coordinates st_geometry_type st_buffer
 #' @importFrom ggplot2 aes theme scale_type geom_sf coord_sf
-#' @importFrom SpatialData transform
+#' @importFrom spatialdataR transform
 #' @importFrom ggforce geom_circle
 #' @importFrom methods is
 #' @importFrom utils tail
