@@ -47,7 +47,6 @@ Suggests:
     vdiffr,
     ZarrArray
 Remotes:
-    HelenaLC/spatialdataR,
     HelenaLC/SpatialData.data
 biocViews: 
     Spatial,
