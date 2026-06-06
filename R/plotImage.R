@@ -163,7 +163,10 @@ NULL
     a <- .get_multiscale_data(x, k)
     # max-projection over z-stacks
     d <- length(dim(x))
-    if (d == 4) a <- apply(a, c(1, 3, 4), max)
+    zidx <- which(axes(x, y="name")=="z")
+    if (length(zidx)>0) {
+        a <- apply(a, seq.int(d)[-zidx], max)
+    }
     # subset channels of interest
     a <- a[.ch_idx(x, ch),,,drop=FALSE]
     a <- .norm_ia(a, data_type(x))
