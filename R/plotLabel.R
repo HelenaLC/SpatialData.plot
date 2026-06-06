@@ -75,7 +75,7 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
     if (length(dim(ym)) > 2) {
         if (is.null(z)) {
             # max-projection across z-slices
-            nm <- vapply(axes(y), \(.) .$name, character(1))
+            nm <- axes(x=y, y="name")
             yx <- match(c("y", "x"), nm)
             ym <- apply(ym, yx, max)
         } else {
