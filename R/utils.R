@@ -1,18 +1,6 @@
 # internal helper for null-coalescing
 `%||%` <- \(a, b) if (is.null(a)) b else a
 
-#' @importFrom methods is
-#' @importFrom SingleCellExperiment int_metadata
-.spatialdata_attrs <- \(x) {
-    if (is(x, "SingleCellExperiment")) {
-        int_metadata(x)$spatialdata_attrs
-    } else if (is(x, "SpatialDataElement")) {
-        meta(x)$spatialdata_attrs
-    } else if (is(x, "Zattrs")) {
-        x$spatialdata_attrs
-    } else stop("invalid 'x'")
-}
-
 #' @importFrom grDevices col2rgb
 .str_is_col <- \(x) !inherits(tryCatch(error=\(e) e, col2rgb(x)), "error")
 
