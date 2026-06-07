@@ -84,7 +84,7 @@ NULL
             n <- length(c)
             if (n < d) stop(
                 "Only ", n, " default colors available, ",
-                "but", d, " are needed; please specify 'c'")
+                "but ", d, " are needed; please specify 'c'")
             c <- c[seq_len(d)]
         }
     }
