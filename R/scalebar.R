@@ -7,8 +7,7 @@
 #'   from the data's Zarr specifications (see \code{axes(x)}).
 #' @param col string indicating the color to use for the scalebar.
 #' @param lwd scalar numeric indicating the linewidth to use for the scalebar.
-#' @param xrel,yrel scalar numeric in [0,1] indicating 
-#'   the relative x- and y-position of the scalebar.
+#' @param xrel,yrel scalar numeric indicating relative position of the scalebar.
 #'
 #' @examples
 #' zs <- file.path("extdata", "blobs.zarr")

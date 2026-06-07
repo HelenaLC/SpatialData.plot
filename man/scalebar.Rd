@@ -18,8 +18,7 @@ from the data's Zarr specifications (see \code{axes(x)}).}
 
 \item{lwd}{scalar numeric indicating the linewidth to use for the scalebar.}
 
-\item{xrel, yrel}{scalar numeric in [0,1] indicating 
-the relative x- and y-position of the scalebar.}
+\item{xrel, yrel}{scalar numeric indicating relative position of the scalebar.}
 }
 \description{
 \code{SpatialDataArray} scalebar
