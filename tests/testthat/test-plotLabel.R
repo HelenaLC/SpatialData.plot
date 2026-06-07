@@ -1,5 +1,6 @@
 require(ggplot2, quietly=TRUE)
 require(spatialdataR, quietly=TRUE)
+require(SingleCellExperiment, quietly=TRUE)
 
 x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="spatialdataR")
@@ -41,4 +42,36 @@ test_that("3/4D plotLabel()", {
     expect_is(df$fill, "character")
     expect_equal(range(df$x), c(1, w))
     expect_equal(range(df$y), c(1, h))
+})
+
+test_that("coloring plotLabel()", {
+    # mock annotation
+    ni <- length(id <- instances(label(x)))
+    df <- DataFrame(id, num=runif(ni), fac=gl(ni, 1))
+    mx <- matrix(runif((ng <- 3)*ni), nr=ng)
+    rownames(mx) <- letters[seq_len(ng)]
+    se <- SingleCellExperiment(list(mx), colData=df)
+    y <- setTable(x, labelNames(x)[1], se)
+    
+    # continuous (colData)
+    expect_is(l <- plotLabel(y, c="num"), "list")
+    p <- ggplot() + l
+    g <- get_guide_data(p, "fill")
+    expect_is(g[[2]], "numeric")
+    # continuous (assay)
+    expect_is(l <- plotLabel(y, c="a"), "list")
+    p <- ggplot() + l
+    g <- get_guide_data(p, "fill")
+    expect_is(g[[2]], "numeric")
+    
+    # discrete
+    expect_is(l <- plotLabel(y, c="fac"), "list")
+    p <- ggplot() + l
+    g <- get_guide_data(p, "fill")
+    expect_is(g[[2]], "character")
+    # by instance (default)
+    expect_is(l <- plotLabel(x), "list")
+    p <- ggplot() + l
+    g <- get_guide_data(p, "fill")
+    expect_is(g[[2]], "character")
 })
