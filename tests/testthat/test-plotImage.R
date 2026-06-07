@@ -51,40 +51,47 @@ test_that(".check_cl", {
 })
 
 # mock multiplex image
-l <- 4; m <- 80; n <- 120
-a <- as(array(runif(l*m*n), c(l,m,n)), "ZarrArray")
-y <- SpatialDataImage(list(a), SpatialDataAttrs(type="image", dim=2, nch=l))
-x <- SpatialData(list(y))
+.mock <- \(t=0, c=3, z=0, y=80, x=120) {
+    dim <- c(t, c, z, y, x); dim <- dim[dim != 0]
+    arr <- drop(as(array(runif(prod(dim)), dim), "ZarrArray"))
+    sda <- SpatialDataAttrs(dim=length(dim)-1, nch=c)
+    SpatialDataImage(list(arr), sda)
+}
 
-test_that(".norm_ia", {
+test_that("utilities", {
+    a <- data(.mock())
+    nch <- dim(a)[1]
     # valid data type
     dt <- data_type(a)
     b <- .norm_ia(realize(a), dt)
     expect_equal(
         tolerance=1e-3,
         apply(b, 1, range), 
-        replicate(l, c(0, 1)))
+        replicate(nch, c(0, 1)))
     # invalid data type
     b <- .norm_ia(realize(a), "")
     expect_equal(
         tolerance=1e-3,
         apply(b, 1, range), 
-        replicate(l, c(0, 1)))
+        replicate(nch, c(0, 1)))
+    # insufficient default colors
+    a <- data(.mock(33))
+    expect_error(.prep_ia(a), "default")
 })
 
-test_that(".prep_ia", { testthat::skip()
-    dt <- data_type(a)
-    ch <- seq_len(d <- dim(a)[1])
-    a <- .norm_ia(realize(a), dt)
+test_that(".prep_ia", {
+    a <- data(i <- .mock(c=c <- 7))
     # no colors, no contrasts
-    b <- .prep_ia(a, ch)
+    b <- .prep_ia(a, seq_len(c))
     expect_is(b, "matrix")
     expect_length(dim(b), 2)
+    expect_equal(dim(a)[-1], dim(b))
     expect_is(b[1,1], "character")
     # colors
-    pal <- colors()[seq_len(l)]
+    pal <- colors()[seq_len(c)]
     b <- .prep_ia(a, c=pal)
+    expect_length(dim(b), 2)
     expect_equal(dim(a)[-1], dim(b))
     expect_is(b, "matrix")
-    expect_is(c(b), "character")
+    expect_is(b[1,1], "character")
 })

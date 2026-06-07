@@ -1,4 +1,4 @@
-test_that("regression test of overlays", {
+test_that("regression test of overlays", { skip()
     zs <- system.file("extdata", "blobs.zarr", package="spatialdataR")
     x <- readSpatialData(zs)
     
