@@ -28,6 +28,7 @@
 #' @importFrom methods is
 #' @export
 scalebar <- function(x, len, col="red", lwd=1, xrel=0.05, yrel=0.05) {
+    # validity
     if (!is(x, "SpatialDataArray")) 
         stop("'x' should be a 'SpatialDataArray' object, i.e., an",
             " image or label element from a 'SpatialData' object")

@@ -1,4 +1,5 @@
-# convenience functions until this is fixed/exported by 'SpatialData'
+# internal helper for null-coalescing
+`%||%` <- \(a, b) if (is.null(a)) b else a
 
 #' @importFrom methods is
 #' @importFrom SingleCellExperiment int_metadata
@@ -65,19 +66,16 @@
 .project <- \(x, y, z=NULL) {
     # max-projection over z-stacks
     axisNames <- axes(x, y="name")
-    zidx <- which(axisNames=="z")
-    if (length(zidx)>0) {
+    zidx <- which(axisNames == "z")
+    if (length(zidx) > 0) {
         if (is.null(z)) {
             # max-projection across z-slices
             y <- apply(y, seq_along(dim(x))[-zidx], max)
         } else {
-            if (length(z)>1) {
-                stop("Only a single z-plane can be selected")
-            }
+            if (length(z) > 1) stop("only a single z-plane can be selected")
             # subset target z-slice
-            y <- .subset_array_by_axes(a=y, axisNames=axisNames, 
-                                       z=z, drop=FALSE)
-            dim(y) <- dim(y)[axisNames!="z"]
+            y <- .subset_array_by_axes(a=y, axisNames=axisNames, z=z, drop=FALSE)
+            dim(y) <- dim(y)[axisNames != "z"]
         }
     }
     y
@@ -116,9 +114,9 @@
 }
 
 .subset_array_by_axes <- \(a, axisNames, ..., drop=FALSE) {
-    if (length(dim(a)) != length(axisNames)) {
-        stop("axisNames must have the same length as the number of dimensions of x")
-    }
+    # this should never be trigger as object validity should prevent it
+    ok <- length(dim(a)) == length(axisNames)
+    if (!ok) stop("'length(axes(x))' must equal 'length(dim(x))'")
     specs <- list(...)
     idx <- lapply(axisNames, \(nm) {
         if (!is.null(specs[[nm]])) {
@@ -130,49 +128,4 @@
     do.call("[", c(list(a), idx, list(drop=drop)))
 }
 
-.unit_map <- c(micrometer="\U03BCm",
-               micron="\U03BCm")
-
-#' Create scalebar for image
-#' 
-#' @param x A \code{SpatialDataArray} object.
-#' @param l A numeric scalar giving the length of the scalebar (in global 
-#'     coordinates). The unit will be extracted from the metadata of \code{x}.
-#' @param xrel,yrel Numeric scalars between 0 and 1 indicating the relative 
-#'     x and y position of the scalebar.
-#' @param color Character scalar indicating the color to use for the scalebar.
-#' @param linewidth Numeric scalar indicating the line width to use for the 
-#'     scalebar.
-#'
-#' @examples
-#' x <- file.path("extdata", "blobs.zarr")
-#' x <- system.file(x, package="spatialdataR")
-#' x <- readSpatialData(x, tables=FALSE)
-#' plotSpatialData() + 
-#'     plotImage(x, i=2) + 
-#'     scalebar(image(x, i=2), l=10)
-#' 
-#' @importFrom ggplot2 annotate
-#' @export
-scalebar <- function(x, l, xrel=0.05, yrel=0.05, 
-                     color="red", linewidth=1) {
-    unit <- axes(x)[[which(axes(x, y="name")=="x")]]$unit
-    if (unit %in% names(.unit_map)) {
-        unit <- .unit_map[unit]
-    }
-    wh <- .get_wh(x)
-    if (xrel<=0.5) {
-        xmin <- diff(wh$w) * xrel + wh$w[1]
-        xmax <- diff(wh$w) * xrel + wh$w[1] + l
-    } else {
-        xmin <- wh$w[2] - diff(wh$w) * (1 - xrel) - l
-        xmax <- wh$w[2] - diff(wh$w) * (1 - xrel)
-    }
-    y <- wh$h[2] - diff(wh$h) * yrel
-    list(annotate(geom="segment", x=xmin, xend=xmax, y=y, yend=y,
-                  color=color, linewidth=linewidth),
-         annotate(geom="text", x=(xmin+xmax)/2, y=y, 
-                  vjust=ifelse(yrel>0.5,1.5,-0.5),
-                  color=color, label=paste0(l, unit)))
-}
-
+.unit_map <- c(micrometer="\U03BCm", micron="\U03BCm")

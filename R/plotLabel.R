@@ -45,18 +45,15 @@
 #' 
 #' # coloring by 'assay' data
 #' p + plotLabel(x, i, c="channel_1_sum")
-NULL
-
-#' @rdname plotLabel
-#' @importFrom grDevices hcl.colors colorRampPalette
-#' @importFrom S4Vectors metadata
-#' @importFrom rlang .data
+#' 
 #' @importFrom methods as
+#' @importFrom rlang .data
+#' @importFrom S4Vectors metadata
+#' @importFrom SingleCellExperiment colData
+#' @importFrom grDevices hcl.colors colorRampPalette
 #' @importFrom ggplot2 scale_fill_manual scale_fill_gradientn
 #' @importFrom ggplot2 aes theme unit guides guide_legend geom_tile
-#'   
-#' @importFrom SingleCellExperiment colData
-#' @export
+#' 
 setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, t=NULL, c=NULL, 
     a=0.5, pal=NULL, nan=NA, assay=1, z=NULL) {
 

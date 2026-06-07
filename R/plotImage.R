@@ -161,26 +161,26 @@ NULL
 #' @importFrom spatialdataR data_type
 .df_i <- \(x, k=NULL, ch=NULL, t=NULL, c=NULL, cl=NULL, z=NULL) {
     a <- .get_ms_data(x, k)
-    axisNames <- axes(x=x, y="name")
+    axisNames <- axes(x, "name")
     # 2D max-projection
     a <- .project(x, a)
     axisNames <- axisNames[axisNames != "z"]
+    ti <- which(axisNames == "t")
+    tn <- length(ti)
     # subset channels and timepoint of interest
-    tidx <- which(axisNames=="t") 
-    if (length(tidx)>0) {
+    if (tn) {
         if (is.null(t)) {
             t <- 1
-        } 
-        if (length(t)>1) {
+        } else if (length(t) > 1) {
             stop("Only a single timepoint can be selected")
         }
     }
     a <- .subset_array_by_axes(a=a, axisNames=axisNames, 
                                c=.ch_idx(x, ch), t=t, drop=FALSE)
     # remove time axis if it exists
-    dim(a) <- dim(a)[axisNames != "t"]
-    if (length(tidx)>0) {
-        axisNames <- axisNames[-tidx]
+    if (tn) {
+        dim(a) <- dim(a)[axisNames != "t"]
+        axisNames <- axisNames[-ti]
     }
     # if no channel axis, add dummy axis
     if (!("c" %in% axisNames)) {

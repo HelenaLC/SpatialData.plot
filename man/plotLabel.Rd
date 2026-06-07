@@ -2,7 +2,6 @@
 % Please edit documentation in R/plotLabel.R
 \name{plotLabel}
 \alias{plotLabel}
-\alias{plotLabel,SpatialData-method}
 \title{\code{SpatialData} label viz.}
 \usage{
 \S4method{plotLabel}{SpatialData}(
@@ -76,4 +75,5 @@ p + plotLabel(x, i, c="id", pal=pal_d)
 
 # coloring by 'assay' data
 p + plotLabel(x, i, c="channel_1_sum")
+
 }
