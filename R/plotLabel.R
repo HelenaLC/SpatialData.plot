@@ -58,7 +58,7 @@ NULL
 #' @importFrom SingleCellExperiment colData
 #' @export
 setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, t=NULL, c=NULL, 
-    a=0.5, pal=c("red", "green"), nan=NA, assay=1, z=NULL) {
+    a=0.5, pal=NULL, nan=NA, assay=1, z=NULL) {
 
     if (!is.null(z)) {
         ok <- length(z) == 1 && is.numeric(z) && z == round(z) && z > 0

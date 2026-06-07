@@ -13,7 +13,7 @@
   t = NULL,
   c = NULL,
   a = 0.5,
-  pal = c("red", "green"),
+  pal = NULL,
   nan = NA,
   assay = 1,
   z = NULL
