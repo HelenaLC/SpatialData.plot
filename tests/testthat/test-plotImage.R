@@ -1,6 +1,5 @@
 require(ggplot2, quietly=TRUE)
 require(spatialdataR, quietly=TRUE)
-require(SpatialData.data, quietly=TRUE)
 
 x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="spatialdataR")

@@ -1,3 +1,13 @@
+changes in version 0.99.7
+
+- added 'scalebar' display
+- near-comprehensive unit testing
+- default to random label coloring by instance
+- multi-scale adjustment (= mapping to physical space)
+- address R CMD check notes/warnings toward Bioc submission
+- support for 3D (z) and 4D (t) through slicing or max-projection
+- drop various code bits in favor of new 'spatialdataR' functionality
+
 changes in version 0.99.6
 
 - renaming of 'SpatialData' classes
