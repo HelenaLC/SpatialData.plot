@@ -52,7 +52,8 @@ by default (NULL), will apply a max-projection across all z-slices.}
 \code{SpatialData} label viz.
 }
 \examples{
-x <- system.file("extdata", "blobs.zarr", package="spatialdataR")
+x <- file.path("extdata", "blobs.zarr")
+x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x)
 
 i <- "blobs_labels"
@@ -67,13 +68,11 @@ t$id <- sample(letters, ncol(t))
 table(x) <- t
 
 # coloring by 'colData'
-n <- length(unique(t$id))
-
-# pal <- hcl.colors(n, "Spectral")
-pal_d <- hcl.colors(10, "Spectral")
-p + plotLabel(x, i, c="id", pal=pal_d)
+p + plotLabel(x, i, c="id")
 
 # coloring by 'assay' data
-p + plotLabel(x, i, c="channel_1_sum")
+p + plotLabel(x, i, 
+  c="channel_1_sum", 
+  pal=c("lavender", "blue"))
 
 }

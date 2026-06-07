@@ -22,7 +22,8 @@
 #'   by default (NULL), will apply a max-projection across all z-slices.
 #' 
 #' @examples
-#' x <- system.file("extdata", "blobs.zarr", package="spatialdataR")
+#' x <- file.path("extdata", "blobs.zarr")
+#' x <- system.file(x, package="spatialdataR")
 #' x <- readSpatialData(x)
 #' 
 #' i <- "blobs_labels"
@@ -37,14 +38,12 @@
 #' table(x) <- t
 #' 
 #' # coloring by 'colData'
-#' n <- length(unique(t$id))
-#' 
-#' # pal <- hcl.colors(n, "Spectral")
-#' pal_d <- hcl.colors(10, "Spectral")
-#' p + plotLabel(x, i, c="id", pal=pal_d)
+#' p + plotLabel(x, i, c="id")
 #' 
 #' # coloring by 'assay' data
-#' p + plotLabel(x, i, c="channel_1_sum")
+#' p + plotLabel(x, i, 
+#'   c="channel_1_sum", 
+#'   pal=c("lavender", "blue"))
 #' 
 #' @importFrom methods as
 #' @importFrom rlang .data
@@ -110,6 +109,7 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, t=NULL, c=NULL,
     aes <- aes(.data[["x"]], .data[["y"]])
     if (!is.null(c)) {
         stopifnot(length(c) == 1, is.character(c))
+        if (is.null(pal)) pal <- hcl.colors(12, "Spectral")
         se <- getTable(x, i)
         is <- instances(se)
         ik <- instance_key(se)
