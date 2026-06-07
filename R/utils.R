@@ -47,16 +47,16 @@
 
 # guess scale of image or label
 .guess_scale <- \(x, w, h) {
-  i <- match(c("y", "x"), axes(x=x, y="name"))
-  d <- vapply(x@data, dim, numeric(length(dim(x))))
-  d <- apply(d, 2, \(.) sum(abs(.[i]-c(h, w))))
-  which.min(d)
+    i <- match(c("y", "x"), axes(x=x, y="name"))
+    d <- vapply(x@data, dim, numeric(length(dim(x))))
+    d <- apply(d, 2, \(.) sum(abs(.[i]-c(h, w))))
+    which.min(d)
 }
 
 # get multiscale
 .get_multiscale_data <- \(x, k=NULL, w=800, h=800) {
-  if (!is.null(k)) return(data(x, k))
-  data(x, .guess_scale(x, w, h))
+    if (!is.null(k)) return(data(x, k))
+    data(x, .guess_scale(x, w, h))
 }
 
 #' @importFrom spatialdataR meta
