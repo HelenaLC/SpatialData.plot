@@ -311,7 +311,7 @@ plotSpatialData() + plotImage(y)
 
 ## Session info
 
-    ## R Under development (unstable) (2026-06-05 r90111)
+    ## R Under development (unstable) (2026-06-06 r90114)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.4 LTS
     ## 
