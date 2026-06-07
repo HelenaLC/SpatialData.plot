@@ -2,6 +2,7 @@
 % Please edit documentation in R/plotLabel.R
 \name{plotLabel}
 \alias{plotLabel}
+\alias{plotLabel,SpatialData-method}
 \title{\code{SpatialData} label viz.}
 \usage{
 \S4method{plotLabel}{SpatialData}(
@@ -42,8 +43,10 @@ When left unspecified, color will be sampled at random.}
 
 \item{nan}{character string; color for missing values (hidden by default).}
 
-\item{assay}{character string; in case of \code{c} denoting a row name,
-specifies which \code{assay} data to use (see \code{\link{getTable}}).}
+\item{assay}{character string; 
+in case of \code{c} denoting a row name,
+specifies which \code{assay} data to use 
+(see \code{\link[spatialdataR]{getTable}}).}
 
 \item{t, z}{integer scalar to indicate a specific time- or z-slice;
 if left unspecified (default NULL), will perform a max-projection.}
@@ -74,5 +77,4 @@ p + plotLabel(x, i, c="id")
 p + plotLabel(x, i, 
   c="channel_1_sum", 
   pal=c("lavender", "blue"))
-
 }

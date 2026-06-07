@@ -4,7 +4,7 @@
 #' 
 #' @description ...
 #'
-#' @param x \code{\link{SpatialData}} object.
+#' @param x \code{\link[spatialdataR]{SpatialData}} object.
 #' @param i element to use from a given layer.
 #' @param j index or name of target coordinate system. 
 #' @param k index of the scale to render; by default (NULL), will auto-select 

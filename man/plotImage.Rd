@@ -21,7 +21,7 @@
 plotSpatialData()
 }
 \arguments{
-\item{x}{\code{\link{SpatialData}} object.}
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object.}
 
 \item{i}{element to use from a given layer.}
 

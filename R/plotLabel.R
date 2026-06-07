@@ -7,8 +7,10 @@
 #'   the default (NULL), gives a binary image of whether or not a
 #'   pixel is non-zero; alternatively, a character string specifying
 #'   a \code{colData} column or row name in an annotation \code{table}.
-#' @param assay character string; in case of \code{c} denoting a row name,
-#'   specifies which \code{assay} data to use (see \code{\link{getTable}}).
+#' @param assay character string; 
+#'   in case of \code{c} denoting a row name,
+#'   specifies which \code{assay} data to use 
+#'   (see \code{\link[spatialdataR]{getTable}}).
 #' @param a scalar numeric in [0, 1]; alpha value passed to \code{geom_tile}.
 #' @param pal character vector; color for discrete/continuous values
 #'   (interpolated automatically when insufficient values are provided).
@@ -39,7 +41,10 @@
 #' p + plotLabel(x, i, 
 #'   c="channel_1_sum", 
 #'   pal=c("lavender", "blue"))
-#' 
+NULL
+
+#' @export
+#' @rdname plotLabel
 #' @importFrom methods as
 #' @importFrom rlang .data
 #' @importFrom S4Vectors metadata
@@ -47,7 +52,6 @@
 #' @importFrom grDevices colors hcl.colors colorRampPalette
 #' @importFrom ggplot2 scale_fill_manual scale_fill_gradientn
 #' @importFrom ggplot2 aes theme unit guides guide_legend geom_tile
-#' @export
 setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL, 
     a=0.5, pal=NULL, nan=NA, assay=1, t=NULL, z=NULL) {
 
