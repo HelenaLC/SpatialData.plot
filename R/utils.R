@@ -1,23 +1,5 @@
-# convenience functions until this is fixed/exported by 'SpatialData'
-
-#' @importFrom methods is
-#' @importFrom SingleCellExperiment int_metadata
-.spatialdata_attrs <- \(x) {
-    if (is(x, "SingleCellExperiment")) {
-        int_metadata(x)$spatialdata_attrs
-    } else if (is(x, "SpatialDataElement")) {
-        meta(x)$spatialdata_attrs
-    } else if (is(x, "Zattrs")) {
-        x$spatialdata_attrs
-    } else stop("invalid 'x'")
-}
-
-.instance_key <- \(x) .spatialdata_attrs(x)$instance_key
-.region_key <- \(x) .spatialdata_attrs(x)$region_key
-.region <- \(x) .spatialdata_attrs(x)$region
-
-#' @importFrom SingleCellExperiment int_colData
-.instance_ids <- \(x) int_colData(x)[[.instance_key(x)]]
+# internal helper for null-coalescing
+`%||%` <- \(a, b) if (is.null(a)) b else a
 
 #' @importFrom grDevices col2rgb
 .str_is_col <- \(x) !inherits(tryCatch(error=\(e) e, col2rgb(x)), "error")
@@ -47,7 +29,7 @@
 
 # guess scale of image or label
 .guess_scale <- \(x, w, h) {
-    i <- match(c("y", "x"), vapply(axes(x), \(.) .$name, character(1)))
+    i <- match(c("y", "x"), axes(x=x, y="name"))
     d <- vapply(x@data, dim, numeric(length(dim(x))))
     d <- apply(d, 2, \(.) sum(abs(.[i]-c(h, w))))
     which.min(d)
@@ -63,20 +45,21 @@
 # y = high-dim. array
 # z = (optional) index
 .project <- \(x, y, z=NULL) {
-    ok <- c("x", "y", "c")
-    as <- axes(x, "name")
-    ok <- as %in% ok
-    if (all(ok)) return(y) # 2D
-    if (is.null(z)) { # project
-        y <- apply(y, which(ok), max)
-        return(y) 
+    # max-projection over z-stacks
+    axisNames <- axes(x, y="name")
+    zidx <- which(axisNames == "z")
+    if (length(zidx) > 0) {
+        if (is.null(z)) {
+            # max-projection across z-slices
+            y <- apply(y, seq_along(dim(x))[-zidx], max)
+        } else {
+            if (length(z) > 1) stop("only a single z-plane can be selected")
+            # subset target z-slice
+            y <- .subset_array_by_axes(a=y, axisNames=axisNames, z=z, drop=FALSE)
+            dim(y) <- dim(y)[axisNames != "z"]
+        }
     }
-    # specific slice
-    i <- !logical(length(as))
-    i <- as.list(i)
-    i[as == "z"] <- z
-    arg <- c(list(y), i)
-    do.call(`[`, arg)
+    y
 }
 
 #' @importFrom utils tail
@@ -110,3 +93,20 @@
     wh$h[2] <- wh$h[2]*ty
     return(wh)
 }
+
+.subset_array_by_axes <- \(a, axisNames, ..., drop=FALSE) {
+    # this should never be trigger as object validity should prevent it
+    ok <- length(dim(a)) == length(axisNames)
+    if (!ok) stop("'length(axes(x))' must equal 'length(dim(x))'")
+    specs <- list(...)
+    idx <- lapply(axisNames, \(nm) {
+        if (!is.null(specs[[nm]])) {
+            specs[[nm]]
+        } else {
+            seq.int(dim(a)[match(nm, axisNames)])
+        }
+    })
+    do.call("[", c(list(a), idx, list(drop=drop)))
+}
+
+.unit_map <- c(micrometer="\U03BCm", micron="\U03BCm")

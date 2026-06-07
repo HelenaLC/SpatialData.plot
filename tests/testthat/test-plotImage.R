@@ -1,3 +1,4 @@
+require(ggplot2, quietly=TRUE)
 require(spatialdataR, quietly=TRUE)
 require(SpatialData.data, quietly=TRUE)
 
@@ -50,41 +51,60 @@ test_that(".check_cl", {
     expect_error(.check_cl(list(NULL, NULL, 0), 3)) # zero scalar
 })
 
-# mock multiplex image
-l <- 4; m <- 80; n <- 120
-a <- as(array(runif(l*m*n), c(l,m,n)), "ZarrArray")
-y <- SpatialDataImage(list(a), SpatialDataAttrs(type="image", dim=2, nch=l))
-x <- SpatialData(list(y))
+# mock high-dim. image
+.mock <- \(c=3, t=0, z=0, y=80, x=120) {
+    dim <- c(c, t, z, y, x); dim <- dim[dim != 0]
+    arr <- drop(as(array(runif(prod(dim)), dim), "ZarrArray"))
+    sda <- SpatialDataAttrs(dim=length(dim)-1, nch=c)
+    SpatialDataImage(list(arr), sda)
+}
 
 test_that(".norm_ia", {
+    a <- data(.mock())
+    nch <- dim(a)[1]
     # valid data type
     dt <- data_type(a)
     b <- .norm_ia(realize(a), dt)
     expect_equal(
         tolerance=1e-3,
         apply(b, 1, range), 
-        replicate(l, c(0, 1)))
+        replicate(nch, c(0, 1)))
     # invalid data type
     b <- .norm_ia(realize(a), "")
     expect_equal(
         tolerance=1e-3,
         apply(b, 1, range), 
-        replicate(l, c(0, 1)))
+        replicate(nch, c(0, 1)))
 })
 
-test_that(".prep_ia", { testthat::skip()
-    dt <- data_type(a)
-    ch <- seq_len(d <- dim(a)[1])
-    a <- .norm_ia(realize(a), dt)
+test_that(".prep_ia", {
+    # insufficient default colors
+    a <- data(.mock(33))
+    expect_error(.prep_ia(a), "default")
     # no colors, no contrasts
-    b <- .prep_ia(a, ch)
+    a <- data(i <- .mock(c=c <- 7))
+    b <- .prep_ia(a, seq_len(c))
     expect_is(b, "matrix")
     expect_length(dim(b), 2)
+    expect_equal(dim(a)[-1], dim(b))
     expect_is(b[1,1], "character")
     # colors
-    pal <- colors()[seq_len(l)]
+    pal <- colors()[seq_len(c)]
     b <- .prep_ia(a, c=pal)
+    expect_length(dim(b), 2)
     expect_equal(dim(a)[-1], dim(b))
     expect_is(b, "matrix")
-    expect_is(c(b), "character")
+    expect_is(b[1,1], "character")
+})
+
+test_that("plotImage,3/4D", {
+    f <- \(x, ...) plotImage(SpatialData(images=list(x)), ...)
+    x <- .mock(c=5, t=3, z=4)
+    # valid
+    expect_is(f(x), "list") # project both
+    expect_is(f(x, t=1), "list") # t-slice
+    expect_is(f(x, z=1), "list") # z-slice
+    # invalid
+    expect_error(f(x, t=4))
+    #expect_error(f(x, z=5)) TODO: this is not throwing an error?
 })

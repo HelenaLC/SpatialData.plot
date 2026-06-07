@@ -6,18 +6,28 @@
 \alias{plotImage,SpatialData-method}
 \title{\code{SpatialData} image viz.}
 \usage{
-\S4method{plotImage}{SpatialData}(x, i = 1, j = 1, k = NULL, ch = NULL, c = NULL, cl = NULL)
+\S4method{plotImage}{SpatialData}(
+  x,
+  i = 1,
+  j = 1,
+  k = NULL,
+  ch = NULL,
+  c = NULL,
+  cl = NULL,
+  t = NULL,
+  z = NULL
+)
 
 plotSpatialData()
 }
 \arguments{
-\item{x}{\code{\link{SpatialData}} object.}
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object.}
 
 \item{i}{element to use from a given layer.}
 
-\item{j}{name of target coordinate system.}
+\item{j}{index or name of target coordinate system.}
 
-\item{k}{index of the scale of an image; by default (NULL), will auto-select 
+\item{k}{index of the scale to render; by default (NULL), will auto-select 
 scale in order to minimize memory-usage and blurring for a target size of 
 800 x 800px; use Inf to plot the lowest resolution available.}
 
@@ -31,6 +41,9 @@ which channels are available for a given \code{SpatialDataImage}}
 specifies channel-wise contrast limits - defaults to [0, 1] for all 
 (ignored when \code{image(x, i)} is an RGB image; 
 for convenience, any NULL = [0, 1], and n = [0, n]).}
+
+\item{t, z}{integer scalar to indicate a specific time- or z-slice;
+if left unspecified (default NULL), will perform a max-projection.}
 }
 \value{
 ggplot

@@ -35,9 +35,7 @@ Imports:
     rlang,
     sf,
     S4Vectors,
-    SingleCellExperiment,
-    Rarr,
-    ZarrArray
+    SingleCellExperiment
 Suggests:
     BiocStyle,
     ggnewscale,
@@ -47,7 +45,8 @@ Suggests:
     Rgraphviz,
     SpatialData.data,
     testthat,
-    vdiffr
+    vdiffr,
+    ZarrArray
 Remotes:
     HelenaLC/spatialdataR,
     HelenaLC/SpatialData.data

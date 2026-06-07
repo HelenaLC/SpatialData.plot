@@ -17,9 +17,14 @@
 
 \item{i}{character string or index; the label element to plot.}
 
-\item{assay}{character string; in case of \code{c} denoting a row name,
-specifies which \code{assay} data to use (see \code{\link{valTable}}).
+\item{j}{index or name of target coordinate system.}
+
+\item{assay}{character string; in case of \code{c} 
+denoting a row name, specifies which \code{assay} 
+data to use (see \code{\link[spatialdataR]{getTable}}).
 (ignored when \code{x} is a \code{SpatialDataPoint}).}
+
+\item{...}{option aesthetic arguments passed \code{geom_sf}.}
 }
 \description{
 \code{SpatialData} point/shape viz.

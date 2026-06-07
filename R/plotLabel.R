@@ -3,26 +3,24 @@
 #' 
 #' @param x \code{SpatialData} object.
 #' @param i character string or index; the label element to plot.
-#' @param j name of target coordinate system. 
-#' @param k index of the scale of an image; by default (NULL), will auto-select 
-#'   scale in order to minimize memory-usage and blurring for a target size of 
-#'   800 x 800px; use Inf to plot the lowest resolution available.
-#' @param c the default, NULL, gives a binary image of whether or not 
-#'   a given pixel is non-zero; alternatively, a character string specifying
-#'   a \code{colData} column or row name in a \code{table} annotating \code{i}.
-#' @param assay character string; in case of \code{c} denoting a row name,
-#'   specifies which \code{assay} data to use (see \code{\link{valTable}}).
+#' @param c determines label colors; 
+#'   the default (NULL), gives a binary image of whether or not a
+#'   pixel is non-zero; alternatively, a character string specifying
+#'   a \code{colData} column or row name in an annotation \code{table}.
+#' @param assay character string; 
+#'   in case of \code{c} denoting a row name,
+#'   specifies which \code{assay} data to use 
+#'   (see \code{\link[spatialdataR]{getTable}}).
 #' @param a scalar numeric in [0, 1]; alpha value passed to \code{geom_tile}.
 #' @param pal character vector; color for discrete/continuous values
 #'   (interpolated automatically when insufficient values are provided).
 #'   When left unspecified, color will be sampled at random.
 #' @param nan character string; color for missing values (hidden by default).
-#' @param z scalar integer; 
-#'   specifies which z-slice to plot when \code{label(x, i)} is 3D; 
-#'   by default (NULL), will apply a max-projection across all z-slices.
+#' @inheritParams plotImage
 #' 
 #' @examples
-#' x <- system.file("extdata", "blobs.zarr", package="spatialdataR")
+#' x <- file.path("extdata", "blobs.zarr")
+#' x <- system.file(x, package="spatialdataR")
 #' x <- readSpatialData(x)
 #' 
 #' i <- "blobs_labels"
@@ -37,34 +35,31 @@
 #' table(x) <- t
 #' 
 #' # coloring by 'colData'
-#' n <- length(unique(t$id))
-#' 
-#' # pal <- hcl.colors(n, "Spectral")
-#' pal_d <- hcl.colors(10, "Spectral")
-#' p + plotLabel(x, i, c="id", pal=pal_d)
+#' p + plotLabel(x, i, c="id")
 #' 
 #' # coloring by 'assay' data
-#' p + plotLabel(x, i, c="channel_1_sum")
+#' p + plotLabel(x, i, 
+#'   c="channel_1_sum", 
+#'   pal=c("lavender", "blue"))
 NULL
 
+#' @export
 #' @rdname plotLabel
-#' @importFrom grDevices hcl.colors colorRampPalette
-#' @importFrom S4Vectors metadata
-#' @importFrom rlang .data
 #' @importFrom methods as
+#' @importFrom rlang .data
+#' @importFrom S4Vectors metadata
+#' @importFrom SingleCellExperiment colData
+#' @importFrom grDevices colors hcl.colors colorRampPalette
 #' @importFrom ggplot2 scale_fill_manual scale_fill_gradientn
 #' @importFrom ggplot2 aes theme unit guides guide_legend geom_tile
-#'   
-#' @importFrom SingleCellExperiment colData
-#' @export
 setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL, 
-    a=0.5, pal=NULL, nan=NA, assay=1, z=NULL) {
+    a=0.5, pal=NULL, nan=NA, assay=1, t=NULL, z=NULL) {
 
     if (!is.null(z)) {
         ok <- length(z) == 1 && is.numeric(z) && z == round(z) && z > 0
         if (!ok) stop("invalid 'z'; should be a scalar integer > 0")
     }
-    
+
     if (is.numeric(i)) i <- labelNames(x)[i]
     i <- match.arg(i, labelNames(x))
     y <- label(x, i)
@@ -76,8 +71,24 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
 
     # get array data
     ym <- .get_ms_data(y, k)
+    axisNames <- axes(x=y, y="name")
     ym <- .project(y, ym, z)
-    
+    axisNames <- axisNames[axisNames != "z"]
+    # subset to selected time
+    tidx <- which(axisNames=="t") 
+    if (length(tidx)>0) {
+        if (is.null(t)) {
+            t <- 1
+        } 
+        if (length(t)>1) {
+            stop("Only a single timepoint can be selected")
+        }
+        ym <- .subset_array_by_axes(a=ym, axisNames=axisNames,
+                                    t=t, drop=FALSE)
+        dim(ym) <- dim(ym)[axisNames!="t"]
+        axisNames <- axisNames[-tidx]
+    }
+
     # keep only indices != 0 since labels might be sparse 
     # and thus save memory by not plotting all pixels
     idx <- BiocGenerics::which(ym != 0L, arr.ind=TRUE)
@@ -94,9 +105,10 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
         y=wh$h[1]+idx[,1L]*sy, 
         z=ym[idx])
     
-    aes <- aes(.data[["x"]], .data[["y"]])
+    aes <- aes(.data$x, .data$y)
     if (!is.null(c)) {
         stopifnot(length(c) == 1, is.character(c))
+        if (is.null(pal)) pal <- hcl.colors(12, "Spectral")
         se <- getTable(x, i)
         is <- instances(se)
         ik <- instance_key(se)
