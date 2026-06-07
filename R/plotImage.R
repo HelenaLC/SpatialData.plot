@@ -117,8 +117,8 @@ NULL
     if (dt %in% names(.DTYPE_MAX_VALUES)) {
         a <- a / .DTYPE_MAX_VALUES[dt]
     } else if (max(a) > 1) {
-        for (i in seq_len(d))
-            a[i,,] <- a[i,,] / max(a[i,,])
+        maxs <- apply(a, 1, max)
+        a <- sweep(a, MARGIN = 1, STATS = maxs, FUN = "/")
     }
   return(a)
 }

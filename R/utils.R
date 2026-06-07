@@ -66,3 +66,18 @@
     ct <- ds$coordinateTransformations[[1]]
     return(unlist(ct$scale))
 }
+
+.subset_array_by_axes <- \(a, axisNames, ..., drop=FALSE) {
+    if (length(dim(a)) != length(axisNames)) {
+        stop("axisNames must have the same length as the number of dimensions of x")
+    }
+    specs <- list(...)
+    idx <- lapply(axisNames, \(nm) {
+        if (!is.null(specs[[nm]])) {
+            specs[[nm]]
+        } else {
+            seq.int(dim(a)[match(nm, axisNames)])
+        }
+    })
+    do.call("[", c(list(a), idx, list(drop=drop)))
+}
