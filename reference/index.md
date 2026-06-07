@@ -21,3 +21,8 @@
   :
 
   `SpatialData` label viz.
+
+- [`scalebar()`](https://HelenaLC.github.io/SpatialData.plot/reference/scalebar.md)
+  :
+
+  `SpatialDataArray` scalebar

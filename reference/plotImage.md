@@ -6,7 +6,17 @@
 
 ``` r
 # S4 method for class 'SpatialData'
-plotImage(x, i = 1, j = 1, k = NULL, ch = NULL, c = NULL, cl = NULL)
+plotImage(
+  x,
+  i = 1,
+  j = 1,
+  k = NULL,
+  ch = NULL,
+  c = NULL,
+  cl = NULL,
+  t = NULL,
+  z = NULL
+)
 
 plotSpatialData()
 ```
@@ -15,7 +25,8 @@ plotSpatialData()
 
 - x:
 
-  `SpatialData` object.
+  [`SpatialData`](https://helenalc.github.io/SpatialData/reference/SpatialData.html)
+  object.
 
 - i:
 
@@ -23,19 +34,20 @@ plotSpatialData()
 
 - j:
 
-  name of target coordinate system.
+  index or name of target coordinate system.
 
 - k:
 
-  index of the scale of an image; by default (NULL), will auto-select
+  index of the scale to render; by default (NULL), will auto-select
   scale in order to minimize memory-usage and blurring for a target size
   of 800 x 800px; use Inf to plot the lowest resolution available.
 
 - ch:
 
   image channel(s) to be used for plotting (defaults to the first
-  channel(s) available); use `channels()` to see which channels are
-  available for a given `SpatialDataImage`
+  channel(s) available); use
+  [`channels()`](https://helenalc.github.io/SpatialData/reference/SpatialDataArray.html)
+  to see which channels are available for a given `SpatialDataImage`
 
 - c:
 
@@ -48,6 +60,11 @@ plotSpatialData()
   when `image(x, i)` is an RGB image; for convenience, any NULL = \[0,
   1\], and n = \[0, n\]).
 
+- t, z:
+
+  integer scalar to indicate a specific time- or z-slice; if left
+  unspecified (default NULL), will perform a max-projection.
+
 ## Value
 
 ggplot
@@ -56,7 +73,7 @@ ggplot
 
 ``` r
 x <- file.path("extdata", "blobs.zarr")
-x <- system.file(x, package="SpatialData")
+x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x, tables=FALSE)
 
 ms <- lapply(seq(3), \(.) 

@@ -7,12 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>SpatialData visualization • SpatialData.plot</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="SpatialData visualization">
-<meta name="description" content="Visualization suit for SpatialData (R). Current functionality includes handling of multiscale images, visualizing labels, points, and shapes. For the latter, POINT, POLYGON, and MULTIPOLYGON geometries are supported. For all but images, there is support to pass information from annotation tables as aesthetics (e.g., colData or assay data).">
-<meta property="og:description" content="Visualization suit for SpatialData (R). Current functionality includes handling of multiscale images, visualizing labels, points, and shapes. For the latter, POINT, POLYGON, and MULTIPOLYGON geometries are supported. For all but images, there is support to pass information from annotation tables as aesthetics (e.g., colData or assay data).">
+<meta name="description" content="Visualization suit for spatialdataR. Current functionality includes handling of multiscale images, visualizing labels, points, and shapes. For the latter, POINT, POLYGON, and MULTIPOLYGON geometries are supported. For all but images, there is support to pass information from annotation tables as aesthetics (e.g., colData or assay data).">
+<meta property="og:description" content="Visualization suit for spatialdataR. Current functionality includes handling of multiscale images, visualizing labels, points, and shapes. For the latter, POINT, POLYGON, and MULTIPOLYGON geometries are supported. For all but images, there is support to pass information from annotation tables as aesthetics (e.g., colData or assay data).">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">SpatialData.plot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,12 +55,49 @@
 <div class="page-header"><h1 id="spatialdataplot">
 <code>SpatialData.plot</code><a class="anchor" aria-label="anchor" href="#spatialdataplot"></a>
 </h1></div>
+<p><a href="https://github.com/HelenaLC/SpatialData.plot/actions/workflows/r-universe.yaml" class="external-link"><img src="https://github.com/HelenaLC/SpatialData.plot/actions/workflows/r-universe.yaml/badge.svg?branch=main&amp;event=push" alt="R-universe"></a></p>
+<p>Visualization capabilities for <code>SpatialData</code> object elements from the <code>spatialdataR</code>: an R interface to Python’s <a href="https://spatialdata.scverse.org" class="external-link">spatialdata</a> framework (<a href="https://doi.org/10.1038/s41592-024-02212-x" class="external-link">Marconato et al. (2024)</a>).</p>
 <blockquote>
 <p><a href="https://helenalc.github.io/SpatialData.plot/articles/SpatialData.plot.html" class="external-link">DEMO</a></p>
 </blockquote>
-<pre><code><span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"HelenaLC/SpatialData"</span><span class="op">)</span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"HelenaLC/SpatialData.plot"</span><span class="op">)</span></span></code></pre>
-<p>Some vignette examples rely on data deposited at Bioconductor’s OSN bucket. To <em>interrogate</em> these, you will need to install <a href="https://cran.r-project.org/web/packages/paws/index.html" class="external-link">paws</a>; it is not necessary for retrievals.</p>
+<div class="section level2">
+<h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
+</h2>
+<ul>
+<li>
+<a href="https://helenalc.github.io/spatialdataR" class="external-link">SpatialData class</a> documentation.</li>
+<li>
+<a href="https://helenalc.github.io/SpatialData.demo" class="external-link">SpatialData.demo</a>: Biotechnology workflows.</li>
+<li>
+<a href="https://github.com/HelenaLC/SpatialData.data" class="external-link">SpatialData.data</a>: Example <code>SpatialData</code>sets.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span>    </span>
+<span><span class="co"># install the development version from GitHub</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"HelenaLC/spatialdataR"</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"HelenaLC/SpatialData.plot"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://helenalc.github.io/spatialdataR" class="external-link">spatialdataR</a></span><span class="op">)</span></span>
+<span><span class="va">zs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"blobs.zarr"</span><span class="op">)</span></span>
+<span><span class="va">zs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="va">zs</span>, package<span class="op">=</span><span class="st">"spatialdataR"</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/readSpatialData.html" class="external-link">readSpatialData</a></span><span class="op">(</span><span class="va">zs</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/plotImage.html">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/plotImage.html">plotImage</a></span><span class="op">(</span><span class="va">sd</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/plotLabel.html">plotLabel</a></span><span class="op">(</span><span class="va">sd</span>, a<span class="op">=</span><span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/plotFrame.html">plotShape</a></span><span class="op">(</span><span class="va">sd</span>, fill<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/plotFrame.html">plotPoint</a></span><span class="op">(</span><span class="va">sd</span>, col<span class="op">=</span><span class="st">"genes"</span>, size<span class="op">=</span><span class="fl">1.2</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>

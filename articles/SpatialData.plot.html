@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>`SpatialData.plot` • SpatialData.plot</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="`SpatialData.plot`">
 </head>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">SpatialData.plot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +65,7 @@ Gruson</h4>
                                     <h4 data-toc-skip class="author">Vince
 Carey</h4>
                         
-            <h4 data-toc-skip class="date">May 09, 2026</h4>
+            <h4 data-toc-skip class="date">June 07, 2026</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HelenaLC/SpatialData.plot/blob/main/vignettes/SpatialData.plot.Rmd" class="external-link"><code>vignettes/SpatialData.plot.Rmd</code></a></small>
       <div class="d-none name"><code>SpatialData.plot.Rmd</code></div>
@@ -77,31 +77,31 @@ Carey</h4>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://eliocamp.github.io/ggnewscale/" class="external-link">ggnewscale</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HelenaLC/SpatialData" class="external-link">SpatialData</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://helenalc.github.io/spatialdataR" class="external-link">spatialdataR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HelenaLC/SpatialData.data" class="external-link">SpatialData.data</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HelenaLC/SpatialData.plot" class="external-link">SpatialData.plot</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SingleCellExperiment</span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/drisso/SingleCellExperiment" class="external-link">SingleCellExperiment</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>The <code>SpatialData</code> package contains a set of reader and
-plotting functions for spatial omics data stored as <a href="https://spatialdata.scverse.org/en/latest/index.html" class="external-link">SpatialData</a>
+<p>The <code>SpatialData.plot</code> package contains a set of plotting
+functions for spatial omics data stored as <a href="https://spatialdata.scverse.org/en/latest/index.html" class="external-link">SpatialData</a>
 <code>.zarr</code> files that follow <a href="https://ngff.openmicroscopy.org/latest/#image-layout" class="external-link">OME-NGFF
 specs</a>.</p>
 <p>Each <code>SpatialData</code> object is composed of five layers:
 images, labels, shapes, points, and tables. Each layer may contain an
 arbitrary number of elements.</p>
-<p>Images and labels are represented as <code>ZarrArray</code>s (<em><a href="https://bioconductor.org/packages/3.23/Rarr" class="external-link">Rarr</a></em>).
+<p>Images and labels are represented as <code>ZarrArray</code>s (<em><a href="https://bioconductor.org/packages/3.24/Rarr" class="external-link">Rarr</a></em>).
 Points and shapes are represented as <em><a href="https://CRAN.R-project.org/package=arrow" class="external-link">arrow</a></em> objects
 linked to an on-disk <em>.parquet</em> file. As such, all data are
 represented out of memory.</p>
 <p>Element annotation as well as cross-layer summarizations (e.g., count
-matrices) are represented as <em><a href="https://bioconductor.org/packages/3.23/SingleCellExperiment" class="external-link">SingleCellExperiment</a></em>
+matrices) are represented as <em><a href="https://bioconductor.org/packages/3.24/SingleCellExperiment" class="external-link">SingleCellExperiment</a></em>
 as tables.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"blobs.zarr"</span><span class="op">)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="va">x</span>, package<span class="op">=</span><span class="st">"SpatialData"</span><span class="op">)</span></span>
-<span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/readSpatialData.html" class="external-link">readSpatialData</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="va">x</span>, package<span class="op">=</span><span class="st">"spatialdataR"</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/readSpatialData.html" class="external-link">readSpatialData</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## class: SpatialData</span></span>
 <span><span class="co">## - images(2):</span></span>
 <span><span class="co">##   - blobs_image (3,64,64)</span></span>
@@ -135,18 +135,18 @@ as tables.</p>
 .zarr stores. Their show method includes the scales available for a
 given element:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">image</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"blobs_image"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/SpatialData.html" class="external-link">image</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"blobs_image"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## class:  SpatialDataImage  </span></span>
 <span><span class="co">## Scales (1): (3,64,64)</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">image</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"blobs_multiscale_image"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/SpatialData.html" class="external-link">image</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"blobs_multiscale_image"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## class:  SpatialDataImage (MultiScale) </span></span>
 <span><span class="co">## Scales (3): (3,64,64 3,32,32 3,16,16)</span></span></code></pre>
 <p>Internally, multiscale <code>ImageArray</code>s are stored as a list
 of <code>ZarrArray</code>, e.g.:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">image</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"blobs_multiscale_image"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">data</a></span><span class="op">(</span><span class="va">i</span>, k<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span>, <span class="va">dim</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/SpatialData.html" class="external-link">image</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"blobs_multiscale_image"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="fu">data</span><span class="op">(</span><span class="va">i</span>, k<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span>, <span class="va">dim</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      [,1] [,2] [,3]</span></span>
 <span><span class="co">## [1,]    3    3    3</span></span>
 <span><span class="co">## [2,]   64   32   16</span></span>
@@ -164,9 +164,9 @@ scale. This also works for plotting:</p>
 </h4>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">i</span> <span class="op">&lt;-</span> <span class="st">"blobs_labels"</span></span>
-<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/table-utils.html" class="external-link">getTable</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span><span class="op">)</span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/table-utils.html" class="external-link">getTable</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span><span class="op">)</span></span>
 <span><span class="va">t</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">table</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">t</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">t</span></span>
 <span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotImage.html">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">pal_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">hcl.colors</a></span><span class="op">(</span><span class="fl">10</span>, <span class="st">"Spectral"</span><span class="op">)</span></span>
@@ -247,7 +247,7 @@ annotated by pathologists.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">td</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData.data/man/get_demo_SDdata.html" class="external-link">get_demo_SDdata</a></span><span class="op">(</span><span class="st">"merfish"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/readSpatialData.html" class="external-link">readSpatialData</a></span><span class="op">(</span><span class="va">pa</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/readSpatialData.html" class="external-link">readSpatialData</a></span><span class="op">(</span><span class="va">pa</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## class: SpatialData</span></span>
 <span><span class="co">## - images(1):</span></span>
 <span><span class="co">##   - rasterized (1,522,575)</span></span>
@@ -256,12 +256,12 @@ annotated by pathologists.</p>
 <span><span class="co">##   - single_molecule (3714642)</span></span>
 <span><span class="co">## - shapes(2):</span></span>
 <span><span class="co">##   - anatomical (6,polygon)</span></span>
-<span><span class="co">##   - cells (2389,circle)</span></span>
+<span><span class="co">##   - cells (2388,circle)</span></span>
 <span><span class="co">## - tables(1):</span></span>
 <span><span class="co">##   - table (268,2389) [cells]</span></span>
 <span><span class="co">## coordinate systems(1):</span></span>
 <span><span class="co">## - global(4): rasterized anatomical cells single_molecule</span></span></code></pre>
-<p>There are only 2389 cells, but 3,714,642 molecules, so that we
+<p>There are only 2388 cells, but 3,714,642 molecules, so that we
 downsample a random subset of 1,000 for visualization:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># layered visualization</span></span>
@@ -275,13 +275,13 @@ downsample a random subset of 1,000 for visualization:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># subset &amp; downsample for speed</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"images"</span>, <span class="st">"points"</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">point</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/SpatialData.html" class="external-link">point</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1e5</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">point</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">point</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/SpatialData.html" class="external-link">point</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/SpatialData.html" class="external-link">point</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
 <span><span class="co"># polygon queries</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">shape</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, \<span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">data</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">shape</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="va">s</span>, <span class="op">]</span><span class="op">)</span></span>
-<span>    <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">y</span>, <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/SpatialData.html" class="external-link">shape</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>, \<span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">data</span><span class="op">(</span><span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/SpatialData.html" class="external-link">shape</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="va">s</span>, <span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">y</span>, <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="../reference/plotImage.html">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>        <span class="fu"><a href="../reference/plotImage.html">plotImage</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">+</span></span>
 <span>        <span class="fu"><a href="../reference/plotFrame.html">plotPoint</a></span><span class="op">(</span><span class="va">z</span>, n<span class="op">=</span><span class="fl">1e3</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span>, col<span class="op">=</span><span class="st">"cyan"</span><span class="op">)</span></span>
@@ -306,13 +306,13 @@ downsample a random subset of 1,000 for visualization:</p>
 <span><span class="co">## - points(0):</span></span>
 <span><span class="co">## - shapes(0):</span></span>
 <span><span class="co">## - tables(1):</span></span>
-<span><span class="co">##   - table (36,3309) []</span></span>
+<span><span class="co">##   - table (36,3309) [point8_labels,point16_labels,point23_labels]</span></span>
 <span><span class="co">## coordinate systems(3):</span></span>
 <span><span class="co">## - point16(2): point16_image point16_labels</span></span>
 <span><span class="co">## - point23(2): point23_image point23_labels</span></span>
 <span><span class="co">## - point8(2): point8_image point8_labels</span></span></code></pre>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/SpatialData.html" class="external-link">imageNames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, \<span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="../reference/plotImage.html">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/plotImage.html">plotImage</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/SpatialData.html" class="external-link">imageNames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, \<span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="../reference/plotImage.html">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/plotImage.html">plotImage</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">i</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">ps</span>, nrow<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="SpatialData.plot_files/figure-html/mibitof-plot-1.png" class="r-plt" alt="" width="864"></p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
@@ -320,7 +320,7 @@ downsample a random subset of 1,000 for visualization:</p>
 <span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    xmin<span class="op">=</span><span class="fl">0</span>, xmax<span class="op">=</span><span class="fl">800</span>, </span>
 <span>    ymin<span class="op">=</span><span class="fl">500</span>, ymax<span class="op">=</span><span class="fl">900</span><span class="op">)</span></span>
-<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SpatialData/man/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"images"</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">bb</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"images"</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">bb</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plotImage.html">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/plotImage.html">plotImage</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></code></pre></div>
 <p><img src="SpatialData.plot_files/figure-html/unnamed-chunk-1-1.png" class="r-plt" alt="" width="768"></p>
 </div>
@@ -328,7 +328,7 @@ downsample a random subset of 1,000 for visualization:</p>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<pre><code><span><span class="co">## R version 4.6.0 (2026-04-24)</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2026-06-05 r90111)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">## Running under: Ubuntu 24.04.4 LTS</span></span>
 <span><span class="co">## </span></span>
@@ -350,53 +350,49 @@ downsample a random subset of 1,000 for visualization:</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] SingleCellExperiment_1.34.0 SummarizedExperiment_1.42.0</span></span>
-<span><span class="co">##  [3] Biobase_2.72.0              GenomicRanges_1.64.0       </span></span>
-<span><span class="co">##  [5] Seqinfo_1.2.0               IRanges_2.46.0             </span></span>
-<span><span class="co">##  [7] S4Vectors_0.50.0            BiocGenerics_0.58.0        </span></span>
-<span><span class="co">##  [9] generics_0.1.4              MatrixGenerics_1.24.0      </span></span>
-<span><span class="co">## [11] matrixStats_1.5.0           SpatialData.plot_0.99.6    </span></span>
-<span><span class="co">## [13] SpatialData.data_0.99.6     SpatialData_0.99.35        </span></span>
+<span><span class="co">##  [1] SingleCellExperiment_1.35.1 SummarizedExperiment_1.43.0</span></span>
+<span><span class="co">##  [3] Biobase_2.73.1              GenomicRanges_1.65.0       </span></span>
+<span><span class="co">##  [5] Seqinfo_1.3.0               IRanges_2.47.2             </span></span>
+<span><span class="co">##  [7] S4Vectors_0.51.3            BiocGenerics_0.59.7        </span></span>
+<span><span class="co">##  [9] generics_0.1.4              MatrixGenerics_1.25.0      </span></span>
+<span><span class="co">## [11] matrixStats_1.5.0           SpatialData.plot_0.99.7    </span></span>
+<span><span class="co">## [13] SpatialData.data_0.99.6     spatialdataR_0.99.43       </span></span>
 <span><span class="co">## [15] ggnewscale_0.5.2            patchwork_1.3.2            </span></span>
-<span><span class="co">## [17] ggplot2_4.0.3               BiocStyle_2.40.0           </span></span>
+<span><span class="co">## [17] ggplot2_4.0.3               BiocStyle_2.41.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##   [1] DBI_1.3.0           bitops_1.0-9        RBGL_1.88.0        </span></span>
-<span><span class="co">##   [4] httr2_1.2.2         anndataR_1.2.0      rlang_1.2.0        </span></span>
-<span><span class="co">##   [7] magrittr_2.0.5      Rarr_2.0.0          RSQLite_2.4.6      </span></span>
-<span><span class="co">##  [10] e1071_1.7-17        compiler_4.6.0      dir.expiry_1.20.0  </span></span>
-<span><span class="co">##  [13] paws.storage_0.9.0  png_0.1-9           systemfonts_1.3.2  </span></span>
-<span><span class="co">##  [16] fftwtools_0.9-11    vctrs_0.7.3         pkgconfig_2.0.3    </span></span>
-<span><span class="co">##  [19] wk_0.9.5            crayon_1.5.3        fastmap_1.2.0      </span></span>
-<span><span class="co">##  [22] dbplyr_2.5.2        XVector_0.52.0      labeling_0.4.3     </span></span>
-<span><span class="co">##  [25] paws.common_0.8.9   rmarkdown_2.31      graph_1.90.0       </span></span>
-<span><span class="co">##  [28] ragg_1.5.2          bit_4.6.0           purrr_1.2.2        </span></span>
-<span><span class="co">##  [31] xfun_0.57           cachem_1.1.0        jsonlite_2.0.0     </span></span>
-<span><span class="co">##  [34] blob_1.3.0          DelayedArray_0.38.1 uuid_1.2-2         </span></span>
-<span><span class="co">##  [37] tweenr_2.0.3        jpeg_0.1-11         tiff_0.1-12        </span></span>
-<span><span class="co">##  [40] parallel_4.6.0      R6_2.6.1            bslib_0.10.0       </span></span>
-<span><span class="co">##  [43] RColorBrewer_1.1-3  reticulate_1.46.0   jquerylib_0.1.4    </span></span>
-<span><span class="co">##  [46] assertthat_0.2.1    Rcpp_1.1.1-1.1      bookdown_0.46      </span></span>
-<span><span class="co">##  [49] knitr_1.51          R.utils_2.13.0      Matrix_1.7-5       </span></span>
-<span><span class="co">##  [52] tidyselect_1.2.1    duckspatial_1.0.0   abind_1.4-8        </span></span>
-<span><span class="co">##  [55] yaml_2.3.12         EBImage_4.54.0      curl_7.1.0         </span></span>
-<span><span class="co">##  [58] lattice_0.22-9      tibble_3.3.1        withr_3.0.2        </span></span>
-<span><span class="co">##  [61] S7_0.2.2            evaluate_1.0.5      desc_1.4.3         </span></span>
-<span><span class="co">##  [64] sf_1.1-1            BiocFileCache_3.2.0 units_1.0-1        </span></span>
-<span><span class="co">##  [67] proxy_0.4-29        polyclip_1.10-7     pillar_1.11.1      </span></span>
-<span><span class="co">##  [70] BiocManager_1.30.27 filelock_1.0.3      KernSmooth_2.23-26 </span></span>
-<span><span class="co">##  [73] RCurl_1.98-1.18     nanoarrow_0.8.0     scales_1.4.0       </span></span>
-<span><span class="co">##  [76] class_7.3-23        glue_1.8.1          tools_4.6.0        </span></span>
-<span><span class="co">##  [79] locfit_1.5-9.12     fs_2.1.0            grid_4.6.0         </span></span>
-<span><span class="co">##  [82] duckdb_1.5.2        basilisk_1.24.0     ggforce_0.5.0      </span></span>
-<span><span class="co">##  [85] cli_3.6.6           rappdirs_0.3.4      textshaping_1.0.5  </span></span>
-<span><span class="co">##  [88] S4Arrays_1.12.0     arrow_24.0.0        dplyr_1.2.1        </span></span>
-<span><span class="co">##  [91] geoarrow_0.4.2      gtable_0.3.6        R.methodsS3_1.8.2  </span></span>
-<span><span class="co">##  [94] sass_0.4.10         digest_0.6.39       classInt_0.4-11    </span></span>
-<span><span class="co">##  [97] SparseArray_1.12.2  ZarrArray_1.0.0     htmlwidgets_1.6.4  </span></span>
-<span><span class="co">## [100] farver_2.1.2        memoise_2.0.1       htmltools_0.5.9    </span></span>
-<span><span class="co">## [103] pkgdown_2.2.0       R.oo_1.27.1         lifecycle_1.0.5    </span></span>
-<span><span class="co">## [106] bit64_4.8.0         MASS_7.3-65</span></span></code></pre>
+<span><span class="co">##  [1] DBI_1.3.0           RBGL_1.89.0         httr2_1.2.2        </span></span>
+<span><span class="co">##  [4] anndataR_1.3.0      rlang_1.2.0         magrittr_2.0.5     </span></span>
+<span><span class="co">##  [7] Rarr_2.0.1          otel_0.2.0          RSQLite_3.53.1     </span></span>
+<span><span class="co">## [10] e1071_1.7-17        compiler_4.7.0      dir.expiry_1.21.0  </span></span>
+<span><span class="co">## [13] paws.storage_0.10.0 png_0.1-9           systemfonts_1.3.2  </span></span>
+<span><span class="co">## [16] vctrs_0.7.3         pkgconfig_2.0.3     wk_0.9.5           </span></span>
+<span><span class="co">## [19] crayon_1.5.3        fastmap_1.2.0       dbplyr_2.5.2       </span></span>
+<span><span class="co">## [22] XVector_0.53.0      labeling_0.4.3      paws.common_0.8.9  </span></span>
+<span><span class="co">## [25] rmarkdown_2.31      graph_1.91.0        ragg_1.5.2         </span></span>
+<span><span class="co">## [28] bit_4.6.0           purrr_1.2.2         xfun_0.58          </span></span>
+<span><span class="co">## [31] cachem_1.1.0        jsonlite_2.0.0      blob_1.3.0         </span></span>
+<span><span class="co">## [34] DelayedArray_0.39.3 uuid_1.2-2          tweenr_2.0.3       </span></span>
+<span><span class="co">## [37] parallel_4.7.0      R6_2.6.1            bslib_0.11.0       </span></span>
+<span><span class="co">## [40] RColorBrewer_1.1-3  reticulate_1.46.0   jquerylib_0.1.4    </span></span>
+<span><span class="co">## [43] Rcpp_1.1.1-1.1      bookdown_0.46       knitr_1.51         </span></span>
+<span><span class="co">## [46] R.utils_2.13.0      Matrix_1.7-5        tidyselect_1.2.1   </span></span>
+<span><span class="co">## [49] duckspatial_1.1.1   abind_1.4-8         yaml_2.3.12        </span></span>
+<span><span class="co">## [52] curl_7.1.0          lattice_0.22-9      tibble_3.3.1       </span></span>
+<span><span class="co">## [55] withr_3.0.2         S7_0.2.2            evaluate_1.0.5     </span></span>
+<span><span class="co">## [58] desc_1.4.3          sf_1.1-1            BiocFileCache_3.3.0</span></span>
+<span><span class="co">## [61] units_1.0-1         proxy_0.4-29        polyclip_1.10-7    </span></span>
+<span><span class="co">## [64] pillar_1.11.1       BiocManager_1.30.27 filelock_1.0.3     </span></span>
+<span><span class="co">## [67] KernSmooth_2.23-26  scales_1.4.0        class_7.3-23       </span></span>
+<span><span class="co">## [70] glue_1.8.1          tools_4.7.0         fs_2.1.0           </span></span>
+<span><span class="co">## [73] grid_4.7.0          basilisk_1.25.0     duckdb_1.5.2       </span></span>
+<span><span class="co">## [76] ggforce_0.5.0       cli_3.6.6           rappdirs_0.3.4     </span></span>
+<span><span class="co">## [79] textshaping_1.0.5   S4Arrays_1.13.0     dplyr_1.2.1        </span></span>
+<span><span class="co">## [82] gtable_0.3.6        R.methodsS3_1.8.2   sass_0.4.10        </span></span>
+<span><span class="co">## [85] digest_0.6.39       classInt_0.4-11     SparseArray_1.13.2 </span></span>
+<span><span class="co">## [88] ZarrArray_1.1.0     farver_2.1.2        memoise_2.0.1      </span></span>
+<span><span class="co">## [91] htmltools_0.5.9     pkgdown_2.2.0       R.oo_1.27.1        </span></span>
+<span><span class="co">## [94] lifecycle_1.0.5     bit64_4.8.2         MASS_7.3-65</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

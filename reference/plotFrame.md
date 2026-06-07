@@ -22,17 +22,26 @@ plotPoint(x, i = 1, j = 1, ...)
 
   character string or index; the label element to plot.
 
+- j:
+
+  index or name of target coordinate system.
+
 - assay:
 
   character string; in case of `c` denoting a row name, specifies which
-  `assay` data to use (see `valTable`). (ignored when `x` is a
-  `SpatialDataPoint`).
+  `assay` data to use (see
+  [`getTable`](https://helenalc.github.io/SpatialData/reference/table-utils.html)).
+  (ignored when `x` is a `SpatialDataPoint`).
+
+- ...:
+
+  option aesthetic arguments passed `geom_sf`.
 
 ## Examples
 
 ``` r
 x <- file.path("extdata", "blobs.zarr")
-x <- system.file(x, package="SpatialData")
+x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x)
 
 # shapes

@@ -13,9 +13,11 @@ plotLabel(
   k = NULL,
   c = NULL,
   a = 0.5,
-  pal = c("red", "green"),
+  pal = NULL,
   nan = NA,
-  assay = 1
+  assay = 1,
+  t = NULL,
+  z = NULL
 )
 ```
 
@@ -31,19 +33,19 @@ plotLabel(
 
 - j:
 
-  name of target coordinate system.
+  index or name of target coordinate system.
 
 - k:
 
-  index of the scale of an image; by default (NULL), will auto-select
+  index of the scale to render; by default (NULL), will auto-select
   scale in order to minimize memory-usage and blurring for a target size
   of 800 x 800px; use Inf to plot the lowest resolution available.
 
 - c:
 
-  the default, NULL, gives a binary image of whether or not a given
-  pixel is non-zero; alternatively, a character string specifying a
-  `colData` column or row name in a `table` annotating `i`.
+  determines label colors; the default (NULL), gives a binary image of
+  whether or not a pixel is non-zero; alternatively, a character string
+  specifying a `colData` column or row name in an annotation `table`.
 
 - a:
 
@@ -52,7 +54,8 @@ plotLabel(
 - pal:
 
   character vector; color for discrete/continuous values (interpolated
-  automatically when insufficient values are provided).
+  automatically when insufficient values are provided). When left
+  unspecified, color will be sampled at random.
 
 - nan:
 
@@ -61,12 +64,19 @@ plotLabel(
 - assay:
 
   character string; in case of `c` denoting a row name, specifies which
-  `assay` data to use (see `valTable`).
+  `assay` data to use (see
+  [`getTable`](https://helenalc.github.io/SpatialData/reference/table-utils.html)).
+
+- t, z:
+
+  integer scalar to indicate a specific time- or z-slice; if left
+  unspecified (default NULL), will perform a max-projection.
 
 ## Examples
 
 ``` r
-x <- system.file("extdata", "blobs.zarr", package="SpatialData")
+x <- file.path("extdata", "blobs.zarr")
+x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x)
 
 i <- "blobs_labels"
@@ -82,13 +92,11 @@ t$id <- sample(letters, ncol(t))
 table(x) <- t
 
 # coloring by 'colData'
-n <- length(unique(t$id))
-
-# pal <- hcl.colors(n, "Spectral")
-pal_d <- hcl.colors(10, "Spectral")
-p + plotLabel(x, i, c="id", pal=pal_d)
+p + plotLabel(x, i, c="id")
 
 
 # coloring by 'assay' data
-p + plotLabel(x, i, c="channel_1_sum")
+p + plotLabel(x, i, 
+  c="channel_1_sum", 
+  pal=c("lavender", "blue"))
 ```
