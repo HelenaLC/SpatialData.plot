@@ -4,9 +4,11 @@
 #'
 #' @param x \code{SpatialData} object.
 #' @param i character string or index; the label element to plot.
+#' @param j index or name of target coordinate system. 
 #' @param assay character string; in case of \code{c} denoting a row name,
-#'   specifies which \code{assay} data to use (see \code{\link{valTable}}).
+#'   specifies which \code{assay} data to use (see \code{\link{getTable}}).
 #'   (ignored when \code{x} is a \code{SpatialDataPoint}).
+#' @param ... option aesthetic arguments passed \code{geom_sf}.
 #'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")

@@ -3,23 +3,18 @@
 #' 
 #' @param x \code{SpatialData} object.
 #' @param i character string or index; the label element to plot.
-#' @param j name of target coordinate system. 
-#' @param k index of the scale of an image; by default (NULL), will auto-select 
-#'   scale in order to minimize memory-usage and blurring for a target size of 
-#'   800 x 800px; use Inf to plot the lowest resolution available.
-#' @param c the default, NULL, gives a binary image of whether or not 
-#'   a given pixel is non-zero; alternatively, a character string specifying
-#'   a \code{colData} column or row name in a \code{table} annotating \code{i}.
+#' @param c determines label colors; 
+#'   the default (NULL), gives a binary image of whether or not a
+#'   pixel is non-zero; alternatively, a character string specifying
+#'   a \code{colData} column or row name in an annotation \code{table}.
 #' @param assay character string; in case of \code{c} denoting a row name,
-#'   specifies which \code{assay} data to use (see \code{\link{valTable}}).
+#'   specifies which \code{assay} data to use (see \code{\link{getTable}}).
 #' @param a scalar numeric in [0, 1]; alpha value passed to \code{geom_tile}.
 #' @param pal character vector; color for discrete/continuous values
 #'   (interpolated automatically when insufficient values are provided).
 #'   When left unspecified, color will be sampled at random.
 #' @param nan character string; color for missing values (hidden by default).
-#' @param z scalar integer; 
-#'   specifies which z-slice to plot when \code{label(x, i)} is 3D; 
-#'   by default (NULL), will apply a max-projection across all z-slices.
+#' @inheritParams plotImage
 #' 
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
@@ -49,12 +44,12 @@
 #' @importFrom rlang .data
 #' @importFrom S4Vectors metadata
 #' @importFrom SingleCellExperiment colData
-#' @importFrom grDevices hcl.colors colorRampPalette
+#' @importFrom grDevices colors hcl.colors colorRampPalette
 #' @importFrom ggplot2 scale_fill_manual scale_fill_gradientn
 #' @importFrom ggplot2 aes theme unit guides guide_legend geom_tile
 #' @export
-setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, t=NULL, c=NULL, 
-    a=0.5, pal=NULL, nan=NA, assay=1, z=NULL) {
+setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL, 
+    a=0.5, pal=NULL, nan=NA, assay=1, t=NULL, z=NULL) {
 
     if (!is.null(z)) {
         ok <- length(z) == 1 && is.numeric(z) && z == round(z) && z > 0
@@ -106,7 +101,7 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, t=NULL, c=NULL,
         y=wh$h[1]+idx[,1L]*sy, 
         z=ym[idx])
     
-    aes <- aes(.data[["x"]], .data[["y"]])
+    aes <- aes(.data$x, .data$y)
     if (!is.null(c)) {
         stopifnot(length(c) == 1, is.character(c))
         if (is.null(pal)) pal <- hcl.colors(12, "Spectral")

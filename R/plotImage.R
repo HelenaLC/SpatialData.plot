@@ -6,8 +6,8 @@
 #'
 #' @param x \code{\link{SpatialData}} object.
 #' @param i element to use from a given layer.
-#' @param j name of target coordinate system. 
-#' @param k index of the scale of an image; by default (NULL), will auto-select 
+#' @param j index or name of target coordinate system. 
+#' @param k index of the scale to render; by default (NULL), will auto-select 
 #'   scale in order to minimize memory-usage and blurring for a target size of 
 #'   800 x 800px; use Inf to plot the lowest resolution available.
 #' @param ch image channel(s) to be used for plotting (defaults to 
@@ -18,6 +18,8 @@
 #'   specifies channel-wise contrast limits - defaults to [0, 1] for all 
 #'   (ignored when \code{image(x, i)} is an RGB image; 
 #'   for convenience, any NULL = [0, 1], and n = [0, n]).
+#' @param t,z integer scalar to indicate a specific time- or z-slice;
+#'   if left unspecified (default NULL), will perform a max-projection.
 #'
 #' @return ggplot
 #'
@@ -192,6 +194,7 @@ NULL
     a <- .prep_ia(a, c, cl)
 }
 
+#' @importFrom rlang .data
 #' @importFrom ggplot2 guides geom_point geom_blank annotation_raster 
 #' @importFrom ggplot2 scale_color_identity scale_x_continuous scale_y_reverse
 .gg_i <- \(x, w, h, pal=NULL) {
@@ -199,7 +202,7 @@ NULL
         guides(col=guide_legend(override.aes=list(alpha=1, size=2))),
         geom_point(aes(col=.data$foo), data.frame(foo=pal), x=0, y=0, alpha=0))
     list(l,
-        geom_blank(aes(x=x, y=y), data.frame(x=w, y=h)),
+        geom_blank(aes(x=.data$x, y=.data$y), data.frame(x=w, y=h)),
         annotation_raster(x, w[1],w[2], h[2],h[1], interpolate=FALSE),
         scale_color_identity(NULL, guide="legend", breaks=pal, labels=names(pal)),
         ggnewscale::new_scale_color())
@@ -207,7 +210,7 @@ NULL
 
 #' @rdname plotImage
 #' @export
-setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, t=NULL, c=NULL, cl=NULL, z=NULL) {
+setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=NULL) {
     if (is.numeric(i))
         i <- imageNames(x)[i]
     y <- image(x, i)

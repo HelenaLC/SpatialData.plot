@@ -51,7 +51,7 @@ test_that(".check_cl", {
     expect_error(.check_cl(list(NULL, NULL, 0), 3)) # zero scalar
 })
 
-# mock multiplex image
+# mock high-dim. image
 .mock <- \(c=3, t=0, z=0, y=80, x=120) {
     dim <- c(c, t, z, y, x); dim <- dim[dim != 0]
     arr <- drop(as(array(runif(prod(dim)), dim), "ZarrArray"))
