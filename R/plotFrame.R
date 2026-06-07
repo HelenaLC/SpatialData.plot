@@ -39,25 +39,24 @@ NULL
 
 #' @importFrom sf st_as_sf st_coordinates st_geometry_type st_buffer
 #' @importFrom ggplot2 aes theme scale_type geom_sf coord_sf
-#' @importFrom spatialdataR transform
+#' @importFrom spatialdataR transform element<-
 #' @importFrom ggforce geom_circle
 #' @importFrom methods is
 #' @importFrom utils tail
-.plot <- \(x, y, key=NULL, n=Inf, assay=1, i=1, ...) {
+.plot <- \(x, y, key=NULL, n=NULL, assay=1, i=1, ...) {
     if (is(y, "SpatialDataPoint")) {
         if (!is.null(key)) {
+            stopifnot(is.character(key), nchar(key) > 0)
             fk <- feature_key(y)
-            y<- dplyr::filter(y, .data[[fk]] %in% key)
+            y <- dplyr::filter(y, .data[[fk]] %in% key)
+            if (!length(y)) stop("no instances of specified 'key'(s)")
         }
     }
-    if (is.finite(n)) {
+    if (!is.null(n)) {
+        stopifnot(is.numeric(n), length(n) == 1, n > 0)
         n <- min(length(y), n)
         y <- y[sample(length(y), n)]
-        if (is(y, "SpatialDataShape")) {
-            shape(x, i) <- y
-        } else {
-            point(x, i) <- y
-        }
+        element(x, i) <- y
     }
     df <- st_as_sf(data(y))
     aes <- aes()

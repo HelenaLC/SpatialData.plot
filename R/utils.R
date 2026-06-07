@@ -13,12 +13,12 @@
     } else stop("invalid 'x'")
 }
 
-.instance_key <- \(x) .spatialdata_attrs(x)$instance_key
-.region_key <- \(x) .spatialdata_attrs(x)$region_key
-.region <- \(x) .spatialdata_attrs(x)$region
-
-#' @importFrom SingleCellExperiment int_colData
-.instance_ids <- \(x) int_colData(x)[[.instance_key(x)]]
+#' .instance_key <- \(x) .spatialdata_attrs(x)$instance_key
+#' .region_key <- \(x) .spatialdata_attrs(x)$region_key
+#' .region <- \(x) .spatialdata_attrs(x)$region
+#' 
+#' #' @importFrom SingleCellExperiment int_colData
+#' .instance_ids <- \(x) int_colData(x)[[.instance_key(x)]]
 
 #' @importFrom grDevices col2rgb
 .str_is_col <- \(x) !inherits(tryCatch(error=\(e) e, col2rgb(x)), "error")
