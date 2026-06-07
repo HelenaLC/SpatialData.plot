@@ -15,6 +15,7 @@
 #' @param a scalar numeric in [0, 1]; alpha value passed to \code{geom_tile}.
 #' @param pal character vector; color for discrete/continuous values
 #'   (interpolated automatically when insufficient values are provided).
+#'   When left unspecified, color will be sampled at random.
 #' @param nan character string; color for missing values (hidden by default).
 #' @param z scalar integer; 
 #'   specifies which z-slice to plot when \code{label(x, i)} is 3D; 
@@ -58,9 +59,12 @@ NULL
 #' @export
 setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, t=NULL, c=NULL, 
     a=0.5, pal=c("red", "green"), nan=NA, assay=1, z=NULL) {
-    
-    #x <- sd_small; i <- j <- 1; k <- z <- NULL; nan <- NA; assay <- 1; a <- 0.5; c <- "id"
-    
+
+    if (!is.null(z)) {
+        ok <- length(z) == 1 && is.numeric(z) && z == round(z) && z > 0
+        if (!ok) stop("invalid 'z'; should be a scalar integer > 0")
+    }
+
     if (is.numeric(i)) i <- labelNames(x)[i]
     i <- match.arg(i, labelNames(x))
     y <- label(x, i)
@@ -71,24 +75,10 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, t=NULL, c=NULL,
     y <- transform(y, j)
 
     # get array data
-    ym <- .get_multiscale_data(y, k)
+    ym <- .get_ms_data(y, k)
     axisNames <- axes(x=y, y="name")
-    zidx <- which(axisNames=="z")
-    if (length(zidx)>0) {
-        if (is.null(z)) {
-            # max-projection across z-slices
-            ym <- apply(ym, seq_along(dim(ym))[-zidx], max)
-        } else {
-            if (length(z)>1) {
-                stop("Only a single z-plane can be selected")
-            }
-            # subset target z-slice
-            ym <- .subset_array_by_axes(a=ym, axisNames=axisNames, z=z, 
-                                        drop=FALSE)
-            dim(ym) <- dim(ym)[axisNames!="z"]
-        }
-        axisNames <- axisNames[-zidx]
-    }
+    ym <- .project(y, ym, z)
+    axisNames <- axisNames[axisNames != "z"]
     # subset to selected time
     tidx <- which(axisNames=="t") 
     if (length(tidx)>0) {
@@ -108,19 +98,13 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, t=NULL, c=NULL,
     # and thus save memory by not plotting all pixels
     idx <- BiocGenerics::which(ym != 0L, arr.ind=TRUE)
     
-    # offset & multi-scale adjustment
+    # physical space mapping
     ds <- dim(ym)
     wh <- .get_wh(y)
-    if (wh$w[2] == tail(dim(y), 1) ||
-        wh$h[2] == tail(dim(y), 2)[1]) {
-        ts <- .get_multiscale_scale(y)
-        tx <- tail(ts, 1)
-        ty <- tail(ts, 2)[1]
-    } else tx <- ty <- 1
     nx <- tail(ds, 1)
     ny <- tail(ds, 2)[1]
-    sx <- (diff(wh$w)/nx)*tx
-    sy <- (diff(wh$h)/ny)*ty
+    sx <- diff(wh$w)/nx
+    sy <- diff(wh$h)/ny
     df <- data.frame(
         x=wh$w[1]+idx[,2L]*sx, 
         y=wh$h[1]+idx[,1L]*sy, 
@@ -149,7 +133,13 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, t=NULL, c=NULL,
                 theme(legend.key.size=unit(0.5, "lines")),
                 scale_fill_gradientn(c, colors=pal, na.value=nan)))
     } else {
-        aes$fill <- aes(.data$z != 0)[[1]]
+        if (is.null(pal)) {
+            id <- instances(y)
+            pal <- sample(colors(), length(id), TRUE)
+            aes$fill <- aes(factor(.data$z))[[1]]
+        } else {
+            aes$fill <- aes(.data$z != 0)[[1]]
+        }
         thm <- list(
             theme(legend.position="none"),
             scale_fill_manual(NULL, values=pal))

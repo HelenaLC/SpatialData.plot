@@ -37,7 +37,8 @@ a \code{colData} column or row name in a \code{table} annotating \code{i}.}
 \item{a}{scalar numeric in [0, 1]; alpha value passed to \code{geom_tile}.}
 
 \item{pal}{character vector; color for discrete/continuous values
-(interpolated automatically when insufficient values are provided).}
+(interpolated automatically when insufficient values are provided).
+When left unspecified, color will be sampled at random.}
 
 \item{nan}{character string; color for missing values (hidden by default).}
 

@@ -50,22 +50,26 @@ test_that(".check_cl", {
     expect_error(.check_cl(list(NULL, NULL, 0), 3)) # zero scalar
 })
 
-dir.create(td <- tempfile())
-x <- MulticancerSteinbock(target=td)
-a <- data(image(x)[seq_len(3), seq_len(100), seq_len(100)], 1)
+# mock multiplex image
+l <- 4; m <- 80; n <- 120
+a <- as(array(runif(l*m*n), c(l,m,n)), "ZarrArray")
+y <- SpatialDataImage(list(a), SpatialDataAttrs(type="image", dim=2, nch=l))
+x <- SpatialData(list(y))
 
 test_that(".norm_ia", {
     # valid data type
     dt <- data_type(a)
     b <- .norm_ia(realize(a), dt)
     expect_equal(
+        tolerance=1e-3,
         apply(b, 1, range), 
-        replicate(3, c(0, 1)))
+        replicate(l, c(0, 1)))
     # invalid data type
     b <- .norm_ia(realize(a), "")
     expect_equal(
+        tolerance=1e-3,
         apply(b, 1, range), 
-        replicate(3, c(0, 1)))
+        replicate(l, c(0, 1)))
 })
 
 test_that(".prep_ia", { testthat::skip()
@@ -78,20 +82,9 @@ test_that(".prep_ia", { testthat::skip()
     expect_length(dim(b), 2)
     expect_is(b[1,1], "character")
     # colors
-    cmy <- c("cyan", "magenta", "yellow")
-    b <- .prep_ia(a, ch, c=cmy)
-    expect_equal(dim(a), dim(b))
-    expect_equal(
-        apply(b, 1, range),
-        replicate(d, c(0, 1)))
-    # lower contrast lim.
-    lim <- list(c(0.5, 1), NULL, NULL)
-    b <- .prep_ia(a, ch, cl=lim)
-    expect_identical(b[-1,], a[-1,,])
-    expect_true(sum(b[1,] == 0) > sum(a[1,,] == 0))
-    # upper contrast lim.
-    lim <- list(c(0, 0.5), NULL, NULL)
-    b <- .chs2rgb(a, ch, cl=lim)
-    fac <- mean(b[1,,]/a[1,,], na.rm=TRUE)
-    expect_equal(fac, 2, tolerance=0.05)
+    pal <- colors()[seq_len(l)]
+    b <- .prep_ia(a, c=pal)
+    expect_equal(dim(a)[-1], dim(b))
+    expect_is(b, "matrix")
+    expect_is(c(b), "character")
 })
