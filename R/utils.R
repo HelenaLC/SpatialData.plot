@@ -129,3 +129,50 @@
     })
     do.call("[", c(list(a), idx, list(drop=drop)))
 }
+
+.unit_map <- c(micrometer="\U03BCm",
+               micron="\U03BCm")
+
+#' Create scalebar for image
+#' 
+#' @param x A \code{SpatialDataArray} object.
+#' @param l A numeric scalar giving the length of the scalebar (in global 
+#'     coordinates). The unit will be extracted from the metadata of \code{x}.
+#' @param xrel,yrel Numeric scalars between 0 and 1 indicating the relative 
+#'     x and y position of the scalebar.
+#' @param color Character scalar indicating the color to use for the scalebar.
+#' @param linewidth Numeric scalar indicating the line width to use for the 
+#'     scalebar.
+#'
+#' @examples
+#' x <- file.path("extdata", "blobs.zarr")
+#' x <- system.file(x, package="spatialdataR")
+#' x <- readSpatialData(x, tables=FALSE)
+#' plotSpatialData() + 
+#'     plotImage(x, i=2) + 
+#'     scalebar(image(x, i=2), l=10)
+#' 
+#' @importFrom ggplot2 annotate
+#' @export
+scalebar <- function(x, l, xrel=0.05, yrel=0.05, 
+                     color="red", linewidth=1) {
+    unit <- axes(x)[[which(axes(x, y="name")=="x")]]$unit
+    if (unit %in% names(.unit_map)) {
+        unit <- .unit_map[unit]
+    }
+    wh <- .get_wh(x)
+    if (xrel<=0.5) {
+        xmin <- diff(wh$w) * xrel + wh$w[1]
+        xmax <- diff(wh$w) * xrel + wh$w[1] + l
+    } else {
+        xmin <- wh$w[2] - diff(wh$w) * (1 - xrel) - l
+        xmax <- wh$w[2] - diff(wh$w) * (1 - xrel)
+    }
+    y <- wh$h[2] - diff(wh$h) * yrel
+    list(annotate(geom="segment", x=xmin, xend=xmax, y=y, yend=y,
+                  color=color, linewidth=linewidth),
+         annotate(geom="text", x=(xmin+xmax)/2, y=y, 
+                  vjust=ifelse(yrel>0.5,1.5,-0.5),
+                  color=color, label=paste0(l, unit)))
+}
+
