@@ -3,6 +3,7 @@
 export(plotSpatialData)
 export(scalebar)
 exportMethods(plotImage)
+exportMethods(plotLabel)
 exportMethods(plotPoint)
 exportMethods(plotShape)
 import(spatialdataR)

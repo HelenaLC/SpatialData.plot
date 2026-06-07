@@ -53,7 +53,7 @@
 #' @importFrom grDevices hcl.colors colorRampPalette
 #' @importFrom ggplot2 scale_fill_manual scale_fill_gradientn
 #' @importFrom ggplot2 aes theme unit guides guide_legend geom_tile
-#' 
+#' @export
 setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, t=NULL, c=NULL, 
     a=0.5, pal=NULL, nan=NA, assay=1, z=NULL) {
 
