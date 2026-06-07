@@ -6,7 +6,17 @@
 \alias{plotImage,SpatialData-method}
 \title{\code{SpatialData} image viz.}
 \usage{
-\S4method{plotImage}{SpatialData}(x, i = 1, j = 1, k = NULL, ch = NULL, c = NULL, cl = NULL)
+\S4method{plotImage}{SpatialData}(
+  x,
+  i = 1,
+  j = 1,
+  k = NULL,
+  ch = NULL,
+  t = NULL,
+  c = NULL,
+  cl = NULL,
+  z = NULL
+)
 
 plotSpatialData()
 }

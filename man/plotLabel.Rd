@@ -10,6 +10,7 @@
   i = 1,
   j = 1,
   k = NULL,
+  t = NULL,
   c = NULL,
   a = 0.5,
   pal = c("red", "green"),
