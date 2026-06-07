@@ -4,18 +4,10 @@
 \alias{scalebar}
 \title{\code{SpatialDataArray} scalebar}
 \usage{
-scalebar(
-  x,
-  len,
-  col = "red",
-  lwd = 1,
-  pos = "bottomleft",
-  xrel = 0.05,
-  yrel = 0.05
-)
+scalebar(x, len = NULL, col = "red", lwd = 1, xrel = 0.05, yrel = 0.05)
 }
 \arguments{
-\item{x}{a \code{SpatialDataArray} object (i.e., 
+\item{x}{a \code{SpatialDataArray} object (i.e.,
 image or label element from a \code{SpatialData} object).}
 
 \item{len}{scalar numeric giving the length of the scalebar 

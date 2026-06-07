@@ -27,11 +27,14 @@
 #' @importFrom ggplot2 annotate
 #' @importFrom methods is
 #' @export
-scalebar <- function(x, len, col="red", lwd=1, xrel=0.05, yrel=0.05) {
+scalebar <- function(x, len=NULL, col="red", lwd=1, xrel=0.05, yrel=0.05) {
     # validity
     if (!is(x, "SpatialDataArray")) 
         stop("'x' should be a 'SpatialDataArray' object, i.e., an",
             " image or label element from a 'SpatialData' object")
+    ok <- \(x) is.numeric(x) && is.finite(x) && length(x) == 1
+    if (!is.null(len)) stopifnot(ok(len), len > 0)
+    stopifnot(ok(xrel), ok(yrel))
     
     xi <- which(axes(x, "name") == "x")
     unit <- axes(x)[[xi]]$unit
@@ -42,6 +45,7 @@ scalebar <- function(x, len, col="red", lwd=1, xrel=0.05, yrel=0.05) {
         unit <- .unit_map[unit]
 
     wh <- .get_wh(x)
+    if (is.null(len)) len <- 0.05*diff(wh$w)
     if (xrel <= 0.5) {
         xmin <- diff(wh$w) * xrel + wh$w[1]
         xmax <- diff(wh$w) * xrel + wh$w[1] + len
@@ -58,7 +62,7 @@ scalebar <- function(x, len, col="red", lwd=1, xrel=0.05, yrel=0.05) {
     text <- annotate(
         geom="text", 
         x=(xmin+xmax)/2, y=y, 
-        color=col, label=paste0(len, unit),
-        vjust=ifelse(yrel > 0.5, 1.5, -0.5))
+        vjust=ifelse(yrel > 0.5, 1.5, -0.5),
+        color=col, label=paste0(round(len, 1), unit))
     return(list(line, text))
 }

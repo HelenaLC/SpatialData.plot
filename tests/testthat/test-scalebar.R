@@ -21,8 +21,22 @@ test_that("scalebar()", {
     y <- set_unit(image(x), "y")
     expect_error(scalebar(image(y), 1))
     
-    # valid specification
+    # invalid arguments
     y <- set_unit(image(x))
+    v <- c(c(1,1), Inf, TRUE, "")
+    for (. in v) {
+        expect_error(scalebar(y, len=.))
+        expect_error(scalebar(y, len=1, xrel=.))
+        expect_error(scalebar(y, len=1, yrel=.))
+    }
+    
+    # default 'len'
+    expect_silent(l <- scalebar(y, len=NULL))
+    p <- ggplot() + l
+    df <- layer_data(p, 1)
+    expect_equal(df$xend-df$x, 0.05*dim(y)[3])
+    
+    # valid arguments
     l <- scalebar(y, 
         len=len <- 5.1234, 
         xrel=xrel <- 0.05, 
@@ -42,4 +56,5 @@ test_that("scalebar()", {
     expect_equal(df$xend, dim(y)[3]*xrel+len)
     expect_equal(df$y, dim(y)[2]*(1-yrel))
     expect_equal(df$yend, df$y)
+    
 })
