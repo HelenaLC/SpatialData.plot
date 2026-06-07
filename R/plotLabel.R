@@ -56,7 +56,7 @@ NULL
 #'   
 #' @importFrom SingleCellExperiment colData
 #' @export
-setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL, 
+setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, t=NULL, c=NULL, 
     a=0.5, pal=c("red", "green"), nan=NA, assay=1, z=NULL) {
     
     #x <- sd_small; i <- j <- 1; k <- z <- NULL; nan <- NA; assay <- 1; a <- 0.5; c <- "id"
@@ -72,18 +72,38 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
 
     # get array data
     ym <- .get_multiscale_data(y, k)
-    if (length(dim(ym)) > 2) {
+    axisNames <- axes(x=y, y="name")
+    zidx <- which(axisNames=="z")
+    if (length(zidx)>0) {
         if (is.null(z)) {
             # max-projection across z-slices
-            nm <- axes(x=y, y="name")
-            yx <- match(c("y", "x"), nm)
-            ym <- apply(ym, yx, max)
+            ym <- apply(ym, seq_along(dim(ym))[-zidx], max)
         } else {
+            if (length(z)>1) {
+                stop("Only a single z-plane can be selected")
+            }
             # subset target z-slice
-            ym <- ym[z,,]
+            ym <- .subset_array_by_axes(a=ym, axisNames=axisNames, z=z, 
+                                        drop=FALSE)
+            dim(ym) <- dim(ym)[axisNames!="z"]
         }
+        axisNames <- axisNames[-zidx]
     }
-  
+    # subset to selected time
+    tidx <- which(axisNames=="t") 
+    if (length(tidx)>0) {
+        if (is.null(t)) {
+            t <- 1
+        } 
+        if (length(t)>1) {
+            stop("Only a single timepoint can be selected")
+        }
+        ym <- .subset_array_by_axes(a=ym, axisNames=axisNames,
+                                    t=t, drop=FALSE)
+        dim(ym) <- dim(ym)[axisNames!="t"]
+        axisNames <- axisNames[-tidx]
+    }
+
     # keep only indices != 0 since labels might be sparse 
     # and thus save memory by not plotting all pixels
     idx <- BiocGenerics::which(ym != 0L, arr.ind=TRUE)

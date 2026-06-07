@@ -159,16 +159,48 @@ NULL
 #' @importFrom methods as
 #' @importFrom DelayedArray realize
 #' @importFrom spatialdataR data_type
-.df_i <- \(x, k=NULL, ch=NULL, c=NULL, cl=NULL) {
+.df_i <- \(x, k=NULL, ch=NULL, t=NULL, c=NULL, cl=NULL, z=NULL) {
     a <- .get_multiscale_data(x, k)
     # max-projection over z-stacks
-    d <- length(dim(x))
-    zidx <- which(axes(x, y="name")=="z")
+    axisNames <- axes(x, y="name")
+    zidx <- which(axisNames=="z")
     if (length(zidx)>0) {
-        a <- apply(a, seq.int(d)[-zidx], max)
+        if (is.null(z)) {
+            # max-projection across z-slices
+            a <- apply(a, seq_along(dim(x))[-zidx], max)
+        } else {
+            if (length(z)>1) {
+                stop("Only a single z-plane can be selected")
+            }
+            # subset target z-slice
+            a <- .subset_array_by_axes(a=a, axisNames=axisNames, 
+                                       z=z, drop=FALSE)
+            dim(a) <- dim(a)[axisNames!="z"]
+        }
+        axisNames <- axisNames[-zidx]
     }
-    # subset channels of interest
-    a <- a[.ch_idx(x, ch),,,drop=FALSE]
+    # subset channels and timepoint of interest
+    tidx <- which(axisNames=="t") 
+    if (length(tidx)>0) {
+        if (is.null(t)) {
+            t <- 1
+        } 
+        if (length(t)>1) {
+            stop("Only a single timepoint can be selected")
+        }
+    }
+    a <- .subset_array_by_axes(a=a, axisNames=axisNames, 
+                               c=.ch_idx(x, ch), t=t, drop=FALSE)
+    # remove time axis if it exists
+    dim(a) <- dim(a)[axisNames != "t"]
+    if (length(tidx)>0) {
+        axisNames <- axisNames[-tidx]
+    }
+    # if no channel axis, add dummy axis
+    if (!("c" %in% axisNames)) {
+        dim(a) <- c(1, dim(a))
+        axisNames <- c("c", axisNames)
+    }
     a <- .norm_ia(a, data_type(x))
     # color merging & contrasts
     a <- .prep_ia(a, c, cl)
@@ -204,7 +236,7 @@ NULL
 
 #' @rdname plotImage
 #' @export
-setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl=NULL) {
+setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, t=NULL, c=NULL, cl=NULL, z=NULL) {
     if (is.numeric(i))
         i <- imageNames(x)[i]
     y <- image(x, i)
@@ -216,7 +248,7 @@ setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl
         ch <- ch %||% channels(y)
         cl <- cl %||% c(0, 1/3)
     }
-    df <- .df_i(y, k, ch, c, cl)
+    df <- .df_i(y, k, ch, t, c, cl, z)
     pal <- c %||% .DEFAULT_COLORS
     if (dim(y)[1] > 1 && !.is_rgb(y)) {
         nms <- unlist(channels(y))[idx <- .ch_idx(y, ch)]
