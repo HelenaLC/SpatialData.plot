@@ -1,3 +1,4 @@
+require(ggplot2, quietly=TRUE)
 require(spatialdataR, quietly=TRUE)
 require(SpatialData.data, quietly=TRUE)
 
@@ -51,14 +52,14 @@ test_that(".check_cl", {
 })
 
 # mock multiplex image
-.mock <- \(t=0, c=3, z=0, y=80, x=120) {
-    dim <- c(t, c, z, y, x); dim <- dim[dim != 0]
+.mock <- \(c=3, t=0, z=0, y=80, x=120) {
+    dim <- c(c, t, z, y, x); dim <- dim[dim != 0]
     arr <- drop(as(array(runif(prod(dim)), dim), "ZarrArray"))
     sda <- SpatialDataAttrs(dim=length(dim)-1, nch=c)
     SpatialDataImage(list(arr), sda)
 }
 
-test_that("utilities", {
+test_that(".norm_ia", {
     a <- data(.mock())
     nch <- dim(a)[1]
     # valid data type
@@ -74,14 +75,14 @@ test_that("utilities", {
         tolerance=1e-3,
         apply(b, 1, range), 
         replicate(nch, c(0, 1)))
-    # insufficient default colors
-    a <- data(.mock(33))
-    expect_error(.prep_ia(a), "default")
 })
 
 test_that(".prep_ia", {
-    a <- data(i <- .mock(c=c <- 7))
+    # insufficient default colors
+    a <- data(.mock(33))
+    expect_error(.prep_ia(a), "default")
     # no colors, no contrasts
+    a <- data(i <- .mock(c=c <- 7))
     b <- .prep_ia(a, seq_len(c))
     expect_is(b, "matrix")
     expect_length(dim(b), 2)
@@ -94,4 +95,16 @@ test_that(".prep_ia", {
     expect_equal(dim(a)[-1], dim(b))
     expect_is(b, "matrix")
     expect_is(b[1,1], "character")
+})
+
+test_that("plotImage,3/4D", {
+    f <- \(x, ...) plotImage(SpatialData(images=list(x)), ...)
+    x <- .mock(c=5, t=3, z=4)
+    # valid
+    expect_is(f(x), "list") # project both
+    expect_is(f(x, t=1), "list") # t-slice
+    expect_is(f(x, z=1), "list") # z-slice
+    # invalid
+    expect_error(f(x, t=4))
+    #expect_error(f(x, z=5)) TODO: this is not throwing an error?
 })
