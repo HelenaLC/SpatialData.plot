@@ -157,9 +157,8 @@ In this example data, we do not have a `label` for the `shape` polygons.
 Such labels could be morphological regions annotated by pathologists.
 
 ```{r merfish-read}
-dir.create(td <- tempfile())
-pa <- get_demo_SDdata("merfish")
-(x <- readSpatialData(pa))
+Sys.setenv(AWS_REGION = "us-east-1")
+(x <- SD.data_load("MouseBrainMERFISH"))
 ```
 
 There are only `r length(spatialdataR::shape(x, "cells"))` cells, but 
@@ -197,7 +196,7 @@ lapply(seq_along(shape(x)), \(s) {
 Colorectal carcinoma, 25 MB; no shapes, no points.
 
 ```{r mibitof-read}
-(x <- ColorectalCarcinomaMIBITOF())
+(x <- SD.data_load("ColorectalCarcinomaMIBITOF"))
 ```
 
 ```{r mibitof-plot, fig.width=9, fig.height=3.5}
