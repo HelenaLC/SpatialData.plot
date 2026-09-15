@@ -30,7 +30,7 @@ plotPoint(x, i = 1, j = 1, ...)
 
   character string; in case of `c` denoting a row name, specifies which
   `assay` data to use (see
-  [`getTable`](https://helenalc.github.io/SpatialData/reference/table-utils.html)).
+  [`getTable`](https://helenalc.github.io/spatialdataR/reference/table-utils.html)).
   (ignored when `x` is a `SpatialDataPoint`).
 
 - ...:

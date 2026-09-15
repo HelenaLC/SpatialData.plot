@@ -65,7 +65,7 @@ plotLabel(
 
   character string; in case of `c` denoting a row name, specifies which
   `assay` data to use (see
-  [`getTable`](https://helenalc.github.io/SpatialData/reference/table-utils.html)).
+  [`getTable`](https://helenalc.github.io/spatialdataR/reference/table-utils.html)).
 
 - t, z:
 

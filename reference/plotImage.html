@@ -63,7 +63,7 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p><code><a href="https://helenalc.github.io/SpatialData/reference/SpatialData.html" class="external-link">SpatialData</a></code> object.</p></dd>
+<dd><p><code><a href="https://helenalc.github.io/spatialdataR/reference/SpatialData.html" class="external-link">SpatialData</a></code> object.</p></dd>
 
 
 <dt id="arg-i">i<a class="anchor" aria-label="anchor" href="#arg-i"></a></dt>
@@ -82,7 +82,7 @@ scale in order to minimize memory-usage and blurring for a target size of
 
 <dt id="arg-ch">ch<a class="anchor" aria-label="anchor" href="#arg-ch"></a></dt>
 <dd><p>image channel(s) to be used for plotting (defaults to
-the first channel(s) available); use <code><a href="https://helenalc.github.io/SpatialData/reference/SpatialDataArray.html" class="external-link">channels()</a></code> to see
+the first channel(s) available); use <code><a href="https://helenalc.github.io/spatialdataR/reference/SpatialDataArray.html" class="external-link">channels()</a></code> to see
 which channels are available for a given <code>SpatialDataImage</code></p></dd>
 
 
@@ -111,7 +111,7 @@ if left unspecified (default NULL), will perform a max-projection.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"blobs.zarr"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="va">x</span>, package<span class="op">=</span><span class="st">"spatialdataR"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/SpatialData/reference/readSpatialData.html" class="external-link">readSpatialData</a></span><span class="op">(</span><span class="va">x</span>, tables<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/spatialdataR/reference/readSpatialData.html" class="external-link">readSpatialData</a></span><span class="op">(</span><span class="va">x</span>, tables<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, \<span class="op">(</span><span class="va">.</span><span class="op">)</span> </span></span>
 <span class="r-in"><span>  <span class="fu">plotSpatialData</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
@@ -140,7 +140,7 @@ if left unspecified (default NULL), will perform a max-projection.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

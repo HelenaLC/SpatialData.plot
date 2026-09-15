@@ -25,7 +25,7 @@ plotSpatialData()
 
 - x:
 
-  [`SpatialData`](https://helenalc.github.io/SpatialData/reference/SpatialData.html)
+  [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
   object.
 
 - i:
@@ -46,7 +46,7 @@ plotSpatialData()
 
   image channel(s) to be used for plotting (defaults to the first
   channel(s) available); use
-  [`channels()`](https://helenalc.github.io/SpatialData/reference/SpatialDataArray.html)
+  [`channels()`](https://helenalc.github.io/spatialdataR/reference/SpatialDataArray.html)
   to see which channels are available for a given `SpatialDataImage`
 
 - c:
