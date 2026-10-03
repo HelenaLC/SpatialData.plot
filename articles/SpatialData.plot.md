@@ -306,7 +306,7 @@ plotSpatialData() + plotImage(y)
 
 ## Session info
 
-    ## R Under development (unstable) (2026-09-13 r90534)
+    ## R Under development (unstable) (2026-10-02 r90631)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.5 LTS
     ## 
@@ -331,7 +331,7 @@ plotSpatialData() + plotImage(y)
     ##  [1] SingleCellExperiment_1.35.2 SummarizedExperiment_1.43.0
     ##  [3] Biobase_2.73.2              GenomicRanges_1.65.4       
     ##  [5] Seqinfo_1.3.2               IRanges_2.47.5             
-    ##  [7] S4Vectors_0.51.9            BiocGenerics_0.59.12       
+    ##  [7] S4Vectors_0.51.10           BiocGenerics_0.59.12       
     ##  [9] generics_0.1.4              MatrixGenerics_1.25.0      
     ## [11] matrixStats_1.5.0           SpatialData.plot_0.99.7    
     ## [13] SpatialData.data_0.99.9     spatialdataR_0.99.44       
@@ -340,34 +340,35 @@ plotSpatialData() + plotImage(y)
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] DBI_1.3.0           RBGL_1.89.0         httr2_1.3.0        
-    ##  [4] anndataR_1.2.1      rlang_1.3.0         magrittr_2.0.5     
-    ##  [7] Rarr_2.0.1          otel_0.2.0          RSQLite_3.53.3     
+    ##  [4] anndataR_1.3.2      rlang_1.3.0         magrittr_2.0.5     
+    ##  [7] Rarr_2.1.43         otel_0.2.0          RSQLite_3.53.3     
     ## [10] e1071_1.7-17        compiler_4.7.0      dir.expiry_1.21.0  
     ## [13] paws.storage_0.10.0 png_0.1-9           systemfonts_1.3.2  
     ## [16] vctrs_0.7.3         pkgconfig_2.0.3     wk_0.9.5           
     ## [19] crayon_1.5.3        fastmap_1.2.0       dbplyr_2.6.0       
     ## [22] XVector_0.53.0      labeling_0.4.3      paws.common_0.8.10 
     ## [25] rmarkdown_2.32      graph_1.91.0        ragg_1.5.2         
-    ## [28] bit_4.6.0           purrr_1.2.2         xfun_0.60          
-    ## [31] cachem_1.1.0        jsonlite_2.0.0      blob_1.3.0         
-    ## [34] DelayedArray_0.39.6 uuid_1.2-2          tweenr_2.0.3       
-    ## [37] parallel_4.7.0      R6_2.6.1            bslib_0.12.0       
-    ## [40] RColorBrewer_1.1-3  reticulate_1.47.0   jquerylib_0.1.4    
-    ## [43] Rcpp_1.1.2          bookdown_0.48       knitr_1.52         
-    ## [46] R.utils_2.13.0      Matrix_1.7-6        tidyselect_1.2.1   
-    ## [49] duckspatial_1.2.1   abind_1.4-8         yaml_2.3.12        
-    ## [52] curl_8.0.0          lattice_0.23-1      tibble_3.3.1       
-    ## [55] withr_3.0.3         S7_0.2.2            evaluate_1.0.5     
-    ## [58] desc_1.4.3          sf_1.1-3            BiocFileCache_3.3.0
-    ## [61] units_1.0-1         proxy_0.4-29        polyclip_1.10-7    
-    ## [64] xml2_1.6.0          pillar_1.11.1       BiocManager_1.30.27
-    ## [67] filelock_1.0.3      KernSmooth_2.23-27  scales_1.4.0       
-    ## [70] class_7.3-24        glue_1.8.1          tools_4.7.0        
-    ## [73] fs_2.1.0            grid_4.7.0          basilisk_1.25.0    
-    ## [76] duckdb_1.5.5        ggforce_0.5.0       cli_3.6.6          
-    ## [79] textshaping_1.0.5   S4Arrays_1.13.0     dplyr_1.2.1        
-    ## [82] gtable_0.3.6        R.methodsS3_1.8.2   sass_0.4.10        
-    ## [85] digest_0.6.39       classInt_0.4-11     SparseArray_1.13.2 
-    ## [88] ZarrArray_1.0.1     farver_2.1.2        memoise_2.0.1      
-    ## [91] htmltools_0.5.9     pkgdown_2.2.1       R.oo_1.27.1        
-    ## [94] lifecycle_1.0.5     bit64_4.8.6         MASS_7.3-66
+    ## [28] bit_4.6.0           purrr_1.2.2         xfun_0.61          
+    ## [31] cachem_1.1.0        grumpy_0.1.1        jsonlite_2.0.0     
+    ## [34] blob_1.3.0          DelayedArray_0.39.8 uuid_1.2-2         
+    ## [37] tweenr_2.0.3        parallel_4.7.0      R6_2.6.1           
+    ## [40] bslib_0.12.0        RColorBrewer_1.1-3  reticulate_1.47.0  
+    ## [43] jquerylib_0.1.4     Rcpp_1.1.2          bookdown_0.48      
+    ## [46] knitr_1.52          R.utils_2.13.0      Matrix_1.7-6       
+    ## [49] tidyselect_1.2.1    duckspatial_1.2.1   abind_1.4-8        
+    ## [52] yaml_2.3.12         curl_8.0.0          lattice_0.23-1     
+    ## [55] tibble_3.3.1        withr_3.0.3         S7_0.2.2           
+    ## [58] evaluate_1.0.5      desc_1.4.3          sf_1.1-3           
+    ## [61] BiocFileCache_3.3.0 units_1.0-1         proxy_0.4-29       
+    ## [64] polyclip_1.10-7     xml2_1.6.0          pillar_1.11.1      
+    ## [67] BiocManager_1.30.27 filelock_1.0.3      KernSmooth_2.23-27 
+    ## [70] scales_1.4.0        class_7.3-24        glue_1.8.1         
+    ## [73] tools_4.7.0         fs_2.1.0            grid_4.7.0         
+    ## [76] basilisk_1.25.0     duckdb_1.5.6        ggforce_0.5.0      
+    ## [79] cli_3.6.6           textshaping_1.0.5   S4Arrays_1.13.2    
+    ## [82] dplyr_1.2.1         gtable_0.3.6        R.methodsS3_1.8.2  
+    ## [85] sass_0.4.10         digest_0.6.39       classInt_0.4-11    
+    ## [88] SparseArray_1.13.4  ZarrArray_1.1.7     farver_2.1.2       
+    ## [91] memoise_2.0.1       htmltools_0.5.9     pkgdown_2.2.1      
+    ## [94] R.oo_1.27.1         lifecycle_1.0.5     bit64_4.8.6        
+    ## [97] MASS_7.3-66
