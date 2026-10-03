@@ -109,4 +109,5 @@
     do.call("[", c(list(a), idx, list(drop=drop)))
 }
 
-.unit_map <- c(micrometer="\U03BCm", micron="\U03BCm")
+# Unicode code for micrometer character is not the same as the Greek letter mu
+.unit_map <- c(micrometer="\U00B5m", micron="\U00B5m")
