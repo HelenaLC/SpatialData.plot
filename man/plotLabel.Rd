@@ -77,10 +77,13 @@ t$id <- sample(letters, ncol(t))
 table(x) <- t
 
 # coloring by 'colData'
-p + plotLabel(i=i, c="id")
+t <- getTable(x, i)
+t$id <- sample(letters, ncol(t))
+table(x) <- t
+plotSpatialData(x) + plotLabel(i=i, c="id")
 
 # coloring by 'assay' data
-p + plotLabel(i=i, 
+plotSpatialData(x) + plotLabel(i=i, 
   c="channel_1_sum", 
   pal=c("lavender", "blue"))
 

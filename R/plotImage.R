@@ -41,8 +41,8 @@
 #' cl <- rep(list(c(0, 1/3)), 3)
 #' plotSpatialData(x, ct="global") + 
 #'   plotImage(k=1, c=cmy, cl=cl) + 
-#'   plotShape(i = "blobs_circles", fill="pink") + 
-#'   plotPoint(i=i, colour="instance_id")
+#'   plotShape(i="blobs_circles", fill="pink") + 
+#'   plotPoint(i="blobs_points", colour="instance_id")
 #' 
 #' @import spatialdataR
 #' @export
