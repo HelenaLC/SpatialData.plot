@@ -18,6 +18,9 @@
 #' @param nan character string; color for missing values (hidden by default).
 #' @inheritParams plotImage
 #' 
+#' @returns list of `ggplot` layers, including
+#' `geom_tile` of the specified image/label element
+#' 
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
 #' x <- system.file(x, package="spatialdataR")

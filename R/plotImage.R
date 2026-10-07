@@ -122,7 +122,7 @@ NULL
         maxs <- apply(a, 1, max)
         a <- sweep(a, MARGIN = 1, STATS = maxs, FUN = "/")
     }
-  return(a)
+    return(a)
 }
 
 # check if an image is RGB or not

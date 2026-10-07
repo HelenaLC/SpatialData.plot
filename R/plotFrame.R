@@ -11,6 +11,9 @@
 #'   (ignored when \code{x} is a \code{SpatialDataPoint}).
 #' @param ... option aesthetic arguments passed \code{geom_sf}.
 #'
+#' @returns list of `ggplot` layers, including
+#' `geom_sf` of the specified point/shape element
+#'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
 #' x <- system.file(x, package="spatialdataR")
