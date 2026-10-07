@@ -3,4 +3,7 @@ linters: linters_with_tags(
     object_overwrite_linter = NULL,
     exclude_tags = "style"
   )
+exclusions: list(
+    "tests"
+  )
 encoding: "UTF-8"
