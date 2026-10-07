@@ -1,5 +1,5 @@
 # internal helper for null-coalescing
-`%||%` <- \(a, b) if (is.null(a)) b else a
+`%||%` <- \(a, b) if (is.null(a)) b else a # nolint: coalesce_linter.
 
 #' @importFrom grDevices col2rgb
 .str_is_col <- \(x) !inherits(tryCatch(error=\(e) e, col2rgb(x)), "error")
