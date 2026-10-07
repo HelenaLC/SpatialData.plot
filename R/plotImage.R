@@ -139,7 +139,7 @@ NULL
     is_rgb <- setequal(x, c("r", "g", "b"))
     return(is_len && (is_012 || is_rgb))
 }
-  
+
 # check if channels are indices or channel names
 #' @importFrom spatialdataR channels
 #' @noRd
@@ -176,8 +176,9 @@ NULL
             stop("Only a single timepoint can be selected")
         }
     }
-    a <- .subset_array_by_axes(a=a, axisNames=axisNames, 
-                               c=.ch_idx(x, ch), t=t, drop=FALSE)
+    a <- .subset_array_by_axes(
+        a=a, c=.ch_idx(x, ch), t=t, 
+        axisNames=axisNames, drop=FALSE)
     # remove time axis if it exists
     if (tn) {
         dim(a) <- dim(a)[axisNames != "t"]
