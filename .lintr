@@ -1,0 +1,5 @@
+linters: linters_with_tags(
+    tags = NULL,
+    exclude_tags = "style"
+  )
+encoding: "UTF-8"
