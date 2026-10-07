@@ -148,14 +148,13 @@ NULL
     lbs <- channels(x)
     if (all(ch %in% lbs)) {
         return(match(ch, lbs))
-    } else if (!any(ch %in% lbs)) {
-        warning("Couldn't find some channels; picking first one(s)!")
-        return(1)
-    } else {
+    }
+    if (all(ch %notin% lbs)) {
         warning("Couldn't find channels; picking first one(s)!")
         return(1)
     }
-    return(NULL)
+    warning("Couldn't find some channels; picking first one(s)!")
+    return(1)
 }
 
 #' @importFrom methods as
