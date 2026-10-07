@@ -1,27 +1,27 @@
-#' @name plotImage
-#' @title \code{SpatialData} image viz.
-#' @aliases plotSpatialData
+#' Add image layer to SpatialData plot
 #' 
-#' @description ...
-#'
-#' @param x \code{\link[spatialdataR]{SpatialData}} object.
-#' @param i element to use from a given layer.
-#' @param j index or name of target coordinate system. 
-#' @param k index of the scale to render; by default (NULL), will auto-select 
+#' @param x \code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+#'   the object will be inherited from \code{plotSpatialData()}.
+#' @param i Index or name of image to plot.
+#' @param j Index or name of coordinate transformation to use. If \code{NULL}, 
+#'   the coordinate transformation will be inherited from 
+#'   \code{plotSpatialData()}.
+#' @param k Index of the scale to render; by default (NULL), will auto-select 
 #'   scale in order to minimize memory-usage and blurring for a target size of 
 #'   800 x 800px; use Inf to plot the lowest resolution available.
-#' @param ch image channel(s) to be used for plotting (defaults to 
+#' @param ch Image channel(s) to be used for plotting (defaults to 
 #'   the first channel(s) available); use \code{channels()} to see 
 #'   which channels are available for a given \code{SpatialDataImage}
-#' @param c character vector; colors to use for each channel. 
-#' @param cl list of length-2 numeric vectors (non-negative, increasing); 
+#' @param c Character vector; colors to use for each channel. 
+#' @param cl List of length-2 numeric vectors (non-negative, increasing); 
 #'   specifies channel-wise contrast limits - defaults to [0, 1] for all 
 #'   (ignored when \code{image(x, i)} is an RGB image; 
 #'   for convenience, any NULL = [0, 1], and n = [0, n]).
-#' @param t,z integer scalar to indicate a specific time- or z-slice;
+#' @param t,z Integer scalar to indicate a specific time- or z-slice;
 #'   if left unspecified (default NULL), will perform a max-projection.
 #'
-#' @return ggplot
+#' @returns An object of type \code{sd_image}, which can be added to an 
+#' existing \code{ggplot}.
 #'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
@@ -29,21 +29,29 @@
 #' x <- readSpatialData(x, tables=FALSE)
 #' 
 #' ms <- lapply(seq(3), \(.) 
-#'   plotSpatialData() +
-#'   plotImage(x, i=2, k=.))
+#'   plotSpatialData(x) +
+#'   plotImage(i=2, k=.))
 #' patchwork::wrap_plots(ms)
 #' 
 #' # custom colors
 #' cmy <- c("cyan", "magenta", "yellow")
-#' plotSpatialData() + plotImage(x, c=cmy)
+#' plotSpatialData(x) + plotImage(c=cmy)
 #' 
 #' # contrast limits
 #' cl <- rep(list(c(0, 1/3)), 3)
-#' plotSpatialData() + plotImage(x, k=1, c=cmy, cl=cl)
+#' plotSpatialData(x, ct="global") + 
+#'   plotImage(k=1, c=cmy, cl=cl) + 
+#'   plotShape(i = "blobs_circles", fill="pink") + 
+#'   plotPoint(i=i, colour="instance_id")
 #' 
 #' @import spatialdataR
-NULL
+#' @export
+plotImage <- function(x=NULL, i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=NULL) {
+    structure(mget(names(formals())), class = "sd_image")
+}
 
+#' @noRd
+#' @keywords internal
 .check_cl <- \(cl, d) {
     if (is.numeric(cl)) {
         stopifnot(length(cl) == 2, cl[2] > cl[1])
@@ -75,7 +83,9 @@ NULL
 # if no colors and channels defined, return the first channel
 #' @importFrom MatrixGenerics rowQuantiles
 #' @importFrom grDevices col2rgb
+#' @importFrom farver encode_colour
 #' @noRd
+#' @keywords internal
 .prep_ia <- \(a, c=NULL, cl=NULL) {
     d <- dim(a)[1]
     if (is.null(c)) {
@@ -98,8 +108,7 @@ NULL
     if (!is.null(cl)) {
         cl <- .check_cl(cl, d)
     } else {
-        qs <- MatrixGenerics::rowQuantiles
-        cl <- qs(linear_a, probs=c(0.05, 0.95))
+        cl <- rowQuantiles(linear_a, probs=c(0.05, 0.95))
         cl <- matrix(cl, ncol=2)
     }
     colors_rgb <- col2rgb(c)
@@ -107,13 +116,13 @@ NULL
     flat_img <- (colors_rgb %*% normed_a) / d
     flat_img |> 
         t() |> 
-        farver::encode_colour() |> 
+        encode_colour() |> 
         matrix(nrow=dim(a)[2], ncol=dim(a)[3])
-        #matrix(nrow=dim(a)[3], ncol=dim(a)[2], byrow=TRUE)
 }
 
 # normalize the image data given its data type
 #' @noRd
+#' @keywords internal
 .norm_ia <- \(a, dt) {
     d <- dim(a)[1]
     if (dt %in% names(.DTYPE_MAX_VALUES)) {
@@ -129,6 +138,7 @@ NULL
 # (NOTE: some RGB channels are named 0, 1, 2)
 #' @importFrom methods is
 #' @noRd
+#' @keywords internal
 .is_rgb <- \(x) {
     if (is(x, "SpatialDataImage") &&
         !is.null(md <- meta(x)))
@@ -143,6 +153,7 @@ NULL
 # check if channels are indices or channel names
 #' @importFrom spatialdataR channels
 #' @noRd
+#' @keywords internal
 .ch_idx <- \(x, ch) {
     if (is.null(ch)) return(1)
     lbs <- channels(x)
@@ -158,9 +169,9 @@ NULL
     return(NULL)
 }
 
-#' @importFrom methods as
-#' @importFrom DelayedArray realize
-#' @importFrom spatialdataR data_type
+#' @importFrom spatialdataR data_type axes
+#' @noRd
+#' @keywords internal
 .df_i <- \(x, k=NULL, ch=NULL, t=NULL, c=NULL, cl=NULL, z=NULL) {
     a <- .get_ms_data(x, k)
     axisNames <- axes(x, "name")
@@ -195,8 +206,11 @@ NULL
 }
 
 #' @importFrom rlang .data
-#' @importFrom ggplot2 guides geom_point geom_blank annotation_raster 
-#' @importFrom ggplot2 scale_color_identity scale_x_continuous scale_y_reverse
+#' @importFrom ggplot2 guides geom_point geom_blank annotation_raster aes
+#' @importFrom ggplot2 scale_color_identity guide_legend
+#' @importFrom ggnewscale new_scale_color
+#' @noRd
+#' @keywords internal
 .gg_i <- \(x, w, h, pal=NULL) {
     l <- if (!is.null(names(pal))) list(
         guides(col=guide_legend(override.aes=list(alpha=1, size=2))),
@@ -205,38 +219,79 @@ NULL
         geom_blank(aes(x=.data$x, y=.data$y), data.frame(x=w, y=h)),
         annotation_raster(x, w[1],w[2], h[2],h[1], interpolate=FALSE),
         scale_color_identity(NULL, guide="legend", breaks=pal, labels=names(pal)),
-        ggnewscale::new_scale_color())
+        new_scale_color())
 }
 
-#' @rdname plotImage
-#' @export
-setMethod("plotImage", "SpatialData", \(x, i=1, j=1, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=NULL) {
-    if (is.numeric(i))
-        i <- imageNames(x)[i]
-    y <- image(x, i)
-    if (is.numeric(j))
-        j <- CTname(y)[j]
+#' @exportS3Method ggplot2::ggplot_add
+#' @importFrom spatialdataR imageNames CTname transform image channels
+ggplot_add.sd_image <- function(object, plot, object_name) {
+    if (is.null(object$x)) {
+        x <- plot@meta$sd_args$sd
+    } else {
+        x <- object$x
+    }
+
+    if (is.numeric(object$i))
+        object$i <- imageNames(x)[object$i]
+    y <- image(x, object$i)
+    if (is.null(object$j)) {
+        j <- plot@meta$sd_args$ct_name
+    } else {
+        j <- object$j
+        if (is.numeric(j))
+            j <- CTname(y)[j]
+    }
     y <- transform(y, j)
     if (.is_rgb(y)) {
         # RGB: we plot everything by default and we don't normalize
-        ch <- ch %||% channels(y)
-        cl <- cl %||% c(0, 1/3)
+        object$ch <- object$ch %||% channels(y)
+        object$cl <- object$cl %||% c(0, 1/3)
     }
-    df <- .df_i(y, k, ch, t, c, cl, z)
-    pal <- c %||% .DEFAULT_COLORS
+    df <- .df_i(y, object$k, object$ch, object$t, object$c, object$cl, object$z)
+    pal <- object$c %||% .DEFAULT_COLORS
     if (dim(y)[1] > 1 && !.is_rgb(y)) {
-        nms <- unlist(channels(y))[idx <- .ch_idx(y, ch)]
+        nms <- unlist(channels(y))[idx <- .ch_idx(y, object$ch)]
         pal <- pal[seq_along(idx)]; names(pal) <- nms
     }
     # physical space mapping
     wh <- .get_wh(y)
-    .gg_i(df, wh$w, wh$h, pal)
-})
+    plot + .gg_i(df, wh$w, wh$h, pal)
+}
 
+#' Plot a SpatialData object
+#' 
+#' Initialize an empty ggplot for a SpatialData object. This function is 
+#' typically combined with one or more calls to add specific plot layers.
+#' 
+#' @param x A SpatialData object.
+#' @param ct The name of a coordinate transformation to use for the plot.
+#' 
+#' @returns A ggplot object.
+#' 
+#' @examples 
+#' x <- file.path("extdata", "blobs.zarr")
+#' x <- system.file(x, package="spatialdataR")
+#' x <- readSpatialData(x, tables=FALSE)
+#' ms <- lapply(seq(3), \(.) plotSpatialData(x) + plotImage(i=2, k=.))
+#' patchwork::wrap_plots(ms)
+#' 
 #' @export
-#' @rdname plotImage
-#' @importFrom ggplot2 ggplot scale_y_reverse coord_fixed
-plotSpatialData <- \() ggplot() + coord_sf(expand=FALSE, reverse="y") + .theme 
+#' @importFrom ggplot2 ggplot coord_sf
+plotSpatialData <- \(x=NULL, ct=NULL) {
+    p <- ggplot() + coord_sf(expand=FALSE, reverse="y") + .theme
+    if (!is.null(x)) {
+        if (is.null(ct)) {
+            ct <- CTname(x)[1]
+        } else if (is.numeric(ct)) {
+            ct <- CTname(x)[ct]
+        }
+    }
+    p@meta$sd_args <- list(
+        sd = x,
+        ct_name = ct
+    )
+    p
+}
 # `annotation_raster` plots the array the same way it is printed, i.e., with the
 # row 1 at the top, which means we need to flip the y-axis to have the correct axis labels.
 # We tried flipping the image itself but it means everything gets out of alignment if

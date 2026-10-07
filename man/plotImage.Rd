@@ -2,14 +2,12 @@
 % Please edit documentation in R/plotImage.R
 \name{plotImage}
 \alias{plotImage}
-\alias{plotSpatialData}
-\alias{plotImage,SpatialData-method}
-\title{\code{SpatialData} image viz.}
+\title{Add image layer to SpatialData plot}
 \usage{
-\S4method{plotImage}{SpatialData}(
-  x,
+plotImage(
+  x = NULL,
   i = 1,
-  j = 1,
+  j = NULL,
   k = NULL,
   ch = NULL,
   c = NULL,
@@ -17,39 +15,41 @@
   t = NULL,
   z = NULL
 )
-
-plotSpatialData()
 }
 \arguments{
-\item{x}{\code{\link[spatialdataR]{SpatialData}} object.}
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+the object will be inherited from \code{plotSpatialData()}.}
 
-\item{i}{element to use from a given layer.}
+\item{i}{Index or name of image to plot.}
 
-\item{j}{index or name of target coordinate system.}
+\item{j}{Index or name of coordinate transformation to use. If \code{NULL}, 
+the coordinate transformation will be inherited from 
+\code{plotSpatialData()}.}
 
-\item{k}{index of the scale to render; by default (NULL), will auto-select 
+\item{k}{Index of the scale to render; by default (NULL), will auto-select 
 scale in order to minimize memory-usage and blurring for a target size of 
 800 x 800px; use Inf to plot the lowest resolution available.}
 
-\item{ch}{image channel(s) to be used for plotting (defaults to 
+\item{ch}{Image channel(s) to be used for plotting (defaults to 
 the first channel(s) available); use \code{channels()} to see 
 which channels are available for a given \code{SpatialDataImage}}
 
-\item{c}{character vector; colors to use for each channel.}
+\item{c}{Character vector; colors to use for each channel.}
 
-\item{cl}{list of length-2 numeric vectors (non-negative, increasing); 
+\item{cl}{List of length-2 numeric vectors (non-negative, increasing); 
 specifies channel-wise contrast limits - defaults to [0, 1] for all 
 (ignored when \code{image(x, i)} is an RGB image; 
 for convenience, any NULL = [0, 1], and n = [0, n]).}
 
-\item{t, z}{integer scalar to indicate a specific time- or z-slice;
+\item{t, z}{Integer scalar to indicate a specific time- or z-slice;
 if left unspecified (default NULL), will perform a max-projection.}
 }
 \value{
-ggplot
+An object of type \code{sd_image}, which can be added to an 
+existing \code{ggplot}.
 }
 \description{
-...
+Add image layer to SpatialData plot
 }
 \examples{
 x <- file.path("extdata", "blobs.zarr")
@@ -57,16 +57,19 @@ x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x, tables=FALSE)
 
 ms <- lapply(seq(3), \(.) 
-  plotSpatialData() +
-  plotImage(x, i=2, k=.))
+  plotSpatialData(x) +
+  plotImage(i=2, k=.))
 patchwork::wrap_plots(ms)
 
 # custom colors
 cmy <- c("cyan", "magenta", "yellow")
-plotSpatialData() + plotImage(x, c=cmy)
+plotSpatialData(x) + plotImage(c=cmy)
 
 # contrast limits
 cl <- rep(list(c(0, 1/3)), 3)
-plotSpatialData() + plotImage(x, k=1, c=cmy, cl=cl)
+plotSpatialData(x, ct="global") + 
+  plotImage(k=1, c=cmy, cl=cl) + 
+  plotShape(i = "blobs_circles", fill="pink") + 
+  plotPoint(i=i, colour="instance_id")
 
 }

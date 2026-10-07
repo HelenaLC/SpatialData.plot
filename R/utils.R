@@ -60,6 +60,7 @@
 }
 
 #' @importFrom utils tail
+#' @importFrom S4Vectors metadata
 .raw_wh <- \(x) {
     wh <- metadata(x)$wh
     if (!is.null(wh)) {
