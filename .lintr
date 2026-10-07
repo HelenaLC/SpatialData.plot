@@ -1,5 +1,6 @@
 linters: linters_with_tags(
     tags = NULL,
+    object_overwrite_linter = NULL,
     exclude_tags = "style"
   )
 encoding: "UTF-8"
