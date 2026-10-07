@@ -1,5 +1,10 @@
 # internal helper for null-coalescing
-`%||%` <- \(a, b) if (is.null(a)) b else a
+`%||%` <- \(a, b) if (is.null(a)) b else a # nolint: coalesce_linter.
+
+# Backport from R 4.6.0
+`%notin%` <- function(x, table) {
+  match(x, table, nomatch = 0L) == 0L
+}
 
 #' @importFrom grDevices col2rgb
 .str_is_col <- \(x) !inherits(tryCatch(error=\(e) e, col2rgb(x)), "error")
@@ -100,11 +105,7 @@
     if (!ok) stop("'length(axes(x))' must equal 'length(dim(x))'")
     specs <- list(...)
     idx <- lapply(axisNames, \(nm) {
-        if (!is.null(specs[[nm]])) {
-            specs[[nm]]
-        } else {
-            TRUE
-        }
+        specs[[nm]] %||% TRUE
     })
     do.call("[", c(list(a), idx, list(drop=drop)))
 }

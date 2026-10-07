@@ -46,7 +46,6 @@ library(patchwork)
 library(ggnewscale) 
 library(spatialdataR)
 library(SpatialData.plot)
-library(SingleCellExperiment)
 ```
 
 # Introduction
