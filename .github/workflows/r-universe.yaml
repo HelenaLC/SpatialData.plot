@@ -2,7 +2,9 @@ name: Test R-universe
 
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
+      - devel
   pull_request:
 
 jobs:
