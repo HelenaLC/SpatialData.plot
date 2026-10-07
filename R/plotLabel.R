@@ -69,7 +69,7 @@ setMethod("plotLabel", "SpatialData", \(x, i=1, j=1, k=NULL, c=NULL,
     
     # transformation
     if (is.numeric(j))
-      j <- CTname(y)[j]
+        j <- CTname(y)[j]
     y <- transform(y, j)
 
     # get array data
