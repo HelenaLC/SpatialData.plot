@@ -20,6 +20,10 @@ from the data's Zarr specifications (see \code{axes(x)}).}
 
 \item{xrel, yrel}{scalar numeric indicating relative position of the scalebar.}
 }
+\value{
+length-two list of \code{ggplot2::annotate()} layers corresponding to
+scalebar line (\code{geom="segment"}) and unit label (\code{geom="text"})
+}
 \description{
 \code{SpatialDataArray} scalebar
 }

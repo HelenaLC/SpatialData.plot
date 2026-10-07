@@ -2,9 +2,7 @@
 `%||%` <- \(a, b) if (is.null(a)) b else a # nolint: coalesce_linter.
 
 # Backport from R 4.6.0
-`%notin%` <- function(x, table) {
-  match(x, table, nomatch = 0L) == 0L
-}
+`%notin%` <- function(x, table) match(x, table, nomatch = 0L) == 0L
 
 #' @importFrom grDevices col2rgb
 .str_is_col <- \(x) !inherits(tryCatch(error=\(e) e, col2rgb(x)), "error")
@@ -27,10 +25,11 @@
 # image data type factors (max values)
 # TODO: add more cases from other data types
 # https://doc.embedded-wizard.de/uint-type
-.DTYPE_MAX_VALUES <- c("uint8" = 255,
-                       "uint16" = 65535,
-                       "uint32" = 4294967295,
-                       "uint64" = 2^64 - 1)
+.DTYPE_MAX_VALUES <- c(
+    "uint8" = 255,
+    "uint16" = 65535,
+    "uint32" = 4294967295,
+    "uint64" = 2^64 - 1)
 
 # guess scale of image or label
 .guess_scale <- \(x, w, h) {

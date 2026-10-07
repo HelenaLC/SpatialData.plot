@@ -26,6 +26,10 @@ data to use (see \code{\link[spatialdataR]{getTable}}).
 
 \item{...}{option aesthetic arguments passed \code{geom_sf}.}
 }
+\value{
+list of `ggplot` layers, including
+`geom_sf` of the specified point/shape element
+}
 \description{
 \code{SpatialData} point/shape viz.
 }

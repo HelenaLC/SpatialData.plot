@@ -51,6 +51,10 @@ specifies which \code{assay} data to use
 \item{t, z}{integer scalar to indicate a specific time- or z-slice;
 if left unspecified (default NULL), will perform a max-projection.}
 }
+\value{
+list of `ggplot` layers, including
+`geom_tile` of the specified image/label element
+}
 \description{
 \code{SpatialData} label viz.
 }

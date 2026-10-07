@@ -9,6 +9,10 @@
 #' @param lwd scalar numeric indicating the linewidth to use for the scalebar.
 #' @param xrel,yrel scalar numeric indicating relative position of the scalebar.
 #'
+#' @return 
+#' length-two list of \code{ggplot2::annotate()} layers corresponding to
+#' scalebar line (\code{geom="segment"}) and unit label (\code{geom="text"})
+#'
 #' @examples
 #' zs <- file.path("extdata", "blobs.zarr")
 #' zs <- system.file(zs, package="spatialdataR")
