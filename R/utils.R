@@ -100,11 +100,7 @@
     if (!ok) stop("'length(axes(x))' must equal 'length(dim(x))'")
     specs <- list(...)
     idx <- lapply(axisNames, \(nm) {
-        if (!is.null(specs[[nm]])) {
-            specs[[nm]]
-        } else {
-            TRUE
-        }
+        specs[[nm]] %||% TRUE
     })
     do.call("[", c(list(a), idx, list(drop=drop)))
 }
