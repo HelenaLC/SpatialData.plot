@@ -42,12 +42,9 @@ Suggests:
     knitr,
     magick,
     patchwork,
-    SpatialData.data,
     testthat,
     vdiffr,
     ZarrArray
-Remotes:
-    HelenaLC/SpatialData.data
 biocViews: 
     Spatial,
     SingleCell,

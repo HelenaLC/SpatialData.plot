@@ -22,7 +22,6 @@ if (!requireNamespace("BiocManager", quietly=TRUE))
     install.packages("BiocManager")
     
 # install the development version from GitHub
-BiocManager::install("HelenaLC/spatialdataR")
 BiocManager::install("HelenaLC/SpatialData.plot")
 ```
 
