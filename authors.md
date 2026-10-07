@@ -14,7 +14,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/HelenaLC/SpatialData.plot/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/HelenaLC/SpatialData.plot/blob/devel/DESCRIPTION)
 
 Crowell H, Manukyan A, Gruson H, Carey V (2026). *SpatialData.plot:
 SpatialData visualization*. R package version 0.99.7,
