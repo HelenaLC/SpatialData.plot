@@ -3,6 +3,14 @@
 data were retrieved on Nov. 11th, 2024, from
 [here](https://github.com/scverse/spatialdata-notebooks/tree/main/notebooks/developers_resources/storage_format/multiple_elements.zarr).
 
+## Value
+
+a `SpatialData` .zarr store of toy example data with all types of
+elements represented: (multiscale) RGB `image`, (multiscale) `label`,
+`point`, circle and (multi)polygon `shape`, `table` annotation. In
+addition, all types of coordinate transformations are represented:
+identity, scale, translation, affine, and sequence.
+
 ## Examples
 
 ``` r
@@ -10,7 +18,7 @@ x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="spatialdataR")
 (x <- readSpatialData(x))
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpYBkdba/duckdb
+#> ℹ /tmp/Rtmpg0BXob/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.

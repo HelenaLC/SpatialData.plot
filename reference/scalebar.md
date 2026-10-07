@@ -33,6 +33,13 @@ scalebar(x, len = NULL, col = "red", lwd = 1, xrel = 0.05, yrel = 0.05)
 
   scalar numeric indicating relative position of the scalebar.
 
+## Value
+
+length-two list of
+[`ggplot2::annotate()`](https://ggplot2.tidyverse.org/reference/annotate.html)
+layers corresponding to scalebar line (`geom="segment"`) and unit label
+(`geom="text"`)
+
 ## Examples
 
 ``` r

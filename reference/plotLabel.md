@@ -72,6 +72,11 @@ plotLabel(
   integer scalar to indicate a specific time- or z-slice; if left
   unspecified (default NULL), will perform a max-projection.
 
+## Value
+
+list of \`ggplot\` layers, including \`geom_tile\` of the specified
+image/label element
+
 ## Examples
 
 ``` r

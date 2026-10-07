@@ -37,6 +37,11 @@ plotPoint(x, i = 1, j = 1, ...)
 
   option aesthetic arguments passed `geom_sf`.
 
+## Value
+
+list of \`ggplot\` layers, including \`geom_sf\` of the specified
+point/shape element
+
 ## Examples
 
 ``` r

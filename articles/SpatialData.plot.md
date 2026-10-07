@@ -205,14 +205,14 @@ which includes all possible types: circles and (multi)polygons.
 
 p <- plotSpatialData()
 a <- p +
-  ggtitle("polygons") +
-  plotShape(x, "blobs_polygons")
+    ggtitle("polygons") +
+    plotShape(x, "blobs_polygons")
 b <- p +
-  ggtitle("multipolygons") +
-  plotShape(x, "blobs_multipolygons")
+    ggtitle("multipolygons") +
+    plotShape(x, "blobs_multipolygons")
 c <- p +
-  ggtitle("circles") +
-  plotShape(x, "blobs_circles")
+    ggtitle("circles") +
+    plotShape(x, "blobs_circles")
 (a | b | c)
 ```
 
