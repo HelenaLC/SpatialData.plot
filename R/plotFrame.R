@@ -44,13 +44,11 @@ NULL
 #' @importFrom methods is
 #' @importFrom utils tail
 .plot <- \(x, y, key=NULL, n=NULL, assay=1, i=1, ...) {
-    if (is(y, "SpatialDataPoint")) {
-        if (!is.null(key)) {
-            stopifnot(is.character(key), nchar(key) > 0)
-            fk <- feature_key(y)
-            y <- dplyr::filter(y, .data[[fk]] %in% key)
-            if (!length(y)) stop("no instances of specified 'key'(s)")
-        }
+    if (is(y, "SpatialDataPoint") && !is.null(key)) {
+        stopifnot(is.character(key), nchar(key) > 0)
+        fk <- feature_key(y)
+        y <- dplyr::filter(y, .data[[fk]] %in% key)
+        if (!length(y)) stop("no instances of specified 'key'(s)")
     }
     if (!is.null(n)) {
         stopifnot(is.numeric(n), length(n) == 1, n > 0)
