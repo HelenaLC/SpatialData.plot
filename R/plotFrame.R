@@ -22,15 +22,15 @@
 #'
 #' # shapes
 #' p <- plotSpatialData(x)
-#' a <- p + plotShape(i = "blobs_polygons")
-#' b <- p + plotShape(i = "blobs_multipolygons")
-#' c <- p + plotShape(i = "blobs_circles")
+#' a <- p + plotShape(i="blobs_polygons")
+#' b <- p + plotShape(i="blobs_multipolygons")
+#' c <- p + plotShape(i="blobs_circles")
 #' patchwork::wrap_plots(a, b, c)
 #'
 #' # layered
 #' p +
-#'   plotShape(i = "blobs_circles", fill="pink") +
-#'   plotShape(i = "blobs_polygons", colour="red")
+#'   plotShape(i="blobs_circles", fill="pink") +
+#'   plotShape(i="blobs_polygons", colour="red")
 #' patchwork::wrap_plots(a, b)
 #' 
 #' @export
@@ -59,7 +59,7 @@ plotShape <- function(x=NULL, i=1, j=NULL, assay=1, ...) {
 #' 
 #' @export
 plotPoint <- function(x=NULL, i=1, j=NULL, ...) {
-    structure(c(mget(names(formals())), list(...)), class = "sd_point")
+    structure(c(mget(names(formals())), list(...)), class="sd_point")
 }
 
 #' @importFrom sf st_as_sf st_buffer
@@ -134,7 +134,7 @@ ggplot_add.sd_shape <- function(object, plot, object_name) {
             j <- CTname(y)[j]
     }
     y <- transform(y, j)
-    plot + do.call(.plot, modifyList(object, list(x = x, y = y, j=NULL, `...` = NULL)))
+    plot + do.call(.plot, modifyList(object, list(x=x, y=y, j=NULL, `...`=NULL)))
 }
 
 #' @exportS3Method ggplot2::ggplot_add
@@ -157,5 +157,5 @@ ggplot_add.sd_point <- function(object, plot, object_name) {
             j <- CTname(y)[j]
     }
     y <- transform(y, j)
-    plot + do.call(.plot, modifyList(object, list(x = x, y = y, j=NULL, `...` = NULL)))
+    plot + do.call(.plot, modifyList(object, list(x=x, y=y, j=NULL, `...`=NULL)))
 }

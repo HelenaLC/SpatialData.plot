@@ -50,7 +50,7 @@
 #' 
 #' @export
 plotLabel <- function(x=NULL, i=1, j=NULL, k=NULL, c=NULL, a=0.5, pal=NULL, nan=NA, assay=1, t=NULL, z=NULL) {
-    structure(mget(names(formals())), class = "sd_label")
+    structure(mget(names(formals())), class="sd_label")
 }
 
 #' @exportS3Method ggplot2::ggplot_add

@@ -37,15 +37,15 @@ x <- readSpatialData(x)
 
 # shapes
 p <- plotSpatialData(x)
-a <- p + plotShape(i = "blobs_polygons")
-b <- p + plotShape(i = "blobs_multipolygons")
-c <- p + plotShape(i = "blobs_circles")
+a <- p + plotShape(i="blobs_polygons")
+b <- p + plotShape(i="blobs_multipolygons")
+c <- p + plotShape(i="blobs_circles")
 patchwork::wrap_plots(a, b, c)
 
 # layered
 p +
-  plotShape(i = "blobs_circles", fill="pink") +
-  plotShape(i = "blobs_polygons", colour="red")
+  plotShape(i="blobs_circles", fill="pink") +
+  plotShape(i="blobs_polygons", colour="red")
 patchwork::wrap_plots(a, b)
 
 }

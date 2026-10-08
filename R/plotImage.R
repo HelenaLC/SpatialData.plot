@@ -47,7 +47,7 @@
 #' @import spatialdataR
 #' @export
 plotImage <- function(x=NULL, i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=NULL) {
-    structure(mget(names(formals())), class = "sd_image")
+    structure(mget(names(formals())), class="sd_image")
 }
 
 #' @noRd
@@ -129,7 +129,7 @@ plotImage <- function(x=NULL, i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=N
         a <- a / .DTYPE_MAX_VALUES[dt]
     } else if (max(a) > 1) {
         maxs <- apply(a, 1, max)
-        a <- sweep(a, MARGIN = 1, STATS = maxs, FUN = "/")
+        a <- sweep(a, 1, maxs, "/")
     }
     return(a)
 }
@@ -221,6 +221,10 @@ plotImage <- function(x=NULL, i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=N
         scale_color_identity(NULL, guide="legend", breaks=pal, labels=names(pal)),
         new_scale_color())
 }
+# `annotation_raster` plots the array the same way it is printed, i.e., with 
+# the 1st row at the top, which means we need to flip the y-axis to have the 
+# correct axis labels. We tried flipping the image itself but it means all 
+# gets out of alignment if the user sets 'scale_y_reverse()' themselves.
 
 #' @exportS3Method ggplot2::ggplot_add
 #' @importFrom spatialdataR imageNames CTname transform image channels
@@ -257,42 +261,3 @@ ggplot_add.sd_image <- function(object, plot, object_name) {
     wh <- .get_wh(y)
     plot + .gg_i(df, wh$w, wh$h, pal)
 }
-
-#' Plot a SpatialData object
-#' 
-#' Initialize an empty ggplot for a SpatialData object. This function is 
-#' typically combined with one or more calls to add specific plot layers.
-#' 
-#' @param x A SpatialData object.
-#' @param ct The name of a coordinate transformation to use for the plot.
-#' 
-#' @returns A ggplot object.
-#' 
-#' @examples 
-#' x <- file.path("extdata", "blobs.zarr")
-#' x <- system.file(x, package="spatialdataR")
-#' x <- readSpatialData(x, tables=FALSE)
-#' ms <- lapply(seq(3), \(.) plotSpatialData(x) + plotImage(i=2, k=.))
-#' patchwork::wrap_plots(ms)
-#' 
-#' @export
-#' @importFrom ggplot2 ggplot coord_sf
-plotSpatialData <- \(x=NULL, ct=NULL) {
-    p <- ggplot() + coord_sf(expand=FALSE, reverse="y") + .theme
-    if (!is.null(x)) {
-        if (is.null(ct)) {
-            ct <- CTname(x)[1]
-        } else if (is.numeric(ct)) {
-            ct <- CTname(x)[ct]
-        }
-    }
-    p@meta$sd_args <- list(
-        sd = x,
-        ct_name = ct
-    )
-    p
-}
-# `annotation_raster` plots the array the same way it is printed, i.e., with the
-# row 1 at the top, which means we need to flip the y-axis to have the correct axis labels.
-# We tried flipping the image itself but it means everything gets out of alignment if
-# the user sets `scale_y_reverse()` themselves.
