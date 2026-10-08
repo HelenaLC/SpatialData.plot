@@ -240,10 +240,17 @@ ggplot_add.sd_image <- function(object, plot, object_name) {
     y <- image(x, object$i)
     if (is.null(object$j)) {
         j <- plot@meta$sd_args$ct_name
+        if (is.null(j)) {
+            # get CT from y
+            j <- CTname(y)[1]
+        }
     } else {
         j <- object$j
         if (is.numeric(j))
             j <- CTname(y)[j]
+    }
+    if (is.null(plot@meta$sd_args$ct_name)) {
+        plot@meta$sd_args$ct_name <- j
     }
     y <- transform(y, j)
     if (.is_rgb(y)) {

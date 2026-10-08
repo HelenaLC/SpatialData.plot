@@ -128,10 +128,17 @@ ggplot_add.sd_shape <- function(object, plot, object_name) {
     y <- shape(x, object$i)
     if (is.null(object$j)) {
         j <- plot@meta$sd_args$ct_name
+        if (is.null(j)) {
+            # get CT from y
+            j <- CTname(y)[1]
+        }
     } else {
         j <- object$j
         if (is.numeric(j))
             j <- CTname(y)[j]
+    }
+    if (is.null(plot@meta$sd_args$ct_name)) {
+        plot@meta$sd_args$ct_name <- j
     }
     y <- transform(y, j)
     if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
@@ -159,10 +166,17 @@ ggplot_add.sd_point <- function(object, plot, object_name) {
     y <- point(x, object$i)
     if (is.null(object$j)) {
         j <- plot@meta$sd_args$ct_name
+        if (is.null(j)) {
+            # get CT from y
+            j <- CTname(y)[1]
+        }
     } else {
         j <- object$j
         if (is.numeric(j))
             j <- CTname(y)[j]
+    }
+    if (is.null(plot@meta$sd_args$ct_name)) {
+        plot@meta$sd_args$ct_name <- j
     }
     y <- transform(y, j)
     if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
