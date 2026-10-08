@@ -2,13 +2,12 @@
 % Please edit documentation in R/plotLabel.R
 \name{plotLabel}
 \alias{plotLabel}
-\alias{plotLabel,SpatialData-method}
-\title{\code{SpatialData} label viz.}
+\title{Add label layer to SpatialData plot}
 \usage{
-\S4method{plotLabel}{SpatialData}(
-  x,
+plotLabel(
+  x = NULL,
   i = 1,
-  j = 1,
+  j = NULL,
   k = NULL,
   c = NULL,
   a = 0.5,
@@ -20,13 +19,16 @@
 )
 }
 \arguments{
-\item{x}{\code{SpatialData} object.}
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+the object will be inherited from \code{plotSpatialData()}.}
 
-\item{i}{character string or index; the label element to plot.}
+\item{i}{Index or name of label to plot.}
 
-\item{j}{index or name of target coordinate system.}
+\item{j}{Index or name of coordinate transformation to use. If \code{NULL}, 
+the coordinate transformation will be inherited from 
+\code{plotSpatialData()}.}
 
-\item{k}{index of the scale to render; by default (NULL), will auto-select 
+\item{k}{Index of the scale to render; by default (NULL), will auto-select 
 scale in order to minimize memory-usage and blurring for a target size of 
 800 x 800px; use Inf to plot the lowest resolution available.}
 
@@ -48,15 +50,15 @@ in case of \code{c} denoting a row name,
 specifies which \code{assay} data to use 
 (see \code{\link[spatialdataR]{getTable}}).}
 
-\item{t, z}{integer scalar to indicate a specific time- or z-slice;
+\item{t, z}{Integer scalar to indicate a specific time- or z-slice;
 if left unspecified (default NULL), will perform a max-projection.}
 }
 \value{
-list of `ggplot` layers, including
-`geom_tile` of the specified image/label element
+An object of type \code{sd_label}, which can be added to an 
+existing \code{ggplot}.
 }
 \description{
-\code{SpatialData} label viz.
+Add label layer to SpatialData plot
 }
 \examples{
 x <- file.path("extdata", "blobs.zarr")
@@ -64,10 +66,10 @@ x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x)
 
 i <- "blobs_labels"
-p <- plotSpatialData()
+p <- plotSpatialData(x)
 
 # simple binary image
-p + plotLabel(x, i)
+p + plotLabel(i=i)
 
 # mock up some extra data
 t <- getTable(x, i)
@@ -75,10 +77,14 @@ t$id <- sample(letters, ncol(t))
 table(x) <- t
 
 # coloring by 'colData'
-p + plotLabel(x, i, c="id")
+t <- getTable(x, i)
+t$id <- sample(letters, ncol(t))
+table(x) <- t
+plotSpatialData(x) + plotLabel(i=i, c="id")
 
 # coloring by 'assay' data
-p + plotLabel(x, i, 
+plotSpatialData(x) + plotLabel(i=i, 
   c="channel_1_sum", 
   pal=c("lavender", "blue"))
+
 }

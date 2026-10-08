@@ -1,51 +1,73 @@
-#' @name plotFrame
-#' @aliases plotShape plotPoint
-#' @title \code{SpatialData} point/shape viz.
+#' Add shape layer to SpatialData plot
 #'
-#' @param x \code{SpatialData} object.
-#' @param i character string or index; the label element to plot.
-#' @param j index or name of target coordinate system. 
-#' @param assay character string; in case of \code{c} 
+#' @param x \code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+#'   the object will be inherited from \code{plotSpatialData()}.
+#' @param i Index or name of shape to plot.
+#' @param j Index or name of coordinate transformation to use. If \code{NULL}, 
+#'   the coordinate transformation will be inherited from 
+#'   \code{plotSpatialData()}.
+#' @param assay Character string; in case of \code{c} 
 #'   denoting a row name, specifies which \code{assay} 
 #'   data to use (see \code{\link[spatialdataR]{getTable}}).
 #'   (ignored when \code{x} is a \code{SpatialDataPoint}).
-#' @param ... option aesthetic arguments passed \code{geom_sf}.
+#' @param ... Optional aesthetic arguments passed to \code{geom_sf}.
 #'
-#' @returns list of `ggplot` layers, including
-#' `geom_sf` of the specified point/shape element
-#'
+#' @returns An object of type \code{sd_shape}, which can be added to an 
+#' existing \code{ggplot}.
+#' 
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
 #' x <- system.file(x, package="spatialdataR")
 #' x <- readSpatialData(x)
 #'
 #' # shapes
-#' p <- plotSpatialData()
-#' a <- p + plotShape(x, "blobs_polygons")
-#' b <- p + plotShape(x, "blobs_multipolygons")
-#' c <- p + plotShape(x, "blobs_circles")
+#' p <- plotSpatialData(x)
+#' a <- p + plotShape(i="blobs_polygons")
+#' b <- p + plotShape(i="blobs_multipolygons")
+#' c <- p + plotShape(i="blobs_circles")
 #' patchwork::wrap_plots(a, b, c)
 #'
 #' # layered
 #' p +
-#'   plotShape(x, "blobs_circles", fill="pink") +
-#'   plotShape(x, "blobs_polygons", colour="red")
+#'   plotShape(i="blobs_circles", fill="pink") +
+#'   plotShape(i="blobs_polygons", colour="red")
 #' patchwork::wrap_plots(a, b)
 #' 
-#' # points
-#' i <- "blobs_points"
-#' p <- plotSpatialData()
-#' p + plotPoint(x, i)                       # simple
-#' p + plotPoint(x, i, colour="genes")       # discrete
-#' p + plotPoint(x, i, colour="instance_id") # continuous
-NULL
+#' @export
+plotShape <- function(x=NULL, i=1, j=NULL, assay=1, ...) {
+    structure(c(mget(names(formals())), list(...)), class = "sd_shape")
+}
 
-#' @importFrom sf st_as_sf st_coordinates st_geometry_type st_buffer
+#' Add point layer to SpatialData plot
+#'
+#' @inheritParams plotShape
+#' @param i Index or name of point to plot.
+#'
+#' @returns An object of type \code{sd_point}, which can be added to an 
+#' existing \code{ggplot}.
+#' 
+#' @examples
+#' x <- file.path("extdata", "blobs.zarr")
+#' x <- system.file(x, package="spatialdataR")
+#' x <- readSpatialData(x)
+#'
+#' i <- "blobs_points"
+#' p <- plotSpatialData(x)
+#' p + plotPoint(i=i)                       # simple
+#' p + plotPoint(i=i, colour="genes")       # discrete
+#' p + plotPoint(i=i, colour="instance_id") # continuous
+#' 
+#' @export
+plotPoint <- function(x=NULL, i=1, j=NULL, ...) {
+    structure(c(mget(names(formals())), list(...)), class="sd_point")
+}
+
+#' @importFrom sf st_as_sf st_buffer
 #' @importFrom ggplot2 aes theme scale_type geom_sf coord_sf
-#' @importFrom spatialdataR transform element<-
-#' @importFrom ggforce geom_circle
+#' @importFrom spatialdataR transform element<- feature_key getTable
+#' @importFrom dplyr filter
+#' @importFrom rlang .data
 #' @importFrom methods is
-#' @importFrom utils tail
 .plot <- \(x, y, key=NULL, n=NULL, assay=1, i=1, ...) {
     if (is(y, "SpatialDataPoint") && !is.null(key)) {
         stopifnot(is.character(key), nzchar(key))
@@ -91,19 +113,49 @@ NULL
         theme(legend.key.size=unit(0.5, "lines")),
         coord_sf(expand=FALSE, reverse="y"))
 }
-#' @export
-#' @rdname plotFrame
-setMethod("plotShape", "SpatialData", \(x, i=1, j=1, assay=1, ...) {
-    if (is.numeric(i)) i <- shapeNames(x)[i]
-    y <- shape(x, i)
-    y <- spatialdataR::transform(y, j)
-    .plot(x, y, assay=assay, i=i, ...)
-})
-#' @export
-#' @rdname plotFrame
-setMethod("plotPoint", "SpatialData", \(x, i=1, j=1, ...) {
-    if (is.numeric(i)) i <- pointNames(x)[i]
-    y <- point(x, i)
-    y <- spatialdataR::transform(y, j)
-    .plot(x, y, i=i, ...)
-})
+
+#' @exportS3Method ggplot2::ggplot_add
+#' @importFrom spatialdataR shapeNames shape transform CTname
+#' @importFrom utils modifyList
+ggplot_add.sd_shape <- function(object, plot, object_name) {
+    if (is.null(object$x)) {
+        x <- plot@meta$sd_args$sd
+    } else {
+        x <- object$x
+    }
+    if (is.numeric(object$i)) 
+        object$i <- shapeNames(x)[object$i]
+    y <- shape(x, object$i)
+    if (is.null(object$j)) {
+        j <- plot@meta$sd_args$ct_name
+    } else {
+        j <- object$j
+        if (is.numeric(j))
+            j <- CTname(y)[j]
+    }
+    y <- transform(y, j)
+    plot + do.call(.plot, modifyList(object, list(x=x, y=y, j=NULL, `...`=NULL)))
+}
+
+#' @exportS3Method ggplot2::ggplot_add
+#' @importFrom spatialdataR pointNames point transform CTname
+#' @importFrom utils modifyList
+ggplot_add.sd_point <- function(object, plot, object_name) {
+    if (is.null(object$x)) {
+        x <- plot@meta$sd_args$sd
+    } else {
+        x <- object$x
+    }
+    if (is.numeric(object$i)) 
+        object$i <- pointNames(x)[object$i]
+    y <- point(x, object$i)
+    if (is.null(object$j)) {
+        j <- plot@meta$sd_args$ct_name
+    } else {
+        j <- object$j
+        if (is.numeric(j))
+            j <- CTname(y)[j]
+    }
+    y <- transform(y, j)
+    plot + do.call(.plot, modifyList(object, list(x=x, y=y, j=NULL, `...`=NULL)))
+}

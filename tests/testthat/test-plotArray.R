@@ -30,12 +30,14 @@ test_that(".guess_scale", {
 })
 
 test_that("plotImage()", {
-    p <- plotSpatialData()
+    x <- file.path("extdata", "blobs.zarr")
+    x <- system.file(x, package="spatialdataR")
+    x <- readSpatialData(x, tables=FALSE)
     # simple
     y <- image(x, "blobs_image")
     y <- y[,,seq_len(32)] # subset to make things harder
     image(x, i <- ".") <- y
-    q <- p + plotImage(x, i)
+    q <- plotSpatialData(x) + plotImage(i=i)
     expect_s3_class(q, "ggplot")
     .check_xy(q, dim(y)[-1])
     # # multiscale
@@ -51,18 +53,17 @@ test_that("plotImage()", {
 })
 
 test_that("plotLabel()", {
-    p <- plotSpatialData()
     # simple
     y <- label(x, i <- "blobs_labels")
     y <- y[,seq_len(32)] # subset to make things harder
-    q <- p + plotLabel(x, i, c=NULL)
+    q <- plotSpatialData(x) + plotLabel(i=i, c=NULL)
     expect_s3_class(q, "ggplot")
     expect_is(q$layers[[1]]$mapping$fill, "quosure")
     # multiscale
     y <- label(x, "blobs_multiscale_labels")
     y <- y[,seq_len(32)] # same thing but different
     # alpha
-    q <- p + plotLabel(x, i, a=a <- runif(1))
+    q <- plotSpatialData(x) + plotLabel(i=i, a=a <- runif(1))
     expect_identical(q$layers[[1]]$aes_params$alpha, a)
     expect_error(show(plotSpatialData() + plotLabel(x, i, a=".....")))
     expect_error(show(plotSpatialData() + plotLabel(x, i, a=c(1, 2))))

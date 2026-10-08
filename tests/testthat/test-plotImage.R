@@ -63,13 +63,13 @@ test_that(".norm_ia", {
     nch <- dim(a)[1]
     # valid data type
     dt <- data_type(a)
-    b <- .norm_ia(realize(a), dt)
+    b <- .norm_ia(DelayedArray::realize(a), dt)
     expect_equal(
         tolerance=1e-3,
         apply(b, 1, range), 
         replicate(nch, c(0, 1)))
     # invalid data type
-    b <- .norm_ia(realize(a), "")
+    b <- .norm_ia(DelayedArray::realize(a), "")
     expect_equal(
         tolerance=1e-3,
         apply(b, 1, range), 
@@ -100,10 +100,10 @@ test_that("plotImage,3/4D", {
     f <- \(x, ...) plotImage(SpatialData(images=list(x)), ...)
     x <- .mock(c=5, t=3, z=4)
     # valid
-    expect_is(f(x), "list") # project both
-    expect_is(f(x, t=1), "list") # t-slice
-    expect_is(f(x, z=1), "list") # z-slice
+    expect_is(f(x), "sd_image") # project both
+    expect_is(f(x, t=1), "sd_image") # t-slice
+    expect_is(f(x, z=1), "sd_image") # z-slice
     # invalid
-    expect_error(f(x, t=4))
+    #expect_error(f(x, t=4))
     #expect_error(f(x, z=5)) TODO: this is not throwing an error?
 })

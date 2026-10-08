@@ -37,8 +37,8 @@ md <- meta(image(sd, 2))
 md$multiscales[[1]]$axes[[3]]$unit <- "micron"
 sd$images[[2]]@meta <- md
 
-plotSpatialData() + 
-  plotImage(sd, i=2) + 
+plotSpatialData(sd) + 
+  plotImage(i=2) + 
   scalebar(image(sd, i=2), len=10)
 
 }
