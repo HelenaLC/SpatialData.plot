@@ -19,10 +19,11 @@
 # image data type factors (max values)
 # TODO: add more cases from other data types
 # https://doc.embedded-wizard.de/uint-type
-.DTYPE_MAX_VALUES <- c("uint8" = 255,
-                       "uint16" = 65535,
-                       "uint32" = 4294967295,
-                       "uint64" = 2^64 - 1)
+.DTYPE_MAX_VALUES <- c(
+    "uint8" = 255,
+    "uint16" = 65535,
+    "uint32" = 4294967295,
+    "uint64" = 2^64 - 1)
 
 # guess scale of image or label
 .guess_scale <- \(x, w, h) {
@@ -98,11 +99,7 @@
     if (!ok) stop("'length(axes(x))' must equal 'length(dim(x))'")
     specs <- list(...)
     idx <- lapply(axisNames, \(nm) {
-        if (!is.null(specs[[nm]])) {
-            specs[[nm]]
-        } else {
-            TRUE
-        }
+        specs[[nm]] %||% TRUE
     })
     do.call("[", c(list(a), idx, list(drop=drop)))
 }

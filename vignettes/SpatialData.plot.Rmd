@@ -2,31 +2,50 @@
 title: "`SpatialData.plot`"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 package: "`r BiocStyle::pkg_ver('SpatialData.plot')`"
-author: 
-  - name: Helena L. Crowell
-  - name: Artür Manukyan
-  - name: Hugo Gruson
-  - name: Vince Carey
 output:
-  BiocStyle::html_document
+  BiocStyle::html_document:
+    toc: true
+    toc_depth: 1 
+    toc_float: true
 vignette: |
   %\VignetteIndexEntry{SpatialData.plot}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+abstract: >
+  `SpatialData.plot` provides a visualization suit for `SpatialData` objects 
+  in `ggplot2`-style, with support for multi-scale `images` and `labels`, 
+  `points` and `shapes`, and layering of elements into composite plots. 
+  For the latter, POINT, POLYGON, and MULTIPOLYGON geometries are supported. 
+  For all but `images`, there is support to pass information from annotation 
+  `tables` as aesthetics (e.g., `colData` or `assay` data). For `images`, 
+  auto-contrasting and multi-channel color merging are supported. 
+  Each layer returns a standard `ggplot` object, allowing for customization 
+  (e.g., using `ggnewscale` for layer-specific fill/color scales), 
+  or multi-panel arrangement (e.g., using `patchwork`).
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(cache=FALSE, message=FALSE, warning=FALSE)
 ```
 
-```{r load-libs}
+# Installation {-}
+
+`SpatialData.plot` can be installed as follows:
+
+```{r inst, eval=FALSE}
+if (require("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("SpatialData.plot")
+```
+
+For the purpose of this vignette, we require the following dependencies:
+
+```{r load-deps}
 library(ggplot2)
 library(patchwork)
-library(ggnewscale)
+library(ggnewscale) 
 library(spatialdataR)
-library(SpatialData.data)
 library(SpatialData.plot)
-library(SingleCellExperiment)
 ```
 
 # Introduction
@@ -34,18 +53,19 @@ library(SingleCellExperiment)
 The `SpatialData.plot` package contains a set of plotting functions for 
 spatial omics data stored as [SpatialData](https://spatialdata.scverse.org/en/latest/index.html) 
 `.zarr` files that follow [OME-NGFF specs](https://ngff.openmicroscopy.org/latest/#image-layout).
-
 Each `SpatialData` object is composed of five layers: images, labels, shapes, 
 points, and tables. Each layer may contain an arbitrary number of elements.
-
 Images and labels are represented as `ZarrArray`s (`r BiocStyle::Biocpkg("Rarr")`). 
 Points and shapes are represented as `r BiocStyle::CRANpkg("arrow")` objects linked 
 to an on-disk *.parquet* file. As such, all data are represented out of memory.
-
 Element annotation as well as cross-layer summarizations (e.g., count matrices)
 are represented as `r BiocStyle::Biocpkg("SingleCellExperiment")` as tables.
 
-```{r read-blobs}
+**We here demonstrate package functionality using a trivial example dataset.
+For more realistic technology-focused examples, we refer readers to the 
+companion [demo website](https://helenalc.github.io/SpatialData.demo).**
+
+```{r read-data}
 x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="spatialdataR")
 (x <- readSpatialData(x))
@@ -53,7 +73,16 @@ x <- system.file(x, package="spatialdataR")
 
 # Visualization
 
-### Images
+`SpatialData.plot` provides 5 user-facing plotting functions:
+
+- `plotSpatialData()` renders a base (blank) `ggplot` with simple aesthetics
+and, importantly, a fixed axial ratio as to not distort spatial coordinates.
+- `plotImage/Label/Point/Shape()` render specific `SpatialData` elements;
+each requires specification of the element index/name `i`, and coordinate 
+system `j` (by default, the first available element/system will be rendered);
+different functions further accept different arguments to control aesthetics.
+
+## Images
 
 `Image/LabelArray`s are linked to potentially multiscale .zarr stores.
 Their show method includes the scales available for a given element:
@@ -78,7 +107,11 @@ wrap_plots(nrow=1, lapply(seq(3), \(.)
     plotSpatialData(x) + plotImage(i=2, k=.)))
 ```
 
-### Labels
+## Labels
+
+Like `image`s, `label`s are represented as `ZarrArray`. Array values, however,
+are integers that correspond to different instances, typically linked to a 
+`table` of annotations (e.g., expression values, observation metadata, etc.).
 
 ```{r plotLabel, fig.width=9, fig.height=3.5}
 i <- "blobs_labels"
@@ -99,8 +132,10 @@ c <- p + plotLabel(i = i, c="channel_1_sum", pal=pal_c) # assay
     theme(legend.position="bottom")
 ```
 
+## Points
 
-### Points
+Elements of the `points` layer are rendered using `geom_point()`, 
+and accepts both discrete and continuous color specifications. 
 
 ```{r plotPoint, fig.width=10, fig.height=3}
 i <- "blobs_points"
@@ -110,23 +145,32 @@ c <- p + plotPoint(i = i, col="instance_id") # continuous
 (a | b | c) 
 ```
 
-### Shapes
+## Shapes
+
+For demonstration, we render each `shape` element present in the object, 
+which includes all possible types: circles and (multi)polygons.
 
 ```{r plotShape, fig.width=8, fig.height=3}
 p <- plotSpatialData(x)
 a <- p +
-  labs(title = "polygons") +
-  plotShape(i = "blobs_polygons")
+    labs(title = "polygons") +
+    plotShape(i = "blobs_polygons")
 b <- p +
-  labs(title = "multipolygons") +
-  plotShape(i = "blobs_multipolygons")
+    labs(title = "multipolygons") +
+    plotShape(i = "blobs_multipolygons")
 c <- p +
-  labs(title = "circles") +
-  plotShape(i = "blobs_circles")
+    labs(title = "circles") +
+    plotShape(i = "blobs_circles")
 (a | b | c)
 ```
 
-### Layering
+## Layering
+
+Several `SpatialData` elements (images, labels, points, shapes) can be layered 
+on-top of each other in `ggplot`-style using the `+`-operator. The return value 
+of each such call remains a `ggplot` object, which accepts additional aesthetics.
+Note that specifying layer-specific fill/color requires setting up a new scale
+with `ggnewscale::new_scale_fill/color()`; an example is as follows:
 
 ```{r blobs-plot, fig.width=8, fig.height=5}
 p <- plotSpatialData(x)
@@ -147,70 +191,6 @@ one <- list(
     p + plotShape(i = 3) + labs(title = "polygons"),
     p + plotPoint(col="genes") + labs(title = "points"))
 wrap_plots(c(list(all), one), nrow=2)
-```
-
-# Examples
-
-## MERFISH
-
-In this example data, we do not have a `label` for the `shape` polygons. 
-Such labels could be morphological regions annotated by pathologists.
-
-```{r merfish-read}
-Sys.setenv(AWS_REGION = "us-east-1")
-(x <- SD.data_load("MouseBrainMERFISH"))
-```
-
-There are only `r length(spatialdataR::shape(x, "cells"))` cells, but 
-`r format(length(spatialdataR::point(x, "single_molecule")), big.mark=",")` 
-molecules, so that we downsample a random subset of 1,000 for visualization:
-
-```{r merfish-plot, fig.width=6, fig.height=4}
-# layered visualization
-plotSpatialData(x) +
-    plotImage(c="white") +
-    plotPoint(n=1e3, col="cell_type", size=0.5) +
-    scale_color_manual(values=rainbow(8)) +
-    guides(col=guide_legend(override.aes=list(size=2))) +
-    plotShape(i="anatomical", fill=NA, col="white", linewidth=1) 
-```
-
-```{r merfish-box, fig.width=7, fig.height=6}
-# subset & downsample for speed
-y <- x[c("images", "points"), ]
-n <- length(point(y))
-i <- sample(n, 1e5)
-point(y) <- point(y)[i]
-# polygon queries
-lapply(seq_along(shape(x)), \(s) {
-    df <- data(shape(x)[s, ])
-    z <- crop(y, sf::st_as_sf(df))
-    plotSpatialData(z) + 
-        plotImage() +
-        plotPoint(n=1e3, size=1/3, col="cyan")
-}) |> wrap_plots(nrow=2) & theme(axis.text.x=element_text(angle=45, hjust=1))
-```
-
-## MibiTOF
-
-Colorectal carcinoma, 25 MB; no shapes, no points.
-
-```{r mibitof-read}
-(x <- SD.data_load("ColorectalCarcinomaMIBITOF"))
-```
-
-```{r mibitof-plot, fig.width=9, fig.height=3.5}
-ps <- lapply(imageNames(x), \(i) plotSpatialData(x) + plotImage(i = i, j = 1) + labs(title = i))
-wrap_plots(ps, nrow=1)
-```
-
-```{r fig.width=8, fig.height=4}
-# bounding-box query
-bb <- list(
-    xmin=0, xmax=800, 
-    ymin=500, ymax=900)
-y <- crop(x["images", 1], bb)
-plotSpatialData(y) + plotImage()
 ```
 
 # Session info

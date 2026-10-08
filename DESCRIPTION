@@ -29,7 +29,7 @@ Imports:
     dplyr,
     farver,
     ggnewscale,
-    ggplot2,
+    ggplot2 (>= 4.0.0),
     MatrixGenerics,
     methods,
     rlang,
@@ -42,12 +42,9 @@ Suggests:
     magick,
     patchwork,
     SingleCellExperiment,
-    SpatialData.data,
     testthat,
     vdiffr,
     ZarrArray
-Remotes:
-    HelenaLC/SpatialData.data
 biocViews: 
     Spatial,
     SingleCell,

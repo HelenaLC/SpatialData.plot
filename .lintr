@@ -1,0 +1,10 @@
+linters: linters_with_tags(
+    tags = NULL,
+    object_overwrite_linter = NULL,
+    namespace_linter = NULL,
+    exclude_tags = "style"
+  )
+exclusions: list(
+    "tests"
+  )
+encoding: "UTF-8"

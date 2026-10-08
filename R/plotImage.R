@@ -131,7 +131,7 @@ plotImage <- function(x=NULL, i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=N
         maxs <- apply(a, 1, max)
         a <- sweep(a, MARGIN = 1, STATS = maxs, FUN = "/")
     }
-  return(a)
+    return(a)
 }
 
 # check if an image is RGB or not
@@ -149,7 +149,7 @@ plotImage <- function(x=NULL, i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=N
     is_rgb <- setequal(x, c("r", "g", "b"))
     return(is_len && (is_012 || is_rgb))
 }
-  
+
 # check if channels are indices or channel names
 #' @importFrom spatialdataR channels
 #' @noRd
@@ -159,14 +159,13 @@ plotImage <- function(x=NULL, i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=N
     lbs <- channels(x)
     if (all(ch %in% lbs)) {
         return(match(ch, lbs))
-    } else if (!any(ch %in% lbs)) {
-        warning("Couldn't find some channels; picking first one(s)!")
-        return(1)
-    } else {
+    }
+    if (all(ch %notin% lbs)) {
         warning("Couldn't find channels; picking first one(s)!")
         return(1)
     }
-    return(NULL)
+    warning("Couldn't find some channels; picking first one(s)!")
+    return(1)
 }
 
 #' @importFrom spatialdataR data_type axes
@@ -188,8 +187,9 @@ plotImage <- function(x=NULL, i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=N
             stop("Only a single timepoint can be selected")
         }
     }
-    a <- .subset_array_by_axes(a=a, axisNames=axisNames, 
-                               c=.ch_idx(x, ch), t=t, drop=FALSE)
+    a <- .subset_array_by_axes(
+        a=a, c=.ch_idx(x, ch), t=t, 
+        axisNames=axisNames, drop=FALSE)
     # remove time axis if it exists
     if (tn) {
         dim(a) <- dim(a)[axisNames != "t"]
