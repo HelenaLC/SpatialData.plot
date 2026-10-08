@@ -30,7 +30,7 @@
 #' p <- plotSpatialData(x)
 #' 
 #' # simple binary image
-#' p + plotLabel(i=i)
+#' p + plotLabel(i)
 #' 
 #' # mock up some extra data
 #' t <- getTable(x, i)
@@ -49,7 +49,7 @@
 #'   pal=c("lavender", "blue"))
 #' 
 #' @export
-plotLabel <- function(x=NULL, i=1, j=NULL, k=NULL, c=NULL, a=0.5, pal=NULL, nan=NA, assay=1, t=NULL, z=NULL) {
+plotLabel <- function(i=1, j=NULL, k=NULL, c=NULL, a=0.5, pal=NULL, nan=NA, assay=1, t=NULL, z=NULL, x=NULL) {
     structure(mget(names(formals())), class="sd_label")
 }
 

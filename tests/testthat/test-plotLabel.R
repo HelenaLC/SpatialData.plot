@@ -30,9 +30,9 @@ test_that("3/4D plotLabel()", {
     expect_error(plotSpatialData(x) + plotLabel(t=c(1,2)))
     expect_error(plotSpatialData(x) + plotLabel(z=c(2,3)))
     # valid
-    expect_is(plotLabel(x), "sd_label") # project both
-    expect_is(plotLabel(x, t=1), "sd_label") # t-slice
-    expect_is(plotLabel(x, z=1), "sd_label") # z-slice
+    expect_is(plotLabel(x=x), "sd_label") # project both
+    expect_is(plotLabel(x=x, t=1), "sd_label") # t-slice
+    expect_is(plotLabel(x=x, z=1), "sd_label") # z-slice
     # check data
     x <- .mock(t=2, z=3, y=h <- 44, x=w <- 55)
     expect_is(l <- plotLabel(z=1, t=1), "sd_label")
@@ -53,7 +53,7 @@ test_that("coloring plotLabel()", {
     y <- setTable(x, labelNames(x)[1], se)
     
     # continuous (colData)
-    expect_is(l <- plotLabel(c="num"), "sd_label")
+    expect_is(l <- plotLabel(1, c="num"), "sd_label")
     p <- plotSpatialData(y) + l
     g <- ggplot2::get_guide_data(p, "fill")
     expect_is(g[[2]], "numeric")

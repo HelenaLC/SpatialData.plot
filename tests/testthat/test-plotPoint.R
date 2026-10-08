@@ -15,7 +15,7 @@ test_that("plotPoint(),SpatialData", {
     expect_message(expect_error(show(p + plotPoint(i = i, color="."))),
                    "Coordinate system already present")
     # simple
-    expect_message(q <- p + plotPoint(i = i), 
+    expect_message(q <- p + plotPoint(i), 
                    "Coordinate system already present")
     expect_s3_class(q, "ggplot")
     expect_identical(q$layers[[1]]$data, df)

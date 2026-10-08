@@ -4,12 +4,9 @@
 \alias{plotShape}
 \title{Add shape layer to SpatialData plot}
 \usage{
-plotShape(x = NULL, i = 1, j = NULL, assay = 1, ...)
+plotShape(i = 1, j = NULL, assay = 1, x = NULL, ...)
 }
 \arguments{
-\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
-the object will be inherited from \code{plotSpatialData()}.}
-
 \item{i}{Index or name of shape to plot.}
 
 \item{j}{Index or name of coordinate transformation to use. If \code{NULL}, 
@@ -20,6 +17,9 @@ the coordinate transformation will be inherited from
 denoting a row name, specifies which \code{assay} 
 data to use (see \code{\link[spatialdataR]{getTable}}).
 (ignored when \code{x} is a \code{SpatialDataPoint}).}
+
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+the object will be inherited from \code{plotSpatialData()}.}
 
 \item{...}{Optional aesthetic arguments passed to \code{geom_sf}.}
 }
@@ -44,8 +44,8 @@ patchwork::wrap_plots(a, b, c)
 
 # layered
 p +
-  plotShape(i="blobs_circles", fill="pink") +
-  plotShape(i="blobs_polygons", colour="red")
+  plotShape("blobs_circles", fill="pink") +
+  plotShape("blobs_polygons", colour="red")
 patchwork::wrap_plots(a, b)
 
 }

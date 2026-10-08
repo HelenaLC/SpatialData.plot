@@ -29,12 +29,12 @@
 #'
 #' # layered
 #' p +
-#'   plotShape(i="blobs_circles", fill="pink") +
-#'   plotShape(i="blobs_polygons", colour="red")
+#'   plotShape("blobs_circles", fill="pink") +
+#'   plotShape("blobs_polygons", colour="red")
 #' patchwork::wrap_plots(a, b)
 #' 
 #' @export
-plotShape <- function(x=NULL, i=1, j=NULL, assay=1, ...) {
+plotShape <- function(i=1, j=NULL, assay=1, x=NULL, ...) {
     structure(c(mget(names(formals())), list(...)), class = "sd_shape")
 }
 
@@ -55,10 +55,10 @@ plotShape <- function(x=NULL, i=1, j=NULL, assay=1, ...) {
 #' p <- plotSpatialData(x)
 #' p + plotPoint(i=i)                       # simple
 #' p + plotPoint(i=i, colour="genes")       # discrete
-#' p + plotPoint(i=i, colour="instance_id") # continuous
+#' p + plotPoint(i, colour="instance_id") # continuous
 #' 
 #' @export
-plotPoint <- function(x=NULL, i=1, j=NULL, ...) {
+plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
     structure(c(mget(names(formals())), list(...)), class="sd_point")
 }
 

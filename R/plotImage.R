@@ -30,7 +30,7 @@
 #' 
 #' ms <- lapply(seq(3), \(.) 
 #'   plotSpatialData(x) +
-#'   plotImage(i=2, k=.))
+#'   plotImage(2, k=.))
 #' patchwork::wrap_plots(ms)
 #' 
 #' # custom colors
@@ -46,7 +46,7 @@
 #' 
 #' @import spatialdataR
 #' @export
-plotImage <- function(x=NULL, i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=NULL) {
+plotImage <- function(i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=NULL, x=NULL) {
     structure(mget(names(formals())), class="sd_image")
 }
 
