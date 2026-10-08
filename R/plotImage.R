@@ -30,7 +30,7 @@
 #' 
 #' ms <- lapply(seq(3), \(.) 
 #'   plotSpatialData(x) +
-#'   plotImage(i=2, k=.))
+#'   plotImage(2, k=.))
 #' patchwork::wrap_plots(ms)
 #' 
 #' # custom colors
@@ -46,7 +46,7 @@
 #' 
 #' @import spatialdataR
 #' @export
-plotImage <- function(x=NULL, i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=NULL) {
+plotImage <- function(i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=NULL, x=NULL) {
     structure(mget(names(formals())), class="sd_image")
 }
 
@@ -240,10 +240,17 @@ ggplot_add.sd_image <- function(object, plot, object_name) {
     y <- image(x, object$i)
     if (is.null(object$j)) {
         j <- plot@meta$sd_args$ct_name
+        if (is.null(j)) {
+            # get CT from y
+            j <- CTname(y)[1]
+        }
     } else {
         j <- object$j
         if (is.numeric(j))
             j <- CTname(y)[j]
+    }
+    if (is.null(plot@meta$sd_args$ct_name)) {
+        plot@meta$sd_args$ct_name <- j
     }
     y <- transform(y, j)
     if (.is_rgb(y)) {
@@ -259,5 +266,14 @@ ggplot_add.sd_image <- function(object, plot, object_name) {
     }
     # physical space mapping
     wh <- .get_wh(y)
+    
+    if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
+        xi <- which(axes(y, "name") == "x")
+        if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
+            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+                                            list(arrayLayerType = "image",
+                                                 arrayLayerName = object$i))
+        }
+    }
     plot + .gg_i(df, wh$w, wh$h, pal)
 }

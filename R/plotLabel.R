@@ -30,7 +30,7 @@
 #' p <- plotSpatialData(x)
 #' 
 #' # simple binary image
-#' p + plotLabel(i=i)
+#' p + plotLabel(i)
 #' 
 #' # mock up some extra data
 #' t <- getTable(x, i)
@@ -49,7 +49,7 @@
 #'   pal=c("lavender", "blue"))
 #' 
 #' @export
-plotLabel <- function(x=NULL, i=1, j=NULL, k=NULL, c=NULL, a=0.5, pal=NULL, nan=NA, assay=1, t=NULL, z=NULL) {
+plotLabel <- function(i=1, j=NULL, k=NULL, c=NULL, a=0.5, pal=NULL, nan=NA, assay=1, t=NULL, z=NULL, x=NULL) {
     structure(mget(names(formals())), class="sd_label")
 }
 
@@ -78,10 +78,17 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
     y <- label(x, object$i)
     if (is.null(object$j)) {
         j <- plot@meta$sd_args$ct_name
+        if (is.null(j)) {
+            # get CT from y
+            j <- CTname(y)[1]
+        }
     } else {
         j <- object$j
         if (is.numeric(j))
             j <- CTname(y)[j]
+    }
+    if (is.null(plot@meta$sd_args$ct_name)) {
+        plot@meta$sd_args$ct_name <- j
     }
     y <- transform(y, j)
 
@@ -155,6 +162,15 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
         thm <- list(
             theme(legend.position="none"),
             scale_fill_manual(NULL, values=object$pal))
+    }
+    
+    if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
+        xi <- which(axes(y, "name") == "x")
+        if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
+            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+                                            list(arrayLayerType = "label",
+                                                 arrayLayerName = object$i))
+        }
     }
     plot + list(thm, do.call(geom_tile, list(data=df, mapping=aes, alpha=object$a)))
 }

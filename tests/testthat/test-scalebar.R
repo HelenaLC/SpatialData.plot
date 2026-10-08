@@ -13,21 +13,25 @@ set_unit <- \(x, dim="x", val="micron") {
 
 test_that("invalid scalebar()", {
     # not an image/label
-    expect_error(scalebar(point(x)))
-    expect_error(scalebar(shape(x)))
-    
+    expect_s3_class(scalebar(), "sd_scalebar")
+
     # missing 'unit'
-    expect_error(scalebar(image(x)))
-    y <- set_unit(image(x), "y")
-    expect_error(scalebar(image(y), 1))
+    p_no_scalebar <- plotSpatialData(x) + plotImage() + scalebar()
+    xtmp <- x
+    image(xtmp) <- set_unit(image(x), "y")
+    expect_equal(plotSpatialData(xtmp) + plotImage() + scalebar(), 
+                 p_no_scalebar)
+    expect_length(p_no_scalebar@layers, 2L)
     
     # invalid arguments
-    y <- set_unit(image(x), "x")
+    xtmp <- x
+    image(xtmp) <- set_unit(image(x), "x")
     v <- c(c(1,1), Inf, TRUE, "")
+    p <- plotSpatialData(xtmp) + plotImage()
     for (. in v) {
-        expect_error(scalebar(y, len=.))
-        expect_error(scalebar(y, len=1, xrel=.))
-        expect_error(scalebar(y, len=1, yrel=.))
+        expect_error(p + scalebar(len=.))
+        expect_error(p + scalebar(len=1, xrel=.))
+        expect_error(p + scalebar(len=1, yrel=.))
     }
 })
 
@@ -36,26 +40,29 @@ test_that("valid scalebar()", {
     # to be non-square & offset from the origin
     y <- list(xmin=dx <- 16, xmax=64, ymin=0, ymax=48)
     y <- set_unit(crop(image(x), y), "x")
+    xtmp <- x
+    image(xtmp) <- y
+    
+    p <- plotSpatialData(xtmp) + plotImage()
     
     # default 'len'
-    expect_silent(l <- scalebar(y, len=NULL))
-    p <- ggplot() + l
-    df <- layer_data(p, 1)
+    expect_silent(l <- p + scalebar(len=NULL))
+    expect_length(l@layers, 4L)
+    df <- layer_data(l, 3)
     expect_equal(df$xend-df$x, 0.05*dim(y)[3])
     
     # valid arguments
-    l <- scalebar(y, 
+    l <- p + scalebar( 
         len=len <- 5.1234, 
         xrel=xrel <- 0.05, 
         yrel=yrel <- 0.11,
         col=col <- "pink", 
         lwd=lwd <- 7)
-    expect_is(l, "list")
-    expect_length(l, 2)
+    expect_s3_class(l, "ggplot")
+    expect_length(l@layers, 4L)
     
     # check placement
-    p <- ggplot() + l
-    df <- layer_data(p, 1)
+    df <- layer_data(l, 3)
     expect_equal(df$colour, col)
     expect_equal(df$linewidth, lwd)
     
@@ -65,18 +72,18 @@ test_that("valid scalebar()", {
     expect_equal(df$yend, df$y)
     
     # flexible 'x/yrel'
-    l <- scalebar(y, xrel=0, yrel=0)
-    df <- layer_data(ggplot() + l, 1)
+    l <- p + scalebar(xrel=0, yrel=0)
+    df <- layer_data(l, 3)
     expect_equal(df$x, dx)
     expect_equal(df$y, dim(y)[2])
     
-    l <- scalebar(y, xrel=-1, yrel=-1)
-    df <- layer_data(ggplot() + l, 1)
+    l <- p + scalebar(xrel=-1, yrel=-1)
+    df <- layer_data(l, 3)
     expect_equal(df$x, dx-dim(y)[3])
     expect_equal(df$y, 2*dim(y)[2])
     
-    l <- scalebar(y, xrel=a <- .9, yrel=b <- 1.2)
-    df <- layer_data(ggplot() + l, 1)
+    l <- p + scalebar(xrel=a <- .9, yrel=b <- 1.2)
+    df <- layer_data(l, 3)
     expect_equal(df$xend, dx+a*dim(y)[3])
     expect_equal(df$y, -(b-1)*dim(y)[2])
 })

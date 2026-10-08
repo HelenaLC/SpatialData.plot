@@ -29,12 +29,12 @@
 #'
 #' # layered
 #' p +
-#'   plotShape(i="blobs_circles", fill="pink") +
-#'   plotShape(i="blobs_polygons", colour="red")
+#'   plotShape("blobs_circles", fill="pink") +
+#'   plotShape("blobs_polygons", colour="red")
 #' patchwork::wrap_plots(a, b)
 #' 
 #' @export
-plotShape <- function(x=NULL, i=1, j=NULL, assay=1, ...) {
+plotShape <- function(i=1, j=NULL, assay=1, x=NULL, ...) {
     structure(c(mget(names(formals())), list(...)), class = "sd_shape")
 }
 
@@ -55,10 +55,10 @@ plotShape <- function(x=NULL, i=1, j=NULL, assay=1, ...) {
 #' p <- plotSpatialData(x)
 #' p + plotPoint(i=i)                       # simple
 #' p + plotPoint(i=i, colour="genes")       # discrete
-#' p + plotPoint(i=i, colour="instance_id") # continuous
+#' p + plotPoint(i, colour="instance_id") # continuous
 #' 
 #' @export
-plotPoint <- function(x=NULL, i=1, j=NULL, ...) {
+plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
     structure(c(mget(names(formals())), list(...)), class="sd_point")
 }
 
@@ -128,12 +128,27 @@ ggplot_add.sd_shape <- function(object, plot, object_name) {
     y <- shape(x, object$i)
     if (is.null(object$j)) {
         j <- plot@meta$sd_args$ct_name
+        if (is.null(j)) {
+            # get CT from y
+            j <- CTname(y)[1]
+        }
     } else {
         j <- object$j
         if (is.numeric(j))
             j <- CTname(y)[j]
     }
+    if (is.null(plot@meta$sd_args$ct_name)) {
+        plot@meta$sd_args$ct_name <- j
+    }
     y <- transform(y, j)
+    if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
+        xi <- which(axes(y, "name") == "x")
+        if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
+            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+                                            list(arrayLayerType = "shape",
+                                                 arrayLayerName = object$i))
+        }
+    }
     plot + do.call(.plot, modifyList(object, list(x=x, y=y, j=NULL, `...`=NULL)))
 }
 
@@ -151,11 +166,26 @@ ggplot_add.sd_point <- function(object, plot, object_name) {
     y <- point(x, object$i)
     if (is.null(object$j)) {
         j <- plot@meta$sd_args$ct_name
+        if (is.null(j)) {
+            # get CT from y
+            j <- CTname(y)[1]
+        }
     } else {
         j <- object$j
         if (is.numeric(j))
             j <- CTname(y)[j]
     }
+    if (is.null(plot@meta$sd_args$ct_name)) {
+        plot@meta$sd_args$ct_name <- j
+    }
     y <- transform(y, j)
+    if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
+        xi <- which(axes(y, "name") == "x")
+        if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
+            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+                                            list(arrayLayerType = "point",
+                                                 arrayLayerName = object$i))
+        }
+    }
     plot + do.call(.plot, modifyList(object, list(x=x, y=y, j=NULL, `...`=NULL)))
 }

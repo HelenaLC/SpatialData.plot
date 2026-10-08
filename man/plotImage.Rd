@@ -5,7 +5,6 @@
 \title{Add image layer to SpatialData plot}
 \usage{
 plotImage(
-  x = NULL,
   i = 1,
   j = NULL,
   k = NULL,
@@ -13,13 +12,11 @@ plotImage(
   c = NULL,
   cl = NULL,
   t = NULL,
-  z = NULL
+  z = NULL,
+  x = NULL
 )
 }
 \arguments{
-\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
-the object will be inherited from \code{plotSpatialData()}.}
-
 \item{i}{Index or name of image to plot.}
 
 \item{j}{Index or name of coordinate transformation to use. If \code{NULL}, 
@@ -43,6 +40,9 @@ for convenience, any NULL = [0, 1], and n = [0, n]).}
 
 \item{t, z}{Integer scalar to indicate a specific time- or z-slice;
 if left unspecified (default NULL), will perform a max-projection.}
+
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+the object will be inherited from \code{plotSpatialData()}.}
 }
 \value{
 An object of type \code{sd_image}, which can be added to an 
@@ -58,7 +58,7 @@ x <- readSpatialData(x, tables=FALSE)
 
 ms <- lapply(seq(3), \(.) 
   plotSpatialData(x) +
-  plotImage(i=2, k=.))
+  plotImage(2, k=.))
 patchwork::wrap_plots(ms)
 
 # custom colors

@@ -5,7 +5,6 @@
 \title{Add label layer to SpatialData plot}
 \usage{
 plotLabel(
-  x = NULL,
   i = 1,
   j = NULL,
   k = NULL,
@@ -15,13 +14,11 @@ plotLabel(
   nan = NA,
   assay = 1,
   t = NULL,
-  z = NULL
+  z = NULL,
+  x = NULL
 )
 }
 \arguments{
-\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
-the object will be inherited from \code{plotSpatialData()}.}
-
 \item{i}{Index or name of label to plot.}
 
 \item{j}{Index or name of coordinate transformation to use. If \code{NULL}, 
@@ -52,6 +49,9 @@ specifies which \code{assay} data to use
 
 \item{t, z}{Integer scalar to indicate a specific time- or z-slice;
 if left unspecified (default NULL), will perform a max-projection.}
+
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+the object will be inherited from \code{plotSpatialData()}.}
 }
 \value{
 An object of type \code{sd_label}, which can be added to an 
@@ -69,7 +69,7 @@ i <- "blobs_labels"
 p <- plotSpatialData(x)
 
 # simple binary image
-p + plotLabel(i=i)
+p + plotLabel(i)
 
 # mock up some extra data
 t <- getTable(x, i)

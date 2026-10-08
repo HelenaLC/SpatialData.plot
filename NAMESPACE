@@ -3,6 +3,7 @@
 S3method(ggplot2::ggplot_add,sd_image)
 S3method(ggplot2::ggplot_add,sd_label)
 S3method(ggplot2::ggplot_add,sd_point)
+S3method(ggplot2::ggplot_add,sd_scalebar)
 S3method(ggplot2::ggplot_add,sd_shape)
 export(plotImage)
 export(plotLabel)
@@ -58,6 +59,7 @@ importFrom(spatialdataR,
   axes,
   channels,
   data_type,
+  extent,
   feature_key,
   getTable,
   image,

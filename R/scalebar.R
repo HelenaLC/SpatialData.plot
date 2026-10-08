@@ -1,7 +1,9 @@
-#' @title \code{SpatialDataArray} scalebar
+#' Add scalebar to plot
 #' 
-#' @param x a \code{SpatialDataArray} object (i.e.,
-#'   image or label element from a \code{SpatialData} object).
+#' \code{scalebar} will get the axis unit and scale information from the 
+#' closest preceding layer where this information is present. Therefore, 
+#' the placement of \code{scalebar} in the sequence of layers is important.
+#' 
 #' @param len scalar numeric giving the length of the scalebar 
 #'   in physical coordinate space; the unit will be extracted
 #'   from the data's Zarr specifications (see \code{axes(x)}).
@@ -25,47 +27,55 @@
 #' 
 #' plotSpatialData(sd) + 
 #'   plotImage(i=2) + 
-#'   scalebar(image(sd, i=2), len=10)
+#'   scalebar(len=10)
 #' 
-#' @importFrom ggplot2 annotate
-#' @importFrom methods is
 #' @export
-scalebar <- function(x, len=NULL, col="red", lwd=1, xrel=0.05, yrel=0.05) {
-    # validity
-    if (!is(x, "SpatialDataArray")) 
-        stop("'x' should be a 'SpatialDataArray' object, i.e., an",
-            " image or label element from a 'SpatialData' object")
-    ok <- \(x) is.numeric(x) && is.finite(x) && length(x) == 1
-    if (!is.null(len)) stopifnot(ok(len), len > 0)
-    stopifnot(ok(xrel), ok(yrel))
-    
-    xi <- which(axes(x, "name") == "x")
-    unit <- axes(x)[[xi]]$unit
-    if (is.null(unit)) 
-        stop("'axes(x)' list element ", xi, 
-            " (X dimension) missing 'unit'")
-    if (unit %in% names(.unit_map))
-        unit <- .unit_map[unit]
+scalebar <- function(len=NULL, col="red", lwd=1, xrel=0.05, yrel=0.05) {
+    structure(mget(names(formals())), class="sd_scalebar")
+}
 
-    wh <- .get_wh(x)
-    if (is.null(len)) len <- 0.05*diff(wh$w)
-    if (xrel <= 0.5) {
-        xmin <- diff(wh$w) * xrel + wh$w[1]
-        xmax <- diff(wh$w) * xrel + wh$w[1] + len
-    } else {
-        xmin <- wh$w[2] - diff(wh$w) * (1 - xrel) - len
-        xmax <- wh$w[2] - diff(wh$w) * (1 - xrel)
-    }
-    y <- wh$h[2] - diff(wh$h) * yrel
+#' @exportS3Method ggplot2::ggplot_add
+#' @importFrom spatialdataR axes image label extent
+#' @importFrom ggplot2 annotate
+ggplot_add.sd_scalebar <- function(object, plot, object_name) {
+    x <- plot@meta$sd_args$sd
+    arrayLayerType <- plot@meta$sd_args$arrayLayerType
+    arrayLayerName <- plot@meta$sd_args$arrayLayerName
     
-    line <- annotate(
-        geom="segment", 
-        color=col, linewidth=lwd,
-        x=xmin, xend=xmax, y=y, yend=y)
-    text <- annotate(
-        geom="text", 
-        x=(xmin+xmax)/2, y=y, 
-        vjust=ifelse(yrel > 0.5, 1.5, -0.5),
-        color=col, label=paste0(round(len, 1), unit))
-    return(list(line, text))
+    if (!is.null(arrayLayerType) && !is.null(arrayLayerName)) {
+        x <- get(arrayLayerType)(x, arrayLayerName)
+
+        # validity
+        ok <- \(x) is.numeric(x) && is.finite(x) && length(x) == 1
+        if (!is.null(object$len)) stopifnot(ok(object$len), object$len > 0)
+        stopifnot(ok(object$xrel), ok(object$yrel))
+        
+        xi <- which(axes(x, "name") == "x")
+        unit <- axes(x)[[xi]]$unit
+        if (unit %in% names(.unit_map))
+            unit <- .unit_map[unit]
+
+        wh <- extent(x)[c("x", "y")] |> setNames(c("w", "h"))
+        if (is.null(object$len)) object$len <- 0.05*diff(wh$w)
+        if (object$xrel <= 0.5) {
+            xmin <- diff(wh$w) * object$xrel + wh$w[1]
+            xmax <- diff(wh$w) * object$xrel + wh$w[1] + object$len
+        } else {
+            xmin <- wh$w[2] - diff(wh$w) * (1 - object$xrel) - object$len
+            xmax <- wh$w[2] - diff(wh$w) * (1 - object$xrel)
+        }
+        y <- wh$h[2] - diff(wh$h) * object$yrel
+        
+        line <- annotate(
+            geom="segment", 
+            color=object$col, linewidth=object$lwd,
+            x=xmin, xend=xmax, y=y, yend=y)
+        text <- annotate(
+            geom="text", 
+            x=(xmin+xmax)/2, y=y, 
+            vjust=ifelse(object$yrel > 0.5, 1.5, -0.5),
+            color=object$col, label=paste0(round(object$len, 1), unit))
+        plot <- plot + list(line, text)
+    }
+    plot
 }

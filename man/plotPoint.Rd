@@ -4,17 +4,17 @@
 \alias{plotPoint}
 \title{Add point layer to SpatialData plot}
 \usage{
-plotPoint(x = NULL, i = 1, j = NULL, ...)
+plotPoint(i = 1, j = NULL, x = NULL, ...)
 }
 \arguments{
-\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
-the object will be inherited from \code{plotSpatialData()}.}
-
 \item{i}{Index or name of point to plot.}
 
 \item{j}{Index or name of coordinate transformation to use. If \code{NULL}, 
 the coordinate transformation will be inherited from 
 \code{plotSpatialData()}.}
+
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+the object will be inherited from \code{plotSpatialData()}.}
 
 \item{...}{Optional aesthetic arguments passed to \code{geom_sf}.}
 }
@@ -34,6 +34,6 @@ i <- "blobs_points"
 p <- plotSpatialData(x)
 p + plotPoint(i=i)                       # simple
 p + plotPoint(i=i, colour="genes")       # discrete
-p + plotPoint(i=i, colour="instance_id") # continuous
+p + plotPoint(i, colour="instance_id") # continuous
 
 }

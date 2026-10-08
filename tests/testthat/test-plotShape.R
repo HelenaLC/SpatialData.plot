@@ -13,7 +13,7 @@ test_that("plotShape(),circles", {
     expect_error(p + plotShape(i = 100))
     # simple
     y <- shape(x, i <- "blobs_circles")
-    q <- p + plotShape(i = i)
+    q <- p + plotShape(i)
     expect_s3_class(q, "ggplot")
     df <- sf::st_coordinates(sf::st_as_sf(data(y)))
     geom <- ggplot2::layer_data(q, 1)$geometry
