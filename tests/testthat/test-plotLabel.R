@@ -33,6 +33,13 @@ test_that("3/4D plotLabel()", {
     expect_is(plotLabel(x=x), "sd_label") # project both
     expect_is(plotLabel(x=x, t=1), "sd_label") # t-slice
     expect_is(plotLabel(x=x, z=1), "sd_label") # z-slice
+    # check that t=1 will be chosen if not specified
+    set.seed(782L)
+    p1 <- plotSpatialData(x) + plotLabel(t=1)
+    set.seed(782L)
+    p2 <- plotSpatialData(x) + plotLabel()
+    expect_identical(ggplot2::layer_data(p1, 1),
+                     ggplot2::layer_data(p2, 1))
     # check data
     x <- .mock(t=2, z=3, y=h <- 44, x=w <- 55)
     expect_is(l <- plotLabel(z=1, t=1), "sd_label")
