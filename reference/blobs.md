@@ -18,7 +18,7 @@ x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="spatialdataR")
 (x <- readSpatialData(x))
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmpc3xlu0/duckdb
+#> ℹ /tmp/RtmphH04mh/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.

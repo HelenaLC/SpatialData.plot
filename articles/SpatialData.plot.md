@@ -274,7 +274,7 @@ wrap_plots(c(list(all), one), nrow=2)
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] SpatialData.plot_0.99.7 spatialdataR_0.99.44    ggnewscale_0.5.2       
+    ## [1] SpatialData.plot_0.99.8 spatialdataR_0.99.44    ggnewscale_0.5.2       
     ## [4] patchwork_1.3.2         ggplot2_4.0.3           BiocStyle_2.41.0       
     ## 
     ## loaded via a namespace (and not attached):
