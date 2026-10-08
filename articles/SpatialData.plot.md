@@ -94,7 +94,7 @@ x <- system.file(x, package="spatialdataR")
 
 `SpatialData.plot` provides 5 user-facing plotting functions:
 
-- [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotImage.md)
+- [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md)
   renders a base (blank) `ggplot` with simple aesthetics and,
   importantly, a fixed axial ratio as to not distort spatial
   coordinates.
@@ -145,7 +145,7 @@ where `k` specifies the target scale. This also works for plotting:
 ``` r
 
 wrap_plots(nrow=1, lapply(seq(3), \(.) 
-    plotSpatialData() + plotImage(x, i=2, k=.)))
+    plotSpatialData(x) + plotImage(i=2, k=.)))
 ```
 
 ![](SpatialData.plot_files/figure-html/ms-plot-1.png)
@@ -164,13 +164,13 @@ t <- getTable(x, i)
 t$id <- sample(letters, ncol(t))
 table(x) <- t
 
-p <- plotSpatialData()
+p <- plotSpatialData(x)
 pal_d <- hcl.colors(10, "Spectral")
 pal_c <- hcl.colors(9, "Inferno")[-9]
 
-a <- p + plotLabel(x, i, pal="grey")                   # binary
-b <- p + plotLabel(x, i, c="id", pal=pal_d)            # metadata
-c <- p + plotLabel(x, i, c="channel_1_sum", pal=pal_c) # assay
+a <- p + plotLabel(i = i, pal="grey")                   # binary
+b <- p + plotLabel(i = i, c="id", pal=pal_d)            # metadata
+c <- p + plotLabel(i = i, c="channel_1_sum", pal=pal_c) # assay
 
 (a | b | c) + 
     plot_layout(guides="collect") & 
@@ -188,9 +188,9 @@ and accepts both discrete and continuous color specifications.
 ``` r
 
 i <- "blobs_points"
-a <- p + plotPoint(x, i)
-b <- p + plotPoint(x, i, col="genes")       # discrete
-c <- p + plotPoint(x, i, col="instance_id") # continuous
+a <- p + plotPoint(i = i)
+b <- p + plotPoint(i = i, col="genes")       # discrete
+c <- p + plotPoint(i = i, col="instance_id") # continuous
 (a | b | c) 
 ```
 
@@ -203,16 +203,16 @@ which includes all possible types: circles and (multi)polygons.
 
 ``` r
 
-p <- plotSpatialData()
+p <- plotSpatialData(x)
 a <- p +
-    ggtitle("polygons") +
-    plotShape(x, "blobs_polygons")
+    labs(title = "polygons") +
+    plotShape(i = "blobs_polygons")
 b <- p +
-    ggtitle("multipolygons") +
-    plotShape(x, "blobs_multipolygons")
+    labs(title = "multipolygons") +
+    plotShape(i = "blobs_multipolygons")
 c <- p +
-    ggtitle("circles") +
-    plotShape(x, "blobs_circles")
+    labs(title = "circles") +
+    plotShape(i = "blobs_circles")
 (a | b | c)
 ```
 
@@ -229,23 +229,23 @@ fill/color requires setting up a new scale with
 
 ``` r
 
-p <- plotSpatialData()
+p <- plotSpatialData(x)
 # joint
 all <- p +
-    plotImage(x) +
-    plotLabel(x, a=1/3) +
-    plotShape(x, 1) +
-    plotShape(x, 3) +
+    plotImage() +
+    plotLabel(a=1/3) +
+    plotShape(i = 1) +
+    plotShape(i = 3) +
     new_scale_color() +
-    plotPoint(x, col="genes") +
-    ggtitle("layered")
+    plotPoint(col="genes") +
+    labs(title = "layered")
 # split
 one <- list(
-    p + plotImage(x) + ggtitle("image"),
-    p + plotLabel(x) + ggtitle("labels"),
-    p + plotShape(x, 1) + ggtitle("circles"),
-    p + plotShape(x, 3) + ggtitle("polygons"),
-    p + plotPoint(x, col="genes") + ggtitle("points"))
+    p + plotImage() + labs(title = "image"),
+    p + plotLabel() + labs(title = "labels"),
+    p + plotShape(i = 1) + labs(title = "circles"),
+    p + plotShape(i = 3) + labs(title = "polygons"),
+    p + plotPoint(col="genes") + labs(title = "points"))
 wrap_plots(c(list(all), one), nrow=2)
 ```
 
@@ -253,7 +253,7 @@ wrap_plots(c(list(all), one), nrow=2)
 
 ## Session info
 
-    ## R Under development (unstable) (2026-10-05 r90641)
+    ## R Under development (unstable) (2026-10-06 r90643)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.5 LTS
     ## 
@@ -283,48 +283,46 @@ wrap_plots(c(list(all), one), nrow=2)
     ##  [5] farver_2.1.2                R.utils_2.13.0             
     ##  [7] S7_0.2.2                    fastmap_1.2.0              
     ##  [9] SingleCellExperiment_1.35.2 duckdb_1.5.6               
-    ## [11] tweenr_2.0.3                digest_0.6.39              
-    ## [13] lifecycle_1.0.5             sf_1.1-3                   
-    ## [15] paws.storage_0.10.0         magrittr_2.0.5             
-    ## [17] compiler_4.7.0              rlang_1.3.0                
-    ## [19] sass_0.4.10                 tools_4.7.0                
-    ## [21] yaml_2.3.12                 knitr_1.52                 
-    ## [23] labeling_0.4.3              S4Arrays_1.13.2            
-    ## [25] classInt_0.4-11             curl_8.0.0                 
-    ## [27] reticulate_1.47.0           DelayedArray_0.39.8        
-    ## [29] RColorBrewer_1.1-3          abind_1.4-8                
-    ## [31] KernSmooth_2.23-27          withr_3.0.3                
-    ## [33] purrr_1.2.2                 BiocGenerics_0.59.12       
-    ## [35] desc_1.4.3                  R.oo_1.27.1                
-    ## [37] polyclip_1.10-7             grid_4.7.0                 
-    ## [39] stats4_4.7.0                e1071_1.7-17               
-    ## [41] MASS_7.3-66                 scales_1.4.0               
-    ## [43] SummarizedExperiment_1.43.0 cli_3.6.6                  
-    ## [45] rmarkdown_2.32              crayon_1.5.3               
-    ## [47] ragg_1.5.2                  generics_0.1.4             
-    ## [49] otel_0.2.0                  ggforce_0.5.0              
-    ## [51] DBI_1.3.0                   cachem_1.1.0               
-    ## [53] proxy_0.4-29                BiocManager_1.30.27        
-    ## [55] XVector_0.53.0              matrixStats_1.5.0          
-    ## [57] vctrs_0.7.3                 Matrix_1.7-6               
-    ## [59] jsonlite_2.0.0              bookdown_0.48              
-    ## [61] IRanges_2.47.5              S4Vectors_0.51.10          
-    ## [63] RBGL_1.89.0                 systemfonts_1.3.2          
-    ## [65] jquerylib_0.1.4             units_1.0-1                
-    ## [67] glue_1.8.1                  pkgdown_2.2.1              
-    ## [69] ZarrArray_1.1.7             gtable_0.3.6               
-    ## [71] Rarr_2.1.43                 GenomicRanges_1.65.4       
-    ## [73] tibble_3.3.1                pillar_1.11.1              
-    ## [75] htmltools_0.5.9             Seqinfo_1.3.2              
-    ## [77] graph_1.91.0                dbplyr_2.6.0               
-    ## [79] R6_2.6.1                    httr2_1.3.0                
-    ## [81] wk_0.9.5                    textshaping_1.0.5          
-    ## [83] evaluate_1.0.5              lattice_0.23-1             
-    ## [85] Biobase_2.73.2              R.methodsS3_1.8.2          
-    ## [87] png_0.1-9                   duckspatial_1.2.1          
-    ## [89] paws.common_0.9.0           bslib_0.12.0               
-    ## [91] class_7.3-24                uuid_1.2-2                 
-    ## [93] Rcpp_1.1.2                  SparseArray_1.13.4         
-    ## [95] anndataR_1.3.2              xfun_0.61                  
-    ## [97] fs_2.1.0                    MatrixGenerics_1.25.0      
-    ## [99] pkgconfig_2.0.3
+    ## [11] digest_0.6.39               lifecycle_1.0.5            
+    ## [13] sf_1.1-3                    paws.storage_0.11.0        
+    ## [15] magrittr_2.0.5              compiler_4.7.0             
+    ## [17] rlang_1.3.0                 sass_0.4.10                
+    ## [19] tools_4.7.0                 yaml_2.3.12                
+    ## [21] knitr_1.52                  labeling_0.4.3             
+    ## [23] S4Arrays_1.13.2             classInt_0.4-11            
+    ## [25] curl_8.0.0                  reticulate_1.47.0          
+    ## [27] DelayedArray_0.39.8         RColorBrewer_1.1-3         
+    ## [29] abind_1.4-8                 KernSmooth_2.23-27         
+    ## [31] withr_3.0.3                 purrr_1.2.2                
+    ## [33] BiocGenerics_0.59.12        desc_1.4.3                 
+    ## [35] R.oo_1.27.1                 grid_4.7.0                 
+    ## [37] stats4_4.7.0                e1071_1.7-17               
+    ## [39] scales_1.4.0                SummarizedExperiment_1.43.0
+    ## [41] cli_3.6.6                   rmarkdown_2.32             
+    ## [43] crayon_1.5.3                ragg_1.5.2                 
+    ## [45] generics_0.1.4              otel_0.2.0                 
+    ## [47] DBI_1.3.0                   cachem_1.1.0               
+    ## [49] proxy_0.4-29                BiocManager_1.30.27        
+    ## [51] XVector_0.53.0              matrixStats_1.5.0          
+    ## [53] vctrs_0.7.3                 Matrix_1.7-6               
+    ## [55] jsonlite_2.0.0              bookdown_0.48              
+    ## [57] IRanges_2.47.5              S4Vectors_0.51.10          
+    ## [59] RBGL_1.89.0                 systemfonts_1.3.2          
+    ## [61] jquerylib_0.1.4             units_1.0-1                
+    ## [63] glue_1.8.1                  pkgdown_2.2.1              
+    ## [65] ZarrArray_1.1.7             gtable_0.3.6               
+    ## [67] Rarr_2.1.45                 GenomicRanges_1.65.4       
+    ## [69] tibble_3.3.1                pillar_1.11.1              
+    ## [71] htmltools_0.5.9             Seqinfo_1.3.2              
+    ## [73] graph_1.91.0                dbplyr_2.6.0               
+    ## [75] R6_2.6.1                    httr2_1.3.0                
+    ## [77] wk_0.9.5                    textshaping_1.0.5          
+    ## [79] evaluate_1.0.5              lattice_0.23-1             
+    ## [81] Biobase_2.73.2              R.methodsS3_1.8.2          
+    ## [83] png_0.1-9                   duckspatial_1.2.1          
+    ## [85] paws.common_0.9.0           bslib_0.12.0               
+    ## [87] class_7.3-24                uuid_1.2-2                 
+    ## [89] Rcpp_1.1.2                  SparseArray_1.13.4         
+    ## [91] anndataR_1.3.2              xfun_0.61                  
+    ## [93] fs_2.1.0                    MatrixGenerics_1.25.0      
+    ## [95] pkgconfig_2.0.3

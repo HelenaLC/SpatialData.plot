@@ -52,22 +52,20 @@ plotSpatialData() +
 - [`blobs`](https://HelenaLC.github.io/SpatialData.plot/reference/blobs.md)
   : \`SpatialData\` .zarr toy datasets
 
-- [`plotShape(`*`<SpatialData>`*`)`](https://HelenaLC.github.io/SpatialData.plot/reference/plotFrame.md)
-  [`plotPoint(`*`<SpatialData>`*`)`](https://HelenaLC.github.io/SpatialData.plot/reference/plotFrame.md)
-  :
+- [`plotImage()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotImage.md)
+  : Add image layer to SpatialData plot
 
-  `SpatialData` point/shape viz.
+- [`plotLabel()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotLabel.md)
+  : Add label layer to SpatialData plot
 
-- [`plotImage(`*`<SpatialData>`*`)`](https://HelenaLC.github.io/SpatialData.plot/reference/plotImage.md)
-  [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotImage.md)
-  :
+- [`plotPoint()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotPoint.md)
+  : Add point layer to SpatialData plot
 
-  `SpatialData` image viz.
+- [`plotShape()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotShape.md)
+  : Add shape layer to SpatialData plot
 
-- [`plotLabel(`*`<SpatialData>`*`)`](https://HelenaLC.github.io/SpatialData.plot/reference/plotLabel.md)
-  :
-
-  `SpatialData` label viz.
+- [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md)
+  : Plot a SpatialData object
 
 - [`scalebar()`](https://HelenaLC.github.io/SpatialData.plot/reference/scalebar.md)
   :

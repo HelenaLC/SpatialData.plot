@@ -1,15 +1,14 @@
-# `SpatialData` label viz.
+# Add label layer to SpatialData plot
 
-`SpatialData` label viz.
+Add label layer to SpatialData plot
 
 ## Usage
 
 ``` r
-# S4 method for class 'SpatialData'
 plotLabel(
-  x,
+  x = NULL,
   i = 1,
-  j = 1,
+  j = NULL,
   k = NULL,
   c = NULL,
   a = 0.5,
@@ -25,19 +24,23 @@ plotLabel(
 
 - x:
 
-  `SpatialData` object.
+  [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
+  object. If `NULL`, the object will be inherited from
+  [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 - i:
 
-  character string or index; the label element to plot.
+  Index or name of label to plot.
 
 - j:
 
-  index or name of target coordinate system.
+  Index or name of coordinate transformation to use. If `NULL`, the
+  coordinate transformation will be inherited from
+  [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 - k:
 
-  index of the scale to render; by default (NULL), will auto-select
+  Index of the scale to render; by default (NULL), will auto-select
   scale in order to minimize memory-usage and blurring for a target size
   of 800 x 800px; use Inf to plot the lowest resolution available.
 
@@ -69,13 +72,13 @@ plotLabel(
 
 - t, z:
 
-  integer scalar to indicate a specific time- or z-slice; if left
+  Integer scalar to indicate a specific time- or z-slice; if left
   unspecified (default NULL), will perform a max-projection.
 
 ## Value
 
-list of \`ggplot\` layers, including \`geom_tile\` of the specified
-image/label element
+An object of type `sd_label`, which can be added to an existing
+`ggplot`.
 
 ## Examples
 
@@ -85,10 +88,10 @@ x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x)
 
 i <- "blobs_labels"
-p <- plotSpatialData()
+p <- plotSpatialData(x)
 
 # simple binary image
-p + plotLabel(x, i)
+p + plotLabel(i=i)
 
 
 # mock up some extra data
@@ -97,11 +100,15 @@ t$id <- sample(letters, ncol(t))
 table(x) <- t
 
 # coloring by 'colData'
-p + plotLabel(x, i, c="id")
+t <- getTable(x, i)
+t$id <- sample(letters, ncol(t))
+table(x) <- t
+plotSpatialData(x) + plotLabel(i=i, c="id")
 
 
 # coloring by 'assay' data
-p + plotLabel(x, i, 
+plotSpatialData(x) + plotLabel(i=i, 
   c="channel_1_sum", 
   pal=c("lavender", "blue"))
+
 ```
