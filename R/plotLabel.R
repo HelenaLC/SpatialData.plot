@@ -156,5 +156,14 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
             theme(legend.position="none"),
             scale_fill_manual(NULL, values=object$pal))
     }
+    
+    if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
+        xi <- which(axes(y, "name") == "x")
+        if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
+            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+                                            list(arrayLayerType = "label",
+                                                 arrayLayerName = object$i))
+        }
+    }
     plot + list(thm, do.call(geom_tile, list(data=df, mapping=aes, alpha=object$a)))
 }

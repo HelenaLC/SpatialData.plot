@@ -134,6 +134,14 @@ ggplot_add.sd_shape <- function(object, plot, object_name) {
             j <- CTname(y)[j]
     }
     y <- transform(y, j)
+    if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
+        xi <- which(axes(y, "name") == "x")
+        if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
+            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+                                            list(arrayLayerType = "shape",
+                                                 arrayLayerName = object$i))
+        }
+    }
     plot + do.call(.plot, modifyList(object, list(x=x, y=y, j=NULL, `...`=NULL)))
 }
 
@@ -157,5 +165,13 @@ ggplot_add.sd_point <- function(object, plot, object_name) {
             j <- CTname(y)[j]
     }
     y <- transform(y, j)
+    if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
+        xi <- which(axes(y, "name") == "x")
+        if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
+            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+                                            list(arrayLayerType = "point",
+                                                 arrayLayerName = object$i))
+        }
+    }
     plot + do.call(.plot, modifyList(object, list(x=x, y=y, j=NULL, `...`=NULL)))
 }

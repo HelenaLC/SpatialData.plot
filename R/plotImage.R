@@ -259,5 +259,14 @@ ggplot_add.sd_image <- function(object, plot, object_name) {
     }
     # physical space mapping
     wh <- .get_wh(y)
+    
+    if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
+        xi <- which(axes(y, "name") == "x")
+        if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
+            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+                                            list(arrayLayerType = "image",
+                                                 arrayLayerName = object$i))
+        }
+    }
     plot + .gg_i(df, wh$w, wh$h, pal)
 }
