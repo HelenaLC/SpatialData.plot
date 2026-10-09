@@ -67,7 +67,7 @@ companion [demo website](https://helenalc.github.io/SpatialData.demo).**
 
 ```{r read-data}
 x <- file.path("extdata", "blobs.zarr")
-x <- system.file(x, package="spatialdataR")
+x <- system.file(x, package="SpatialData.plot")
 (x <- readSpatialData(x))
 ```
 
@@ -199,7 +199,6 @@ A scalebar of a specified length (in the annotated unit) can be added using
 the `scalebar()` function.
 
 ```{r}
-image(x) <- set_unit(image(x), dim="x", val="micron")
 plotSpatialData(x) +
     plotImage() +
     plotLabel(a=1/3) +
