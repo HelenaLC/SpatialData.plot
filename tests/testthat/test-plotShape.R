@@ -7,6 +7,8 @@ x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x, tables=FALSE)
 
 test_that("plotShape(),circles", {
+    expect_error(plotShape(x=x, as="missing"), 
+                 "must be either")
     p <- plotSpatialData(x)
     # invalid
     expect_error(p + plotShape(i = "."))
@@ -32,13 +34,18 @@ test_that("plotShape(),circles", {
     expect_all_equal(ggplot2::layer_data(q, 1)$colour, c)
     q <- p + plotShape(i = i, colour=c <- "red") # string
     expect_all_equal(ggplot2::layer_data(q, 1)$colour, c)
+    
+    xtmp <- x
+    shape(xtmp)@data <- duckspatial::ddbs_is_simple(data(shape(xtmp)))
+    q <- plotSpatialData(xtmp) + plotShape(fill="is_simple")
+    expect_all_equal(ggplot2::layer_data(q, 1)$fill, "#F8766D")
 })
 
 test_that("plotShape(),polygons", {
     p <- plotSpatialData(x)
     y <- shape(x, i <- "blobs_polygons")
     # simple
-    q <- p + plotShape(i = i)
+    q <- plotSpatialData() + plotShape(x=x, i=i)
     geom <- ggplot2::layer_data(q)$geometry
     expect_s3_class(q, "ggplot")
     df <- centroids(y)
@@ -48,12 +55,16 @@ test_that("plotShape(),polygons", {
     expect_s3_class(geom, "sfc_POLYGON")
     # color
     expect_error(show(p + plotShape(i = i, colour=".")))
-    q <- p + plotShape(i = i, colour=NA) # none
+    q <- p + plotShape(i=i, colour=NA) # none
     expect_all_equal(ggplot2::layer_data(q, 1)$colour, NA)
-    q <- p + plotShape(i = i, colour=c <- 1) # numeric
+    q <- p + plotShape(i=i, colour=c <- 1) # numeric
     expect_all_equal(ggplot2::layer_data(q, 1)$colour, c)
-    q <- p + plotShape(i = i, colour=c <- "red") # string
+    q <- p + plotShape(i=i, colour=c <- "red") # string
     expect_all_equal(ggplot2::layer_data(q, 1)$colour, c)
+    
+    q <- p + plotShape(i=i, as="border") + plotShape(i=i, as="centroid")
+    expect_length(q@layers, 2L)
+    
     # TODO
     # # coloring by 'table'
     # f <- list(

@@ -37,7 +37,7 @@ test_that("3/4D plotLabel()", {
     set.seed(782L)
     p1 <- plotSpatialData(x) + plotLabel(t=1)
     set.seed(782L)
-    p2 <- plotSpatialData(x) + plotLabel()
+    p2 <- plotSpatialData() + plotLabel(x=x)
     expect_identical(ggplot2::layer_data(p1, 1),
                      ggplot2::layer_data(p2, 1))
     # check data
