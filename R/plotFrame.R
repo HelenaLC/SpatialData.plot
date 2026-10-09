@@ -99,8 +99,8 @@ plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
                 df <- cbind(df, fd)
             }
             if (val %in% names(df)) {
-                if (scale_type(df[[arg]]) == "discrete")
-                    df[[val]] <- factor(df[[arg]])
+                if (scale_type(df[[val]]) == "discrete")
+                    df[[val]] <- factor(df[[val]])
                 col <- match(arg, c("col", "color", "colour"))
                 .arg <- ifelse(!is.na(col), "colour", arg)
                 aes[[.arg]] <- aes(.data[[val]])[[1]]
