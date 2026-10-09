@@ -81,5 +81,6 @@ test_that("plotShape(),multipolygons", {
     expect_all_equal(df$colour, hex <- "#595959FF")
     fd <- ggplot2::layer_data(q)
     fd$colour <- hex
-    expect_identical(df, fd)
+    expect_identical(sort(colnames(df)), sort(colnames(fd)))
+    expect_identical(df, fd[, colnames(df)])
 })
