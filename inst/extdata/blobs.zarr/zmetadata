@@ -17,10 +17,12 @@
                         {
                             "name": "y",
                             "type": "space"
+                            "unit": "micrometer"
                         },
                         {
                             "name": "x",
-                            "type": "space"
+                            "type": "space",
+                            "unit": "micrometer"
                         }
                     ],
                     "coordinateTransformations": [
@@ -155,11 +157,13 @@
                         },
                         {
                             "name": "y",
-                            "type": "space"
+                            "type": "space",
+                            "unit": "micrometer"
                         },
                         {
                             "name": "x",
-                            "type": "space"
+                            "type": "space",
+                            "unit": "micrometer"
                         }
                     ],
                     "coordinateTransformations": [
