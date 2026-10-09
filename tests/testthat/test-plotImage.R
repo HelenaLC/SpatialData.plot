@@ -37,8 +37,8 @@ test_that(".ch_idx()", {
 
 test_that(".df_i()", {
     m <- .mock(c=3, t=2, z=1, y=5, x=3)
-    expect_identical(.df_i(x=m, k=1, ch=1, t=1, c=NULL, cl=NULL, z=1),
-                     .df_i(x=m, k=1, ch=1, t=NULL, c=NULL, cl=NULL, z=1))
+    expect_identical(.df_i(x=m, k=1, ch="a", t=1, c=NULL, cl=NULL, z=1),
+                     .df_i(x=m, k=1, ch="a", t=NULL, c=NULL, cl=NULL, z=1))
     expect_error(.df_i(x=m, k=1, ch=1, t=c(1,2), c=NULL, cl=NULL, z=1),
                  "Only a single timepoint can be selected")
 })
