@@ -43,7 +43,6 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotImage</span><span class="op">(</span></span>
-<span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  i <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  j <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  k <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -51,7 +50,8 @@
 <span>  c <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cl <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  t <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  z <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  z <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  x <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -59,12 +59,7 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p><code><a href="https://helenalc.github.io/spatialdataR/reference/SpatialData.html" class="external-link">SpatialData</a></code> object. If <code>NULL</code>,
-the object will be inherited from <code><a href="plotSpatialData.html">plotSpatialData()</a></code>.</p></dd>
-
-
-<dt id="arg-i">i<a class="anchor" aria-label="anchor" href="#arg-i"></a></dt>
+<dl><dt id="arg-i">i<a class="anchor" aria-label="anchor" href="#arg-i"></a></dt>
 <dd><p>Index or name of image to plot.</p></dd>
 
 
@@ -101,6 +96,11 @@ for convenience, any NULL = [0, 1], and n = [0, n]).</p></dd>
 <dd><p>Integer scalar to indicate a specific time- or z-slice;
 if left unspecified (default NULL), will perform a max-projection.</p></dd>
 
+
+<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
+<dd><p><code><a href="https://helenalc.github.io/spatialdataR/reference/SpatialData.html" class="external-link">SpatialData</a></code> object. If <code>NULL</code>,
+the object will be inherited from <code><a href="plotSpatialData.html">plotSpatialData()</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -116,7 +116,7 @@ existing <code>ggplot</code>.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">ms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, \<span class="op">(</span><span class="va">.</span><span class="op">)</span> </span></span>
 <span class="r-in"><span>  <span class="fu"><a href="plotSpatialData.html">plotSpatialData</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu">plotImage</span><span class="op">(</span>i<span class="op">=</span><span class="fl">2</span>, k<span class="op">=</span><span class="va">.</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">plotImage</span><span class="op">(</span><span class="fl">2</span>, k<span class="op">=</span><span class="va">.</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotImage-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>

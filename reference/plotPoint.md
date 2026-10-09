@@ -5,16 +5,10 @@ Add point layer to SpatialData plot
 ## Usage
 
 ``` r
-plotPoint(x = NULL, i = 1, j = NULL, ...)
+plotPoint(i = 1, j = NULL, x = NULL, ...)
 ```
 
 ## Arguments
-
-- x:
-
-  [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
-  object. If `NULL`, the object will be inherited from
-  [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 - i:
 
@@ -24,6 +18,12 @@ plotPoint(x = NULL, i = 1, j = NULL, ...)
 
   Index or name of coordinate transformation to use. If `NULL`, the
   coordinate transformation will be inherited from
+  [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
+
+- x:
+
+  [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
+  object. If `NULL`, the object will be inherited from
   [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 - ...:
@@ -54,7 +54,7 @@ p + plotPoint(i=i, colour="genes")       # discrete
 #> Coordinate system already present.
 #> ℹ Adding new coordinate system, which will replace the existing one.
 
-p + plotPoint(i=i, colour="instance_id") # continuous
+p + plotPoint(i, colour="instance_id") # continuous
 #> Don't know how to automatically pick scale for object of type <NULL>.
 #> Defaulting to continuous.
 #> Coordinate system already present.

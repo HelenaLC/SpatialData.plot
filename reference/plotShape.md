@@ -5,16 +5,10 @@ Add shape layer to SpatialData plot
 ## Usage
 
 ``` r
-plotShape(x = NULL, i = 1, j = NULL, assay = 1, ...)
+plotShape(i = 1, j = NULL, assay = 1, x = NULL, ...)
 ```
 
 ## Arguments
-
-- x:
-
-  [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
-  object. If `NULL`, the object will be inherited from
-  [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 - i:
 
@@ -32,6 +26,12 @@ plotShape(x = NULL, i = 1, j = NULL, assay = 1, ...)
   `assay` data to use (see
   [`getTable`](https://helenalc.github.io/spatialdataR/reference/table-utils.html)).
   (ignored when `x` is a `SpatialDataPoint`).
+
+- x:
+
+  [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
+  object. If `NULL`, the object will be inherited from
+  [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 - ...:
 
@@ -65,8 +65,8 @@ patchwork::wrap_plots(a, b, c)
 
 # layered
 p +
-  plotShape(i="blobs_circles", fill="pink") +
-  plotShape(i="blobs_polygons", colour="red")
+  plotShape("blobs_circles", fill="pink") +
+  plotShape("blobs_polygons", colour="red")
 #> Coordinate system already present.
 #> ℹ Adding new coordinate system, which will replace the existing one.
 #> Coordinate system already present.

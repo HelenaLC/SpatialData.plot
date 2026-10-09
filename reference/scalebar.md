@@ -1,19 +1,16 @@
-# `SpatialDataArray` scalebar
+# Add scalebar to plot
 
-`SpatialDataArray` scalebar
+`scalebar` will get the axis unit and scale information from the closest
+preceding layer where this information is present. Therefore, the
+placement of `scalebar` in the sequence of layers is important.
 
 ## Usage
 
 ``` r
-scalebar(x, len = NULL, col = "red", lwd = 1, xrel = 0.05, yrel = 0.05)
+scalebar(len = NULL, col = "red", lwd = 1, xrel = 0.05, yrel = 0.05)
 ```
 
 ## Arguments
-
-- x:
-
-  a `SpatialDataArray` object (i.e., image or label element from a
-  `SpatialData` object).
 
 - len:
 
@@ -54,6 +51,6 @@ sd$images[[2]]@meta <- md
 
 plotSpatialData(sd) + 
   plotImage(i=2) + 
-  scalebar(image(sd, i=2), len=10)
+  scalebar(len=10)
 
 ```

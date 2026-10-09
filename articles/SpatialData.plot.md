@@ -63,7 +63,7 @@ website](https://helenalc.github.io/SpatialData.demo).**
 ``` r
 
 x <- file.path("extdata", "blobs.zarr")
-x <- system.file(x, package="spatialdataR")
+x <- system.file(x, package="SpatialData.plot")
 (x <- readSpatialData(x))
 ```
 
@@ -168,9 +168,9 @@ p <- plotSpatialData(x)
 pal_d <- hcl.colors(10, "Spectral")
 pal_c <- hcl.colors(9, "Inferno")[-9]
 
-a <- p + plotLabel(i = i, pal="grey")                   # binary
-b <- p + plotLabel(i = i, c="id", pal=pal_d)            # metadata
-c <- p + plotLabel(i = i, c="channel_1_sum", pal=pal_c) # assay
+a <- p + plotLabel(i, pal="grey")                   # binary
+b <- p + plotLabel(i, c="id", pal=pal_d)            # metadata
+c <- p + plotLabel(i, c="channel_1_sum", pal=pal_c) # assay
 
 (a | b | c) + 
     plot_layout(guides="collect") & 
@@ -188,9 +188,9 @@ and accepts both discrete and continuous color specifications.
 ``` r
 
 i <- "blobs_points"
-a <- p + plotPoint(i = i)
-b <- p + plotPoint(i = i, col="genes")       # discrete
-c <- p + plotPoint(i = i, col="instance_id") # continuous
+a <- p + plotPoint(i=i)
+b <- p + plotPoint(i=i, col="genes")       # discrete
+c <- p + plotPoint(i=i, col="instance_id") # continuous
 (a | b | c) 
 ```
 
@@ -205,14 +205,14 @@ which includes all possible types: circles and (multi)polygons.
 
 p <- plotSpatialData(x)
 a <- p +
-    labs(title = "polygons") +
-    plotShape(i = "blobs_polygons")
+    labs(title="polygons") +
+    plotShape(i="blobs_polygons")
 b <- p +
-    labs(title = "multipolygons") +
-    plotShape(i = "blobs_multipolygons")
+    labs(title="multipolygons") +
+    plotShape(i="blobs_multipolygons")
 c <- p +
-    labs(title = "circles") +
-    plotShape(i = "blobs_circles")
+    labs(title="circles") +
+    plotShape(i="blobs_circles")
 (a | b | c)
 ```
 
@@ -234,22 +234,39 @@ p <- plotSpatialData(x)
 all <- p +
     plotImage() +
     plotLabel(a=1/3) +
-    plotShape(i = 1) +
-    plotShape(i = 3) +
+    plotShape(i=1) +
+    plotShape(i=3) +
     new_scale_color() +
     plotPoint(col="genes") +
-    labs(title = "layered")
+    labs(title="layered")
 # split
 one <- list(
-    p + plotImage() + labs(title = "image"),
-    p + plotLabel() + labs(title = "labels"),
-    p + plotShape(i = 1) + labs(title = "circles"),
-    p + plotShape(i = 3) + labs(title = "polygons"),
-    p + plotPoint(col="genes") + labs(title = "points"))
+    p + plotImage() + labs(title="image"),
+    p + plotLabel() + labs(title="labels"),
+    p + plotShape(i=1) + labs(title="circles"),
+    p + plotShape(i=3) + labs(title="polygons"),
+    p + plotPoint(col="genes") + labs(title="points"))
 wrap_plots(c(list(all), one), nrow=2)
 ```
 
 ![](SpatialData.plot_files/figure-html/blobs-plot-1.png)
+
+### Scalebars
+
+A scalebar of a specified length (in the annotated unit) can be added
+using the
+[`scalebar()`](https://HelenaLC.github.io/SpatialData.plot/reference/scalebar.md)
+function.
+
+``` r
+
+plotSpatialData(x) +
+    plotImage() +
+    plotLabel(a=1/3) +
+    scalebar(len=10, xrel=0.05, yrel=0.95)
+```
+
+![](SpatialData.plot_files/figure-html/unnamed-chunk-1-1.png)
 
 ## Session info
 

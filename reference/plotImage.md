@@ -6,7 +6,6 @@ Add image layer to SpatialData plot
 
 ``` r
 plotImage(
-  x = NULL,
   i = 1,
   j = NULL,
   k = NULL,
@@ -14,17 +13,12 @@ plotImage(
   c = NULL,
   cl = NULL,
   t = NULL,
-  z = NULL
+  z = NULL,
+  x = NULL
 )
 ```
 
 ## Arguments
-
-- x:
-
-  [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
-  object. If `NULL`, the object will be inherited from
-  [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 - i:
 
@@ -65,6 +59,12 @@ plotImage(
   Integer scalar to indicate a specific time- or z-slice; if left
   unspecified (default NULL), will perform a max-projection.
 
+- x:
+
+  [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
+  object. If `NULL`, the object will be inherited from
+  [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
+
 ## Value
 
 An object of type `sd_image`, which can be added to an existing
@@ -79,7 +79,7 @@ x <- readSpatialData(x, tables=FALSE)
 
 ms <- lapply(seq(3), \(.) 
   plotSpatialData(x) +
-  plotImage(i=2, k=.))
+  plotImage(2, k=.))
 patchwork::wrap_plots(ms)
 
 

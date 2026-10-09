@@ -6,7 +6,6 @@ Add label layer to SpatialData plot
 
 ``` r
 plotLabel(
-  x = NULL,
   i = 1,
   j = NULL,
   k = NULL,
@@ -16,17 +15,12 @@ plotLabel(
   nan = NA,
   assay = 1,
   t = NULL,
-  z = NULL
+  z = NULL,
+  x = NULL
 )
 ```
 
 ## Arguments
-
-- x:
-
-  [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
-  object. If `NULL`, the object will be inherited from
-  [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 - i:
 
@@ -75,6 +69,12 @@ plotLabel(
   Integer scalar to indicate a specific time- or z-slice; if left
   unspecified (default NULL), will perform a max-projection.
 
+- x:
+
+  [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
+  object. If `NULL`, the object will be inherited from
+  [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
+
 ## Value
 
 An object of type `sd_label`, which can be added to an existing
@@ -91,7 +91,7 @@ i <- "blobs_labels"
 p <- plotSpatialData(x)
 
 # simple binary image
-p + plotLabel(i=i)
+p + plotLabel(i)
 
 
 # mock up some extra data
