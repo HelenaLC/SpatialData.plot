@@ -50,12 +50,13 @@ ggplot_add.sd_scalebar <- function(object, plot, object_name) {
         if (!is.null(object$len)) stopifnot(ok(object$len), object$len > 0)
         stopifnot(ok(object$xrel), ok(object$yrel))
         
+        x <- transform(x, plot@meta$sd_args$ct_name)
         xi <- which(axes(x, "name") == "x")
         unit <- axes(x)[[xi]]$unit
         if (unit %in% names(.unit_map))
             unit <- .unit_map[unit]
 
-        wh <- extent(x)[c("x", "y")] |> setNames(c("w", "h"))
+        wh <- .get_wh(x)
         if (is.null(object$len)) object$len <- 0.05*diff(wh$w)
         if (object$xrel <= 0.5) {
             xmin <- diff(wh$w) * object$xrel + wh$w[1]

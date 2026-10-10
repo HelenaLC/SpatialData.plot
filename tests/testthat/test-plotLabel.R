@@ -37,7 +37,7 @@ test_that("3/4D plotLabel()", {
     set.seed(782L)
     p1 <- plotSpatialData(x) + plotLabel(t=1)
     set.seed(782L)
-    p2 <- plotSpatialData(x) + plotLabel()
+    p2 <- plotSpatialData() + plotLabel(x=x)
     expect_identical(ggplot2::layer_data(p1, 1),
                      ggplot2::layer_data(p2, 1))
     # check data
@@ -61,7 +61,7 @@ test_that("coloring plotLabel()", {
     
     # continuous (colData)
     expect_is(l <- plotLabel(1, c="num"), "sd_label")
-    p <- plotSpatialData(y) + l
+    p <- plotSpatialData(y, ct=1) + l
     g <- ggplot2::get_guide_data(p, "fill")
     expect_is(g[[2]], "numeric")
     # continuous (assay)

@@ -4,7 +4,7 @@
 \alias{plotShape}
 \title{Add shape layer to SpatialData plot}
 \usage{
-plotShape(i = 1, j = NULL, assay = 1, x = NULL, ...)
+plotShape(i = 1, j = NULL, assay = 1, x = NULL, as = "border", ...)
 }
 \arguments{
 \item{i}{Index or name of shape to plot.}
