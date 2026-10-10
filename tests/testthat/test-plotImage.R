@@ -107,3 +107,11 @@ test_that("plotImage,3/4D", {
     #expect_error(f(x, t=4))
     #expect_error(f(x, z=5)) TODO: this is not throwing an error?
 })
+
+test_that("Selection by numeric and name are equivalent", {
+    p <- plotSpatialData(x)
+    expect_equal(
+        p + plotImage(2),
+        p + plotImage("blobs_multiscale_image")
+    )
+})
