@@ -270,7 +270,7 @@ plotSpatialData(x) +
 
 ## Session info
 
-    ## R Under development (unstable) (2026-10-06 r90643)
+    ## R Under development (unstable) (2026-10-09 r90655)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.5 LTS
     ## 
