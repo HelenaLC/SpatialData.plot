@@ -34,11 +34,11 @@
 #' patchwork::wrap_plots(a, b)
 #' 
 #' @export
-plotShape <- function(i=1, j=NULL, assay=1, x=NULL, as="border", ...) {
-    if (!as %in% c("border", "solid", "centroid")) {
-        stop("'as' must be either 'border', 'solid' or 'centroid'")
-    }
-    structure(c(mget(names(formals())), list(...)), class = "sd_shape")
+plotShape <- function(i=1, j=NULL, assay=1, x=NULL, 
+    as=c("border", "solid", "centroid"), ...) {
+    args <- mget(names(formals()))
+    args$as <- match.arg(as)
+    structure(c(args, list(...)), class="sd_shape")
 }
 
 #' Add point layer to SpatialData plot
@@ -114,11 +114,9 @@ plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
         df <- st_buffer(df, df$radius)
     } else {
         # shapes 
-        if (identical(as, "centroid")) {
-            st_geometry(df) <- st_centroid(st_geometry(df))
-        } else if (identical(as, "border")) {
-            dot[["fill"]] <- NA
-        }
+        switch(as, 
+            border={ dot[["fill"]] <- NA },
+            centroid={ st_geometry(df) <- st_centroid(st_geometry(df)) })
     }
     list(
         do.call(geom_sf, c(list(data=df, mapping=aes), c(dot))),
