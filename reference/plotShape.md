@@ -5,7 +5,14 @@ Add shape layer to SpatialData plot
 ## Usage
 
 ``` r
-plotShape(i = 1, j = NULL, assay = 1, x = NULL, ...)
+plotShape(
+  i = 1,
+  j = NULL,
+  assay = 1,
+  x = NULL,
+  as = c("border", "solid", "centroid"),
+  ...
+)
 ```
 
 ## Arguments

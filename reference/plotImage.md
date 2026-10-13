@@ -96,8 +96,6 @@ plotSpatialData(x, ct="global") +
   plotPoint(i="blobs_points", colour="instance_id")
 #> Coordinate system already present.
 #> ℹ Adding new coordinate system, which will replace the existing one.
-#> Don't know how to automatically pick scale for object of type <NULL>.
-#> Defaulting to continuous.
 #> Coordinate system already present.
 #> ℹ Adding new coordinate system, which will replace the existing one.
 

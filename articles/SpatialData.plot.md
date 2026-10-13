@@ -114,7 +114,7 @@ Their show method includes the scales available for a given element:
 image(x, "blobs_image")
 ```
 
-    ## class:  SpatialDataImage  
+    ## class: SpatialDataImage  
     ## Scales (1): (3,64,64)
 
 ``` r
@@ -122,7 +122,7 @@ image(x, "blobs_image")
 image(x, "blobs_multiscale_image")
 ```
 
-    ## class:  SpatialDataImage (MultiScale) 
+    ## class: SpatialDataImage (MultiScale) 
     ## Scales (3): (3,64,64 3,32,32 3,16,16)
 
 Internally, multiscale `ImageArray`s are stored as a list of
@@ -270,7 +270,7 @@ plotSpatialData(x) +
 
 ## Session info
 
-    ## R Under development (unstable) (2026-10-09 r90655)
+    ## R Under development (unstable) (2026-10-12 r90666)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.5 LTS
     ## 
@@ -291,7 +291,7 @@ plotSpatialData(x) +
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] SpatialData.plot_0.99.9 spatialdataR_0.99.44    ggnewscale_0.5.2       
+    ## [1] SpatialData.plot_0.99.9 spatialdataR_0.99.45    ggnewscale_0.5.2       
     ## [4] patchwork_1.3.2         ggplot2_4.0.3           BiocStyle_2.41.0       
     ## 
     ## loaded via a namespace (and not attached):
@@ -328,7 +328,7 @@ plotSpatialData(x) +
     ## [61] jquerylib_0.1.4             units_1.0-1                
     ## [63] glue_1.8.1                  pkgdown_2.2.1              
     ## [65] ZarrArray_1.1.7             gtable_0.3.6               
-    ## [67] Rarr_2.1.45                 GenomicRanges_1.65.4       
+    ## [67] Rarr_2.1.46                 GenomicRanges_1.65.4       
     ## [69] tibble_3.3.1                pillar_1.11.1              
     ## [71] htmltools_0.5.9             Seqinfo_1.3.2              
     ## [73] graph_1.91.0                dbplyr_2.6.0               
@@ -336,7 +336,7 @@ plotSpatialData(x) +
     ## [77] wk_0.9.5                    textshaping_1.0.5          
     ## [79] evaluate_1.0.5              lattice_0.23-1             
     ## [81] Biobase_2.73.2              R.methodsS3_1.8.2          
-    ## [83] png_0.1-9                   duckspatial_1.2.1          
+    ## [83] png_0.1-9                   duckspatial_1.3.0          
     ## [85] paws.common_0.9.0           bslib_0.12.0               
     ## [87] class_7.3-24                uuid_1.2-2                 
     ## [89] Rcpp_1.1.2                  SparseArray_1.13.4         

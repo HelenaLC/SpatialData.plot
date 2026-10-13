@@ -49,14 +49,10 @@ p + plotPoint(i=i)                       # simple
 #> ℹ Adding new coordinate system, which will replace the existing one.
 
 p + plotPoint(i=i, colour="genes")       # discrete
-#> Don't know how to automatically pick scale for object of type <NULL>.
-#> Defaulting to continuous.
 #> Coordinate system already present.
 #> ℹ Adding new coordinate system, which will replace the existing one.
 
 p + plotPoint(i, colour="instance_id") # continuous
-#> Don't know how to automatically pick scale for object of type <NULL>.
-#> Defaulting to continuous.
 #> Coordinate system already present.
 #> ℹ Adding new coordinate system, which will replace the existing one.
 
