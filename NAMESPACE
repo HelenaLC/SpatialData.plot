@@ -50,8 +50,11 @@ importFrom(grDevices,
 importFrom(methods,is)
 importFrom(rlang,.data)
 importFrom(sf,
+  "st_geometry<-",
   st_as_sf,
-  st_buffer
+  st_buffer,
+  st_centroid,
+  st_geometry
 )
 importFrom(spatialdataR,
   "element<-",

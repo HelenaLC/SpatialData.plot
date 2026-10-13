@@ -34,8 +34,11 @@
 #' patchwork::wrap_plots(a, b)
 #' 
 #' @export
-plotShape <- function(i=1, j=NULL, assay=1, x=NULL, ...) {
-    structure(c(mget(names(formals())), list(...)), class = "sd_shape")
+plotShape <- function(i=1, j=NULL, assay=1, x=NULL, 
+    as=c("border", "solid", "centroid"), ...) {
+    args <- mget(names(formals()))
+    args$as <- match.arg(as)
+    structure(c(args, list(...)), class="sd_shape")
 }
 
 #' Add point layer to SpatialData plot
@@ -62,13 +65,13 @@ plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
     structure(c(mget(names(formals())), list(...)), class="sd_point")
 }
 
-#' @importFrom sf st_as_sf st_buffer
+#' @importFrom sf st_as_sf st_buffer st_geometry st_centroid st_geometry<-
 #' @importFrom ggplot2 aes theme scale_type geom_sf coord_sf
 #' @importFrom spatialdataR transform element<- feature_key getTable
 #' @importFrom dplyr filter
 #' @importFrom rlang .data
 #' @importFrom methods is
-.plot <- \(x, y, key=NULL, n=NULL, assay=1, i=1, ...) {
+.plot <- \(x, y, key=NULL, n=NULL, assay=1, i=1, as="border",  ...) {
     if (is(y, "SpatialDataPoint") && !is.null(key)) {
         stopifnot(is.character(key), nzchar(key))
         fk <- feature_key(y)
@@ -96,8 +99,8 @@ plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
                 df <- cbind(df, fd)
             }
             if (val %in% names(df)) {
-                if (scale_type(df[[arg]]) == "discrete")
-                    df[[val]] <- factor(df[[arg]])
+                if (scale_type(df[[val]]) == "discrete")
+                    df[[val]] <- factor(df[[val]])
                 col <- match(arg, c("col", "color", "colour"))
                 .arg <- ifelse(!is.na(col), "colour", arg)
                 aes[[.arg]] <- aes(.data[[val]])[[1]]
@@ -106,8 +109,15 @@ plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
         }
     }
     
-    if ("radius" %in% names(df))
+    if ("radius" %in% names(df)) {
+        # points
         df <- st_buffer(df, df$radius)
+    } else {
+        # shapes 
+        switch(as, 
+            border={ dot[["fill"]] <- NA },
+            centroid={ st_geometry(df) <- st_centroid(st_geometry(df)) })
+    }
     list(
         do.call(geom_sf, c(list(data=df, mapping=aes), c(dot))),
         theme(legend.key.size=unit(0.5, "lines")),
