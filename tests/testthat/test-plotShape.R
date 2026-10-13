@@ -7,8 +7,7 @@ x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x, tables=FALSE)
 
 test_that("plotShape(),circles", {
-    expect_error(plotShape(x=x, as="missing"), 
-                 "must be either")
+    expect_error(plotShape(x=x, as="missing"), "should be")
     p <- plotSpatialData(x)
     # invalid
     expect_error(p + plotShape(i = "."))
