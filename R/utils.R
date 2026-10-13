@@ -20,14 +20,10 @@
 # TODO: add more cases from other data types
 # https://doc.embedded-wizard.de/uint-type
 .DTYPE_MAX_VALUES <- c(
-    "uint8" = 255,
-    "int8" = 2^7 - 1,
-    "uint16" = 65535,
-    "int16" = 2^15 - 1,
-    "uint32" = 4294967295,
-    "int32" = 2^31 - 1,
-    "uint64" = 2^64 - 1,
-    "int64" = 2^63 - 1)
+    "uint8"=2^8-1, "int8"=2^7-1,
+    "uint16"=2^16-1, "int16"=2^15-1,
+    "uint32"=2^32-1, "int32"=2^31-1,
+    "uint64"=2^64-1, "int64"=2^63-1)
 
 # guess scale of image or label
 .guess_scale <- \(x, w, h) {
