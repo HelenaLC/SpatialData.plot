@@ -40,8 +40,7 @@ test_that(".get_wh works", {
 
 test_that(".subset_array_by_axes works", {
     m <- .mock(c=2, t=0, z=3, y=5, x=3)
-    expect_error(.subset_array_by_axes(m, axisNames = c("x", "y")), 
-                 "must equal")
+    expect_error(.subset_array_by_axes(m, axisNames = c("x", "y")), "must equal")
     expect_identical(dim(.subset_array_by_axes(m@data[[1]], axisNames=c("c", "z", "y", "x"), y=1:2, x=1)), c(2L, 3L, 2L, 1L))
     expect_identical(dim(.subset_array_by_axes(m@data[[1]], axisNames=c("c", "z", "y", "x"), y=1:2, x=1, drop=TRUE)), c(2L, 3L, 2L))
     

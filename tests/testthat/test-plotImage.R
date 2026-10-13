@@ -88,8 +88,9 @@ test_that(".norm_ia", {
     # integer type
     b <- .norm_ia(a, dt = "uint8")
     expect_equal(range(b), range(a) / (2^8 - 1))
-    expect_equal(.norm_ia(2 * as.array(a), dt = "missing"),
-                 .norm_ia(3 * as.array(a), dt = "missing"))
+    expect_equal(
+        .norm_ia(2 * as.array(a), dt = "missing"),
+        .norm_ia(3 * as.array(a), dt = "missing"))
 })
 
 test_that(".prep_ia", {
