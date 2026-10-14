@@ -1,15 +1,15 @@
 #' Add label layer to SpatialData plot
-#' 
-#' @param x \code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+#'
+#' @param x \code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
 #'   the object will be inherited from \code{plotSpatialData()}.
 #' @param i Index or name of label to plot.
-#' @param c determines label colors; 
+#' @param c determines label colors;
 #'   the default (NULL), gives a binary image of whether or not a
 #'   pixel is non-zero; alternatively, a character string specifying
 #'   a \code{colData} column or row name in an annotation \code{table}.
-#' @param assay character string; 
+#' @param assay character string;
 #'   in case of \code{c} denoting a row name,
-#'   specifies which \code{assay} data to use 
+#'   specifies which \code{assay} data to use
 #'   (see \code{\link[spatialdataR]{getTable}}).
 #' @param a scalar numeric in [0, 1]; alpha value passed to \code{geom_tile}.
 #' @param pal character vector; color for discrete/continuous values
@@ -17,37 +17,37 @@
 #'   When left unspecified, color will be sampled at random.
 #' @param nan character string; color for missing values (hidden by default).
 #' @inheritParams plotImage
-#' 
-#' @returns An object of type \code{sd_label}, which can be added to an 
+#'
+#' @returns An object of type \code{sd_label}, which can be added to an
 #' existing \code{ggplot}.
-#' 
+#'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
 #' x <- system.file(x, package="spatialdataR")
 #' x <- readSpatialData(x)
-#' 
+#'
 #' i <- "blobs_labels"
 #' p <- plotSpatialData(x)
-#' 
+#'
 #' # simple binary image
 #' p + plotLabel(i)
-#' 
+#'
 #' # mock up some extra data
 #' t <- getTable(x, i)
 #' t$id <- sample(letters, ncol(t))
 #' table(x) <- t
-#' 
+#'
 #' # coloring by 'colData'
 #' t <- getTable(x, i)
 #' t$id <- sample(letters, ncol(t))
 #' table(x) <- t
 #' plotSpatialData(x) + plotLabel(i=i, c="id")
-#' 
+#'
 #' # coloring by 'assay' data
-#' plotSpatialData(x) + plotLabel(i=i, 
-#'   c="channel_1_sum", 
+#' plotSpatialData(x) + plotLabel(i=i,
+#'   c="channel_1_sum",
 #'   pal=c("lavender", "blue"))
-#' 
+#'
 #' @export
 plotLabel <- function(i=1, j=NULL, k=NULL, c=NULL, a=0.5, pal=NULL, nan=NA, assay=1, t=NULL, z=NULL, x=NULL) {
     structure(mget(names(formals())), class="sd_label")
@@ -68,12 +68,12 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
         x <- object$x
     }
     if (!is.null(object$z)) {
-        ok <- length(object$z) == 1 && is.numeric(object$z) && 
+        ok <- length(object$z) == 1 && is.numeric(object$z) &&
             object$z == round(object$z) && object$z > 0
         if (!ok) stop("invalid 'z'; should be a scalar integer > 0")
     }
 
-    if (is.numeric(object$i)) 
+    if (is.numeric(object$i))
         object$i <- labelNames(x)[object$i]
     y <- label(x, object$i)
     if (is.null(object$j)) {
@@ -89,19 +89,20 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
     }
     if (is.null(plot@meta$sd_args$ct_name)) {
         plot@meta$sd_args$ct_name <- j
+        message("Using coordinate system '", j, "'")
     }
     y <- transform(y, j)
 
     # get array data
     ym <- .get_ms_data(y, object$k)
     axisNames <- axes(x=y, y="name")
-    
+
     # z-slice or max-projection
     ym <- .project(y, ym, object$z)
     axisNames <- axisNames[axisNames != "z"]
-    
+
     # subset to selected time
-    tidx <- which(axisNames == "t") 
+    tidx <- which(axisNames == "t")
     if (length(tidx) > 0) {
         if (is.null(object$t)) {
             object$t <- 1
@@ -112,10 +113,10 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
         dim(ym) <- dim(ym)[axisNames != "t"]
     }
 
-    # keep only indices != 0 since labels might be sparse 
+    # keep only indices != 0 since labels might be sparse
     # and thus save memory by not plotting all pixels
     idx <- BiocGenerics::which(ym != 0L, arr.ind=TRUE)
-    
+
     # physical space mapping
     ds <- dim(ym)
     wh <- .get_wh(y)
@@ -124,10 +125,10 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
     sx <- diff(wh$w)/nx
     sy <- diff(wh$h)/ny
     df <- data.frame(
-        x=wh$w[1]+idx[,2L]*sx, 
-        y=wh$h[1]+idx[,1L]*sy, 
+        x=wh$w[1]+idx[,2L]*sx,
+        y=wh$h[1]+idx[,1L]*sy,
         z=ym[idx])
-    
+
     aes <- aes(.data$x, .data$y)
     if (!is.null(object$c)) {
         stopifnot(length(object$c) == 1, is.character(object$c))
@@ -139,7 +140,7 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
         df$z <- val[match(df$z, is)]
         if (object$c == ik) df$z <- factor(df$z)
         aes$fill <- aes(.data[["z"]])[[1]]
-        thm <- switch(scale_type(df$z), 
+        thm <- switch(scale_type(df$z),
             discrete={
                 val <- sort(unique(df$z), na.last=NA)
                 pal <- colorRampPalette(object$pal)(length(val))
@@ -163,11 +164,11 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
             theme(legend.position="none"),
             scale_fill_manual(NULL, values=object$pal))
     }
-    
+
     if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
         xi <- which(axes(y, "name") == "x")
         if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
-            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+            plot@meta$sd_args <- modifyList(plot@meta$sd_args,
                                             list(arrayLayerType = "label",
                                                  arrayLayerName = object$i))
         }

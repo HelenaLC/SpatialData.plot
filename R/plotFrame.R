@@ -1,20 +1,20 @@
 #' Add shape layer to SpatialData plot
 #'
-#' @param x \code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+#' @param x \code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
 #'   the object will be inherited from \code{plotSpatialData()}.
 #' @param i Index or name of shape to plot.
-#' @param j Index or name of coordinate transformation to use. If \code{NULL}, 
-#'   the coordinate transformation will be inherited from 
+#' @param j Index or name of coordinate transformation to use. If \code{NULL},
+#'   the coordinate transformation will be inherited from
 #'   \code{plotSpatialData()}.
-#' @param assay Character string; in case of \code{c} 
-#'   denoting a row name, specifies which \code{assay} 
+#' @param assay Character string; in case of \code{c}
+#'   denoting a row name, specifies which \code{assay}
 #'   data to use (see \code{\link[spatialdataR]{getTable}}).
 #'   (ignored when \code{x} is a \code{SpatialDataPoint}).
 #' @param ... Optional aesthetic arguments passed to \code{geom_sf}.
 #'
-#' @returns An object of type \code{sd_shape}, which can be added to an 
+#' @returns An object of type \code{sd_shape}, which can be added to an
 #' existing \code{ggplot}.
-#' 
+#'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
 #' x <- system.file(x, package="spatialdataR")
@@ -32,9 +32,9 @@
 #'   plotShape("blobs_circles", fill="pink") +
 #'   plotShape("blobs_polygons", colour="red")
 #' patchwork::wrap_plots(a, b)
-#' 
+#'
 #' @export
-plotShape <- function(i=1, j=NULL, assay=1, x=NULL, 
+plotShape <- function(i=1, j=NULL, assay=1, x=NULL,
     as=c("border", "solid", "centroid"), ...) {
     args <- mget(names(formals()))
     args$as <- match.arg(as)
@@ -46,9 +46,9 @@ plotShape <- function(i=1, j=NULL, assay=1, x=NULL,
 #' @inheritParams plotShape
 #' @param i Index or name of point to plot.
 #'
-#' @returns An object of type \code{sd_point}, which can be added to an 
+#' @returns An object of type \code{sd_point}, which can be added to an
 #' existing \code{ggplot}.
-#' 
+#'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
 #' x <- system.file(x, package="spatialdataR")
@@ -59,7 +59,7 @@ plotShape <- function(i=1, j=NULL, assay=1, x=NULL,
 #' p + plotPoint(i=i)                       # simple
 #' p + plotPoint(i=i, colour="genes")       # discrete
 #' p + plotPoint(i, colour="instance_id") # continuous
-#' 
+#'
 #' @export
 plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
     structure(c(mget(names(formals())), list(...)), class="sd_point")
@@ -108,13 +108,13 @@ plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
             }
         }
     }
-    
+
     if ("radius" %in% names(df)) {
         # points
         df <- st_buffer(df, df$radius)
     } else {
-        # shapes 
-        switch(as, 
+        # shapes
+        switch(as,
             border={ dot[["fill"]] <- NA },
             centroid={ st_geometry(df) <- st_centroid(st_geometry(df)) })
     }
@@ -133,7 +133,7 @@ ggplot_add.sd_shape <- function(object, plot, object_name) {
     } else {
         x <- object$x
     }
-    if (is.numeric(object$i)) 
+    if (is.numeric(object$i))
         object$i <- shapeNames(x)[object$i]
     y <- shape(x, object$i)
     if (is.null(object$j)) {
@@ -149,12 +149,13 @@ ggplot_add.sd_shape <- function(object, plot, object_name) {
     }
     if (is.null(plot@meta$sd_args$ct_name)) {
         plot@meta$sd_args$ct_name <- j
+        message("Using coordinate system '", j, "'")
     }
     y <- transform(y, j)
     if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
         xi <- which(axes(y, "name") == "x")
         if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
-            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+            plot@meta$sd_args <- modifyList(plot@meta$sd_args,
                                             list(arrayLayerType = "shape",
                                                  arrayLayerName = object$i))
         }
@@ -171,7 +172,7 @@ ggplot_add.sd_point <- function(object, plot, object_name) {
     } else {
         x <- object$x
     }
-    if (is.numeric(object$i)) 
+    if (is.numeric(object$i))
         object$i <- pointNames(x)[object$i]
     y <- point(x, object$i)
     if (is.null(object$j)) {
@@ -187,12 +188,13 @@ ggplot_add.sd_point <- function(object, plot, object_name) {
     }
     if (is.null(plot@meta$sd_args$ct_name)) {
         plot@meta$sd_args$ct_name <- j
+        message("Using coordinate system '", j, "'")
     }
     y <- transform(y, j)
     if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
         xi <- which(axes(y, "name") == "x")
         if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
-            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+            plot@meta$sd_args <- modifyList(plot@meta$sd_args,
                                             list(arrayLayerType = "point",
                                                  arrayLayerName = object$i))
         }
