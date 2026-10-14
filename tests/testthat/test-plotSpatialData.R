@@ -15,6 +15,8 @@ test_that("regression test of overlays", {
     one <- list(
         p + plotImage() + ggplot2::ggtitle("image"),
         p + plotLabel() + ggplot2::ggtitle("labels"),
+        # FIXME: is it expected that circles are plotted as solid even though
+        # the default is `as = "border"`?
         p + plotShape(1) + ggplot2::ggtitle("circles"),
         p + plotShape(3) + ggplot2::ggtitle("polygons"),
         p + plotPoint(col="genes") + ggplot2::ggtitle("points"))
