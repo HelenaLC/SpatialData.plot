@@ -59,17 +59,17 @@
     y
 }
 
-#' @importFrom utils tail
 #' @importFrom S4Vectors metadata
 .raw_wh <- \(x) {
     wh <- metadata(x)$wh
+    xyidx <- match(c("x", "y"), axes(x, "name"))
     if (!is.null(wh)) {
         df <- data.frame(x=wh[[1]], y=wh[[2]])
     } else {
         ds <- dim(data(x, 1))
         df <- data.frame(
-            x=c(0, tail(ds, 1)),
-            y=c(0, tail(ds, 2)[1]))
+            x=c(0, ds[xyidx[1]]),
+            y=c(0, ds[xyidx[2]]))
     }
     wh <- list(w=df$x, h=df$y)
     return(wh)
@@ -79,11 +79,12 @@
 # through multi-scale adjustment
 .get_wh <- \(x) {
     wh <- .raw_wh(x)
-    if (wh$w[2] == tail(dim(x), 1) ||
-        wh$h[2] == tail(dim(x), 2)[1]) {
+    xyidx <- match(c("x", "y"), axes(x, "name"))
+    if (wh$w[2] == dim(x)[xyidx[1]] ||
+        wh$h[2] == dim(x)[xyidx[2]]) {
         ts <- spatialdataR:::.get_ms_scale(x)
-        tx <- tail(ts, 1)
-        ty <- tail(ts, 2)[1]
+        tx <- ts[xyidx[1]]
+        ty <- ts[xyidx[2]]
     } else {
         tx <- ty <- 1
     }

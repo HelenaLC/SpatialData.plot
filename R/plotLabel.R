@@ -111,6 +111,7 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
         }
         ym <- .subset_array_by_axes(a=ym, axisNames=axisNames, t=object$t, drop=FALSE)
         dim(ym) <- dim(ym)[axisNames != "t"]
+        axisNames <- axisNames[axisNames != "t"]
     }
 
     # keep only indices != 0 since labels might be sparse
@@ -120,8 +121,8 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
     # physical space mapping
     ds <- dim(ym)
     wh <- .get_wh(y)
-    nx <- tail(ds, 1)
-    ny <- tail(ds, 2)[1]
+    nx <- ds[which(axisNames == "x")]
+    ny <- ds[which(axisNames == "y")]
     sx <- diff(wh$w)/nx
     sy <- diff(wh$h)/ny
     df <- data.frame(

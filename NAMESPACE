@@ -78,7 +78,4 @@ importFrom(spatialdataR,
   shapeNames,
   transform
 )
-importFrom(utils,
-  modifyList,
-  tail
-)
+importFrom(utils,modifyList)
