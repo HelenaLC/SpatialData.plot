@@ -98,7 +98,7 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
     axisNames <- axes(x=y, y="name")
 
     # z-slice or max-projection
-    ym <- .project(y, ym, object$z)
+    ym <- .project(axisNames, ym, object$z)
     axisNames <- axisNames[axisNames != "z"]
 
     # subset to selected time
@@ -166,7 +166,7 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
     }
 
     if (!is.null(CTunit(y)[[j]]$x)) {
-        plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+        plot@meta$sd_args <- modifyList(plot@meta$sd_args,
                                         list(arrayLayerType = "label",
                                              arrayLayerName = object$i))
     }

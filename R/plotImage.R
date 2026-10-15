@@ -175,7 +175,7 @@ plotImage <- function(i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=N
     a <- .get_ms_data(x, k)
     axisNames <- axes(x, "name")
     # 2D max-projection
-    a <- .project(x, a, z)
+    a <- .project(axisNames, a, z)
     axisNames <- axisNames[axisNames != "z"]
     ti <- which(axisNames == "t")
     tn <- length(ti)
@@ -269,7 +269,7 @@ ggplot_add.sd_image <- function(object, plot, object_name) {
     wh <- .get_wh(y)
 
     if (!is.null(CTunit(y)[[j]]$x)) {
-        plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+        plot@meta$sd_args <- modifyList(plot@meta$sd_args,
                                         list(arrayLayerType = "image",
                                              arrayLayerName = object$i))
     }

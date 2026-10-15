@@ -39,22 +39,21 @@
     data(x, .guess_scale(x, w, h))
 }
 
-# x = image or label
+# a = axis names of y
 # y = high-dim. array
 # z = (optional) index
-.project <- \(x, y, z=NULL) {
+.project <- \(a, y, z=NULL) {
     # max-projection over z-stacks
-    axisNames <- axes(x, y="name")
-    zidx <- which(axisNames == "z")
+    zidx <- which(a == "z")
     if (length(zidx)) {
         if (is.null(z)) {
             # max-projection across z-slices
-            y <- apply(y, seq_along(dim(x))[-zidx], max)
+            y <- apply(y, seq_along(a)[-zidx], max)
         } else {
             if (length(z) > 1) stop("only a single z-plane can be selected")
             # subset target z-slice
-            y <- .subset_array_by_axes(a=y, axisNames=axisNames, z=z, drop=FALSE)
-            dim(y) <- dim(y)[axisNames != "z"]
+            y <- .subset_array_by_axes(a=y, axisNames=a, z=z, drop=FALSE)
+            dim(y) <- dim(y)[a != "z"]
         }
     }
     y
@@ -69,13 +68,13 @@
     } else {
         ds <- dim(data(x, 1))
         df <- data.frame(
-            x=c(0, tail(ds, 1)), 
+            x=c(0, tail(ds, 1)),
             y=c(0, tail(ds, 2)[1]))
     }
     wh <- list(w=df$x, h=df$y)
     return(wh)
 }
-    
+
 # map index to physical space
 # through multi-scale adjustment
 .get_wh <- \(x) {
