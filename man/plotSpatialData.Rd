@@ -15,7 +15,7 @@ plotSpatialData(x = NULL, ct = NULL)
 A ggplot object.
 }
 \description{
-Initialize an empty ggplot for a SpatialData object. This function is 
+Initialize an empty ggplot for a SpatialData object. This function is
 typically combined with one or more calls to add specific plot layers.
 }
 \examples{

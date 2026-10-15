@@ -21,15 +21,15 @@ plotLabel(
 \arguments{
 \item{i}{Index or name of label to plot.}
 
-\item{j}{Index or name of coordinate transformation to use. If \code{NULL}, 
-the coordinate transformation will be inherited from 
+\item{j}{Index or name of coordinate transformation to use. If \code{NULL},
+the coordinate transformation will be inherited from
 \code{plotSpatialData()}.}
 
-\item{k}{Index of the scale to render; by default (NULL), will auto-select 
-scale in order to minimize memory-usage and blurring for a target size of 
+\item{k}{Index of the scale to render; by default (NULL), will auto-select
+scale in order to minimize memory-usage and blurring for a target size of
 800 x 800px; use Inf to plot the lowest resolution available.}
 
-\item{c}{determines label colors; 
+\item{c}{determines label colors;
 the default (NULL), gives a binary image of whether or not a
 pixel is non-zero; alternatively, a character string specifying
 a \code{colData} column or row name in an annotation \code{table}.}
@@ -42,19 +42,19 @@ When left unspecified, color will be sampled at random.}
 
 \item{nan}{character string; color for missing values (hidden by default).}
 
-\item{assay}{character string; 
+\item{assay}{character string;
 in case of \code{c} denoting a row name,
-specifies which \code{assay} data to use 
+specifies which \code{assay} data to use
 (see \code{\link[spatialdataR]{getTable}}).}
 
 \item{t, z}{Integer scalar to indicate a specific time- or z-slice;
 if left unspecified (default NULL), will perform a max-projection.}
 
-\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
 the object will be inherited from \code{plotSpatialData()}.}
 }
 \value{
-An object of type \code{sd_label}, which can be added to an 
+An object of type \code{sd_label}, which can be added to an
 existing \code{ggplot}.
 }
 \description{
@@ -83,8 +83,8 @@ table(x) <- t
 plotSpatialData(x) + plotLabel(i=i, c="id")
 
 # coloring by 'assay' data
-plotSpatialData(x) + plotLabel(i=i, 
-  c="channel_1_sum", 
+plotSpatialData(x) + plotLabel(i=i,
+  c="channel_1_sum",
   pal=c("lavender", "blue"))
 
 }

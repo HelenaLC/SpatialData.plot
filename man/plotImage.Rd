@@ -19,33 +19,33 @@ plotImage(
 \arguments{
 \item{i}{Index or name of image to plot.}
 
-\item{j}{Index or name of coordinate transformation to use. If \code{NULL}, 
-the coordinate transformation will be inherited from 
+\item{j}{Index or name of coordinate transformation to use. If \code{NULL},
+the coordinate transformation will be inherited from
 \code{plotSpatialData()}.}
 
-\item{k}{Index of the scale to render; by default (NULL), will auto-select 
-scale in order to minimize memory-usage and blurring for a target size of 
+\item{k}{Index of the scale to render; by default (NULL), will auto-select
+scale in order to minimize memory-usage and blurring for a target size of
 800 x 800px; use Inf to plot the lowest resolution available.}
 
-\item{ch}{Image channel(s) to be used for plotting (defaults to 
-the first channel(s) available); use \code{channels()} to see 
+\item{ch}{Image channel(s) to be used for plotting (defaults to
+the first channel(s) available); use \code{channels()} to see
 which channels are available for a given \code{SpatialDataImage}}
 
 \item{c}{Character vector; colors to use for each channel.}
 
-\item{cl}{List of length-2 numeric vectors (non-negative, increasing); 
-specifies channel-wise contrast limits - defaults to [0, 1] for all 
-(ignored when \code{image(x, i)} is an RGB image; 
+\item{cl}{List of length-2 numeric vectors (non-negative, increasing);
+specifies channel-wise contrast limits - defaults to [0, 1] for all
+(ignored when \code{image(x, i)} is an RGB image;
 for convenience, any NULL = [0, 1], and n = [0, n]).}
 
 \item{t, z}{Integer scalar to indicate a specific time- or z-slice;
 if left unspecified (default NULL), will perform a max-projection.}
 
-\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
 the object will be inherited from \code{plotSpatialData()}.}
 }
 \value{
-An object of type \code{sd_image}, which can be added to an 
+An object of type \code{sd_image}, which can be added to an
 existing \code{ggplot}.
 }
 \description{
@@ -56,7 +56,7 @@ x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x, tables=FALSE)
 
-ms <- lapply(seq(3), \(.) 
+ms <- lapply(seq(3), \(.)
   plotSpatialData(x) +
   plotImage(2, k=.))
 patchwork::wrap_plots(ms)
@@ -67,9 +67,9 @@ plotSpatialData(x) + plotImage(c=cmy)
 
 # contrast limits
 cl <- rep(list(c(0, 1/3)), 3)
-plotSpatialData(x, ct="global") + 
-  plotImage(k=1, c=cmy, cl=cl) + 
-  plotShape(i="blobs_circles", fill="pink") + 
+plotSpatialData(x, ct="global") +
+  plotImage(k=1, c=cmy, cl=cl) +
+  plotShape(i="blobs_circles", fill="pink") +
   plotPoint(i="blobs_points", colour="instance_id")
 
 }

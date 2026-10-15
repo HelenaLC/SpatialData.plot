@@ -16,22 +16,22 @@ plotShape(
 \arguments{
 \item{i}{Index or name of shape to plot.}
 
-\item{j}{Index or name of coordinate transformation to use. If \code{NULL}, 
-the coordinate transformation will be inherited from 
+\item{j}{Index or name of coordinate transformation to use. If \code{NULL},
+the coordinate transformation will be inherited from
 \code{plotSpatialData()}.}
 
-\item{assay}{Character string; in case of \code{c} 
-denoting a row name, specifies which \code{assay} 
+\item{assay}{Character string; in case of \code{c}
+denoting a row name, specifies which \code{assay}
 data to use (see \code{\link[spatialdataR]{getTable}}).
 (ignored when \code{x} is a \code{SpatialDataPoint}).}
 
-\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
 the object will be inherited from \code{plotSpatialData()}.}
 
 \item{...}{Optional aesthetic arguments passed to \code{geom_sf}.}
 }
 \value{
-An object of type \code{sd_shape}, which can be added to an 
+An object of type \code{sd_shape}, which can be added to an
 existing \code{ggplot}.
 }
 \description{

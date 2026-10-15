@@ -9,17 +9,17 @@ plotPoint(i = 1, j = NULL, x = NULL, ...)
 \arguments{
 \item{i}{Index or name of point to plot.}
 
-\item{j}{Index or name of coordinate transformation to use. If \code{NULL}, 
-the coordinate transformation will be inherited from 
+\item{j}{Index or name of coordinate transformation to use. If \code{NULL},
+the coordinate transformation will be inherited from
 \code{plotSpatialData()}.}
 
-\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
 the object will be inherited from \code{plotSpatialData()}.}
 
 \item{...}{Optional aesthetic arguments passed to \code{geom_sf}.}
 }
 \value{
-An object of type \code{sd_point}, which can be added to an 
+An object of type \code{sd_point}, which can be added to an
 existing \code{ggplot}.
 }
 \description{
