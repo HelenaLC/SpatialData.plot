@@ -159,13 +159,10 @@ plotImage <- function(i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=N
     lbs <- channels(x)
     if (all(ch %in% lbs)) {
         return(match(ch, lbs))
-    }
-    if (all(ch %notin% lbs)) {
-        warning("Couldn't find channels; picking first one(s)!")
+    } else {
+        warning("Couldn't find all channels; picking the first one!")
         return(1)
     }
-    warning("Couldn't find some channels; picking first one(s)!")
-    return(1)
 }
 
 #' @importFrom spatialdataR data_type axes
