@@ -35,8 +35,8 @@ which channels are available for a given \code{SpatialDataImage}}
 
 \item{cl}{List of length-2 numeric vectors (non-negative, increasing);
 specifies channel-wise contrast limits - defaults to [0, 1] for all
-(ignored when \code{image(x, i)} is an RGB image;
-for convenience, any NULL = [0, 1], and n = [0, n]).}
+([0, 1/3] when \code{image(x, i)} is an RGB image).
+For convenience, any NULL = [0, 1], and n = [0, n].}
 
 \item{t, z}{Integer scalar to indicate a specific time- or z-slice;
 if left unspecified (default NULL), will perform a max-projection.}
