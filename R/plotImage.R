@@ -227,7 +227,7 @@ plotImage <- function(i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=N
 # gets out of alignment if the user sets 'scale_y_reverse()' themselves.
 
 #' @exportS3Method ggplot2::ggplot_add
-#' @importFrom spatialdataR imageNames CTname transform image channels
+#' @importFrom spatialdataR imageNames CTname CTunit transform image channels
 ggplot_add.sd_image <- function(object, plot, object_name) {
     if (is.null(object$x)) {
         x <- plot@meta$sd_args$sd

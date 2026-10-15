@@ -125,7 +125,7 @@ plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
 }
 
 #' @exportS3Method ggplot2::ggplot_add
-#' @importFrom spatialdataR shapeNames shape transform CTname
+#' @importFrom spatialdataR shapeNames shape transform CTname CTunit
 #' @importFrom utils modifyList
 ggplot_add.sd_shape <- function(object, plot, object_name) {
     if (is.null(object$x)) {
@@ -153,7 +153,7 @@ ggplot_add.sd_shape <- function(object, plot, object_name) {
     }
     y <- transform(y, j)
     if (!is.null(CTunit(y)[[j]]$x)) {
-        plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+        plot@meta$sd_args <- modifyList(plot@meta$sd_args,
                                         list(arrayLayerType = "shape",
                                              arrayLayerName = object$i))
     }
@@ -161,7 +161,7 @@ ggplot_add.sd_shape <- function(object, plot, object_name) {
 }
 
 #' @exportS3Method ggplot2::ggplot_add
-#' @importFrom spatialdataR pointNames point transform CTname
+#' @importFrom spatialdataR pointNames point transform CTname CTunit
 #' @importFrom utils modifyList
 ggplot_add.sd_point <- function(object, plot, object_name) {
     if (is.null(object$x)) {
@@ -189,7 +189,7 @@ ggplot_add.sd_point <- function(object, plot, object_name) {
     }
     y <- transform(y, j)
     if (!is.null(CTunit(y)[[j]]$x)) {
-        plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
+        plot@meta$sd_args <- modifyList(plot@meta$sd_args,
                                         list(arrayLayerType = "point",
                                              arrayLayerName = object$i))
     }

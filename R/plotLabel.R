@@ -58,8 +58,8 @@ plotLabel <- function(i=1, j=NULL, k=NULL, c=NULL, a=0.5, pal=NULL, nan=NA, assa
 #' @importFrom grDevices colors hcl.colors colorRampPalette
 #' @importFrom ggplot2 scale_fill_manual scale_fill_gradientn scale_type
 #' @importFrom ggplot2 aes theme unit guides guide_legend geom_tile
-#' @importFrom spatialdataR labelNames label CTname transform axes getTable
-#' @importFrom spatialdataR instances instance_key
+#' @importFrom spatialdataR labelNames label CTname CTunit transform axes
+#' @importFrom spatialdataR getTable instances instance_key
 #' @importFrom BiocGenerics which
 ggplot_add.sd_label <- function(object, plot, object_name) {
     if (is.null(object$x)) {
