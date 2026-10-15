@@ -21,8 +21,8 @@ plotShape(
 the coordinate transformation will be inherited from
 \code{plotSpatialData()}.}
 
-\item{assay}{Character string; in case of \code{c}
-denoting a row name, specifies which \code{assay}
+\item{assay}{Index or name of an assay; in case of \code{fill} or
+\code{colour} denoting a row name, specifies which \code{assay}
 data to use (see \code{\link[spatialdataR]{getTable}}).
 (ignored when \code{x} is a \code{SpatialDataPoint}).}
 
@@ -38,7 +38,8 @@ in order to get a defined subset.}
 (plot filled shapes) or \code{"centroid"} (just plot a point at the
 coordinates of the centroid of the shape).}
 
-\item{...}{Optional aesthetic arguments passed to \code{geom_sf}.}
+\item{...}{Optional aesthetic arguments (for example \code{fill} or
+\code{colour}) passed to \code{geom_sf}.}
 }
 \value{
 An object of type \code{sd_shape}, which can be added to an

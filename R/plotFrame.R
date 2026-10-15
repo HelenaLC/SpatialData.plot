@@ -6,8 +6,8 @@
 #' @param j Index or name of coordinate transformation to use. If \code{NULL},
 #'   the coordinate transformation will be inherited from
 #'   \code{plotSpatialData()}.
-#' @param assay Character string; in case of \code{c}
-#'   denoting a row name, specifies which \code{assay}
+#' @param assay Index or name of an assay; in case of \code{fill} or
+#'   \code{colour} denoting a row name, specifies which \code{assay}
 #'   data to use (see \code{\link[spatialdataR]{getTable}}).
 #'   (ignored when \code{x} is a \code{SpatialDataPoint}).
 #' @param n Positive numeric scalar. If not \code{NULL}, randomly sample
@@ -17,7 +17,8 @@
 #'   \code{"border"} (just plot the outline, the default), \code{"solid"}
 #'   (plot filled shapes) or \code{"centroid"} (just plot a point at the
 #'   coordinates of the centroid of the shape).
-#' @param ... Optional aesthetic arguments passed to \code{geom_sf}.
+#' @param ... Optional aesthetic arguments (for example \code{fill} or
+#'   \code{colour}) passed to \code{geom_sf}.
 #'
 #' @returns An object of type \code{sd_shape}, which can be added to an
 #' existing \code{ggplot}.
@@ -98,7 +99,7 @@ plotPoint <- function(i=1, j=NULL, x=NULL, n=NULL, key=NULL, ...) {
     dot <- list(...)
     for (arg in names(dot)) {
         val <- dot[[arg]]
-        if (is.character(val)) {
+        if (is.character(val) && length(val) == 1L) {
             z <- tryCatch(
                 error=\(e) NULL,
                 getTable(x, i, val, assay=assay))

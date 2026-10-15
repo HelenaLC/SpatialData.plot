@@ -23,7 +23,8 @@ in order to get a defined subset.}
 \item{key}{Character vector. If not \code{NULL}, only plot points where
 \code{feature_key(point(x, i))} is a value in \code{key}.}
 
-\item{...}{Optional aesthetic arguments passed to \code{geom_sf}.}
+\item{...}{Optional aesthetic arguments (for example \code{fill} or
+\code{colour}) passed to \code{geom_sf}.}
 }
 \value{
 An object of type \code{sd_point}, which can be added to an
