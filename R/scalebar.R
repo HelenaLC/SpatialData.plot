@@ -51,8 +51,7 @@ ggplot_add.sd_scalebar <- function(object, plot, object_name) {
         stopifnot(ok(object$xrel), ok(object$yrel))
         
         x <- transform(x, plot@meta$sd_args$ct_name)
-        xi <- which(axes(x, "name") == "x")
-        unit <- axes(x)[[xi]]$unit
+        unit <- CTunit(x)[[plot@meta$sd_args$ct_name]]$x
         if (unit %in% names(.unit_map))
             unit <- .unit_map[unit]
 
