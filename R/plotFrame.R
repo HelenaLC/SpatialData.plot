@@ -10,6 +10,13 @@
 #'   denoting a row name, specifies which \code{assay}
 #'   data to use (see \code{\link[spatialdataR]{getTable}}).
 #'   (ignored when \code{x} is a \code{SpatialDataPoint}).
+#' @param n Positive numeric scalar. If not \code{NULL}, randomly sample
+#'   \code{n} element for plotting. Use \code{set.seed()} before the plot
+#'   in order to get a defined subset.
+#' @param as Character scalar defining how to plot shapes. Must be one of
+#'   \code{"border"} (just plot the outline, the default), \code{"solid"}
+#'   (plot filled shapes) or \code{"centroid"} (just plot a point at the
+#'   coordinates of the centroid of the shape).
 #' @param ... Optional aesthetic arguments passed to \code{geom_sf}.
 #'
 #' @returns An object of type \code{sd_shape}, which can be added to an
@@ -34,7 +41,7 @@
 #' patchwork::wrap_plots(a, b)
 #'
 #' @export
-plotShape <- function(i=1, j=NULL, assay=1, x=NULL,
+plotShape <- function(i=1, j=NULL, assay=1, x=NULL, n=NULL,
     as=c("border", "solid", "centroid"), ...) {
     args <- mget(names(formals()))
     args$as <- match.arg(as)
@@ -45,6 +52,8 @@ plotShape <- function(i=1, j=NULL, assay=1, x=NULL,
 #'
 #' @inheritParams plotShape
 #' @param i Index or name of point to plot.
+#' @param key Character vector. If not \code{NULL}, only plot points where
+#'   \code{feature_key(point(x, i))} is a value in \code{key}.
 #'
 #' @returns An object of type \code{sd_point}, which can be added to an
 #' existing \code{ggplot}.
@@ -61,7 +70,7 @@ plotShape <- function(i=1, j=NULL, assay=1, x=NULL,
 #' p + plotPoint(i, colour="instance_id") # continuous
 #'
 #' @export
-plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
+plotPoint <- function(i=1, j=NULL, x=NULL, n=NULL, key=NULL, ...) {
     structure(c(mget(names(formals())), list(...)), class="sd_point")
 }
 

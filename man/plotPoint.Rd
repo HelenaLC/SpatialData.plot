@@ -4,7 +4,7 @@
 \alias{plotPoint}
 \title{Add point layer to SpatialData plot}
 \usage{
-plotPoint(i = 1, j = NULL, x = NULL, ...)
+plotPoint(i = 1, j = NULL, x = NULL, n = NULL, key = NULL, ...)
 }
 \arguments{
 \item{i}{Index or name of point to plot.}
@@ -15,6 +15,13 @@ the coordinate transformation will be inherited from
 
 \item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
 the object will be inherited from \code{plotSpatialData()}.}
+
+\item{n}{Positive numeric scalar. If not \code{NULL}, randomly sample
+\code{n} element for plotting. Use \code{set.seed()} before the plot
+in order to get a defined subset.}
+
+\item{key}{Character vector. If not \code{NULL}, only plot points where
+\code{feature_key(point(x, i))} is a value in \code{key}.}
 
 \item{...}{Optional aesthetic arguments passed to \code{geom_sf}.}
 }

@@ -9,6 +9,7 @@ plotShape(
   j = NULL,
   assay = 1,
   x = NULL,
+  n = NULL,
   as = c("border", "solid", "centroid"),
   ...
 )
@@ -27,6 +28,15 @@ data to use (see \code{\link[spatialdataR]{getTable}}).
 
 \item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
 the object will be inherited from \code{plotSpatialData()}.}
+
+\item{n}{Positive numeric scalar. If not \code{NULL}, randomly sample
+\code{n} element for plotting. Use \code{set.seed()} before the plot
+in order to get a defined subset.}
+
+\item{as}{Character scalar defining how to plot shapes. Must be one of
+\code{"border"} (just plot the outline, the default), \code{"solid"}
+(plot filled shapes) or \code{"centroid"} (just plot a point at the
+coordinates of the centroid of the shape).}
 
 \item{...}{Optional aesthetic arguments passed to \code{geom_sf}.}
 }
