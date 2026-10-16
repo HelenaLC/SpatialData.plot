@@ -270,7 +270,7 @@ plotSpatialData(x) +
 
 ## Session info
 
-    ## R Under development (unstable) (2026-10-15 r90676)
+    ## R Under development (unstable) (2026-10-14 r90673)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.5 LTS
     ## 
@@ -291,8 +291,8 @@ plotSpatialData(x) +
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] SpatialData.plot_0.99.9 spatialdataR_0.99.45    ggnewscale_0.5.2       
-    ## [4] patchwork_1.3.2         ggplot2_4.0.3           BiocStyle_2.41.0       
+    ## [1] SpatialData.plot_0.99.10 spatialdataR_0.99.45     ggnewscale_0.5.2        
+    ## [4] patchwork_1.3.2          ggplot2_4.0.3            BiocStyle_2.41.0        
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1            grumpy_0.1.1               
