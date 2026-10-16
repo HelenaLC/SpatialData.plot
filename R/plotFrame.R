@@ -94,11 +94,7 @@ plotPoint <- function(i=1, j=NULL, x=NULL, ...) {
                 error=\(e) NULL,
                 getTable(x, i, val, assay=assay))
             if (!is.null(z)) {
-                fd <- data.frame(z)
-                names(fd) <- val
-                df <- cbind(df, fd)
-            }
-            if (val %in% names(df)) {
+                df[[val]] <- z
                 if (scale_type(df[[val]]) == "discrete")
                     df[[val]] <- factor(df[[val]])
                 col <- match(arg, c("col", "color", "colour"))
