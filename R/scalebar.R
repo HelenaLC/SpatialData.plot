@@ -68,7 +68,8 @@ ggplot_add.sd_scalebar <- function(object, plot, object_name) {
 
         line <- annotate(
             geom="segment",
-            color=object$col, linewidth=object$lwd,
+            color=object$col, 
+            linewidth=object$lwd,
             x=xmin, xend=xmax, y=y, yend=y)
         text <- annotate(
             geom="text",

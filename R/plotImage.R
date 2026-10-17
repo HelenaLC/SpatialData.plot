@@ -1,11 +1,10 @@
 #' Add image layer to SpatialData plot
 #'
-#' @param x \code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
-#'   the object will be inherited from \code{plotSpatialData()}.
+#' @param x \code{\link[spatialdataR]{SpatialData}} object.
+#'   If \code{NULL}, will be inherited from \code{plotSpatialData()}.
 #' @param i Index or name of image to plot.
-#' @param j Index or name of coordinate transformation to use. If \code{NULL},
-#'   the coordinate transformation will be inherited from
-#'   \code{plotSpatialData()}.
+#' @param j Index or name of coordinate system to use. 
+#'   If \code{NULL}, will be inherited from \code{plotSpatialData()}.
 #' @param k Index of the scale to render; by default (NULL), will auto-select
 #'   scale in order to minimize memory-usage and blurring for a target size of
 #'   800 x 800px; use Inf to plot the lowest resolution available.
@@ -20,8 +19,8 @@
 #' @param t,z Integer scalar to indicate a specific time- or z-slice;
 #'   if left unspecified (default NULL), will perform a max-projection.
 #'
-#' @returns An object of type \code{sd_image}, which can be added to an
-#' existing \code{ggplot}.
+#' @returns An object of type \code{sd_image}, 
+#' which can be added to an existing \code{ggplot}.
 #'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
@@ -266,9 +265,10 @@ ggplot_add.sd_image <- function(object, plot, object_name) {
     wh <- .get_wh(y)
 
     if (!is.null(CTunit(y)[[j]]$x)) {
-        plot@meta$sd_args <- modifyList(plot@meta$sd_args,
-                                        list(arrayLayerType = "image",
-                                             arrayLayerName = object$i))
+        plot@meta$sd_args <- modifyList(
+            plot@meta$sd_args, list(
+                arrayLayerType="image",
+                arrayLayerName=object$i))
     }
     plot + .gg_i(df, wh$w, wh$h, pal)
 }

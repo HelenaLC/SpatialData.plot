@@ -9,26 +9,25 @@ plotPoint(i = 1, j = NULL, x = NULL, n = NULL, key = NULL, ...)
 \arguments{
 \item{i}{Index or name of point to plot.}
 
-\item{j}{Index or name of coordinate transformation to use. If \code{NULL},
-the coordinate transformation will be inherited from
-\code{plotSpatialData()}.}
+\item{j}{Index or name of coordinate system to use. 
+If \code{NULL}, will be inherited from \code{plotSpatialData()}.}
 
 \item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
 the object will be inherited from \code{plotSpatialData()}.}
 
-\item{n}{Positive numeric scalar. If not \code{NULL}, randomly sample
-\code{n} element for plotting. Use \code{set.seed()} before the plot
-in order to get a defined subset.}
+\item{n}{Positive integer scalar; 
+if not \code{NULL}, will randomly sample \code{n} points for plotting. 
+Use \code{set.seed()} before plotting to get a reproducible subset.}
 
-\item{key}{Character vector. If not \code{NULL}, only plot points where
-\code{feature_key(point(x, i))} is a value in \code{key}.}
+\item{key}{Character vector; if not \code{NULL}, only plot points 
+where \code{feature_key(point(x, i))} is a value in \code{key}.}
 
-\item{...}{Optional aesthetic arguments (for example \code{fill} or
-\code{colour}) passed to \code{geom_sf}.}
+\item{...}{Optional aesthetic arguments (for example, 
+\code{fill} or \code{color}) passed to \code{geom_sf}.}
 }
 \value{
-An object of type \code{sd_point}, which can be added to an
-existing \code{ggplot}.
+An object of type \code{sd_point}, 
+which can be added to an existing \code{ggplot}.
 }
 \description{
 Add point layer to SpatialData plot
@@ -40,8 +39,8 @@ x <- readSpatialData(x)
 
 i <- "blobs_points"
 p <- plotSpatialData(x)
-p + plotPoint(i=i)                       # simple
-p + plotPoint(i=i, colour="genes")       # discrete
+p + plotPoint(i=i)                     # simple
+p + plotPoint(i=i, colour="genes")     # discrete
 p + plotPoint(i, colour="instance_id") # continuous
 
 }

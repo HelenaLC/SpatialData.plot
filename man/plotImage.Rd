@@ -19,9 +19,8 @@ plotImage(
 \arguments{
 \item{i}{Index or name of image to plot.}
 
-\item{j}{Index or name of coordinate transformation to use. If \code{NULL},
-the coordinate transformation will be inherited from
-\code{plotSpatialData()}.}
+\item{j}{Index or name of coordinate system to use. 
+If \code{NULL}, will be inherited from \code{plotSpatialData()}.}
 
 \item{k}{Index of the scale to render; by default (NULL), will auto-select
 scale in order to minimize memory-usage and blurring for a target size of
@@ -41,12 +40,12 @@ For convenience, any NULL = [0, 1], and n = [0, n].}
 \item{t, z}{Integer scalar to indicate a specific time- or z-slice;
 if left unspecified (default NULL), will perform a max-projection.}
 
-\item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
-the object will be inherited from \code{plotSpatialData()}.}
+\item{x}{\code{\link[spatialdataR]{SpatialData}} object.
+If \code{NULL}, will be inherited from \code{plotSpatialData()}.}
 }
 \value{
-An object of type \code{sd_image}, which can be added to an
-existing \code{ggplot}.
+An object of type \code{sd_image}, 
+which can be added to an existing \code{ggplot}.
 }
 \description{
 Add image layer to SpatialData plot

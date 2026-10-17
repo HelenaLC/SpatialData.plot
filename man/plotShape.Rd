@@ -17,33 +17,32 @@ plotShape(
 \arguments{
 \item{i}{Index or name of shape to plot.}
 
-\item{j}{Index or name of coordinate transformation to use. If \code{NULL},
-the coordinate transformation will be inherited from
-\code{plotSpatialData()}.}
+\item{j}{Index or name of coordinate system to use. 
+If \code{NULL}, will be inherited from \code{plotSpatialData()}.}
 
 \item{assay}{Index or name of an assay; in case of \code{fill} or
 \code{colour} denoting a row name, specifies which \code{assay}
 data to use (see \code{\link[spatialdataR]{getTable}}).
-(ignored when \code{x} is a \code{SpatialDataPoint}).}
+Ignored when \code{x} is a \code{SpatialDataPoint}.}
 
 \item{x}{\code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
 the object will be inherited from \code{plotSpatialData()}.}
 
-\item{n}{Positive numeric scalar. If not \code{NULL}, randomly sample
-\code{n} element for plotting. Use \code{set.seed()} before the plot
-in order to get a defined subset.}
+\item{n}{Positive integer scalar; 
+if not \code{NULL}, will randomly sample \code{n} points for plotting. 
+Use \code{set.seed()} before plotting to get a reproducible subset.}
 
 \item{as}{Character scalar defining how to plot shapes. Must be one of
 \code{"border"} (just plot the outline, the default), \code{"solid"}
 (plot filled shapes) or \code{"centroid"} (just plot a point at the
 coordinates of the centroid of the shape).}
 
-\item{...}{Optional aesthetic arguments (for example \code{fill} or
-\code{colour}) passed to \code{geom_sf}.}
+\item{...}{Optional aesthetic arguments (for example, 
+\code{fill} or \code{color}) passed to \code{geom_sf}.}
 }
 \value{
-An object of type \code{sd_shape}, which can be added to an
-existing \code{ggplot}.
+An object of type \code{sd_shape}, 
+which can be added to an existing \code{ggplot}.
 }
 \description{
 Add shape layer to SpatialData plot

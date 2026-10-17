@@ -3,25 +3,24 @@
 #' @param x \code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
 #'   the object will be inherited from \code{plotSpatialData()}.
 #' @param i Index or name of shape to plot.
-#' @param j Index or name of coordinate transformation to use. If \code{NULL},
-#'   the coordinate transformation will be inherited from
-#'   \code{plotSpatialData()}.
+#' @param j Index or name of coordinate system to use. 
+#'   If \code{NULL}, will be inherited from \code{plotSpatialData()}.
 #' @param assay Index or name of an assay; in case of \code{fill} or
 #'   \code{colour} denoting a row name, specifies which \code{assay}
 #'   data to use (see \code{\link[spatialdataR]{getTable}}).
-#'   (ignored when \code{x} is a \code{SpatialDataPoint}).
-#' @param n Positive numeric scalar. If not \code{NULL}, randomly sample
-#'   \code{n} element for plotting. Use \code{set.seed()} before the plot
-#'   in order to get a defined subset.
+#'   Ignored when \code{x} is a \code{SpatialDataPoint}.
+#' @param n Positive integer scalar; 
+#'   if not \code{NULL}, will randomly sample \code{n} points for plotting. 
+#'   Use \code{set.seed()} before plotting to get a reproducible subset.
 #' @param as Character scalar defining how to plot shapes. Must be one of
 #'   \code{"border"} (just plot the outline, the default), \code{"solid"}
 #'   (plot filled shapes) or \code{"centroid"} (just plot a point at the
 #'   coordinates of the centroid of the shape).
-#' @param ... Optional aesthetic arguments (for example \code{fill} or
-#'   \code{colour}) passed to \code{geom_sf}.
+#' @param ... Optional aesthetic arguments (for example, 
+#'   \code{fill} or \code{color}) passed to \code{geom_sf}.
 #'
-#' @returns An object of type \code{sd_shape}, which can be added to an
-#' existing \code{ggplot}.
+#' @returns An object of type \code{sd_shape}, 
+#' which can be added to an existing \code{ggplot}.
 #'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
@@ -53,11 +52,11 @@ plotShape <- function(i=1, j=NULL, assay=1, x=NULL, n=NULL,
 #'
 #' @inheritParams plotShape
 #' @param i Index or name of point to plot.
-#' @param key Character vector. If not \code{NULL}, only plot points where
-#'   \code{feature_key(point(x, i))} is a value in \code{key}.
+#' @param key Character vector; if not \code{NULL}, only plot points 
+#'   where \code{feature_key(point(x, i))} is a value in \code{key}.
 #'
-#' @returns An object of type \code{sd_point}, which can be added to an
-#' existing \code{ggplot}.
+#' @returns An object of type \code{sd_point}, 
+#' which can be added to an existing \code{ggplot}.
 #'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
@@ -66,8 +65,8 @@ plotShape <- function(i=1, j=NULL, assay=1, x=NULL, n=NULL,
 #'
 #' i <- "blobs_points"
 #' p <- plotSpatialData(x)
-#' p + plotPoint(i=i)                       # simple
-#' p + plotPoint(i=i, colour="genes")       # discrete
+#' p + plotPoint(i=i)                     # simple
+#' p + plotPoint(i=i, colour="genes")     # discrete
 #' p + plotPoint(i, colour="instance_id") # continuous
 #'
 #' @export
@@ -159,11 +158,13 @@ ggplot_add.sd_shape <- function(object, plot, object_name) {
     }
     y <- transform(y, j)
     if (!is.null(CTunit(y)[[j]]$x)) {
-        plot@meta$sd_args <- modifyList(plot@meta$sd_args,
-                                        list(arrayLayerType = "shape",
-                                             arrayLayerName = object$i))
+        plot@meta$sd_args <- modifyList(
+            plot@meta$sd_args, list(
+                arrayLayerType="shape",
+                arrayLayerName=object$i))
     }
-    plot + do.call(.plot, modifyList(object, list(x=x, y=y, j=NULL, `...`=NULL)))
+    plot + do.call(.plot, modifyList(object, 
+        list(x=x, y=y, j=NULL, `...`=NULL)))
 }
 
 #' @exportS3Method ggplot2::ggplot_add
@@ -195,9 +196,11 @@ ggplot_add.sd_point <- function(object, plot, object_name) {
     }
     y <- transform(y, j)
     if (!is.null(CTunit(y)[[j]]$x)) {
-        plot@meta$sd_args <- modifyList(plot@meta$sd_args,
-                                        list(arrayLayerType = "point",
-                                             arrayLayerName = object$i))
+        plot@meta$sd_args <- modifyList(
+            plot@meta$sd_args, list(
+                arrayLayerType="point",
+                arrayLayerName=object$i))
     }
-    plot + do.call(.plot, modifyList(object, list(x=x, y=y, j=NULL, `...`=NULL)))
+    plot + do.call(.plot, modifyList(object, 
+        list(x=x, y=y, j=NULL, `...`=NULL)))
 }

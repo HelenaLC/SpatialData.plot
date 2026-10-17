@@ -1,7 +1,7 @@
 #' Add label layer to SpatialData plot
 #'
-#' @param x \code{\link[spatialdataR]{SpatialData}} object. If \code{NULL},
-#'   the object will be inherited from \code{plotSpatialData()}.
+#' @param x \code{\link[spatialdataR]{SpatialData}} object. 
+#'   If \code{NULL}, will be inherited from \code{plotSpatialData()}.
 #' @param i Index or name of label to plot.
 #' @param c determines label colors;
 #'   the default (NULL), gives a binary image of whether or not a
@@ -18,8 +18,8 @@
 #' @param nan character string; color for missing values (hidden by default).
 #' @inheritParams plotImage
 #'
-#' @returns An object of type \code{sd_label}, which can be added to an
-#' existing \code{ggplot}.
+#' @returns An object of type \code{sd_label}, 
+#' which can be added to an existing \code{ggplot}.
 #'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
@@ -167,9 +167,11 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
     }
 
     if (!is.null(CTunit(y)[[j]]$x)) {
-        plot@meta$sd_args <- modifyList(plot@meta$sd_args,
-                                        list(arrayLayerType = "label",
-                                             arrayLayerName = object$i))
+        plot@meta$sd_args <- modifyList(
+            plot@meta$sd_args, list(
+                arrayLayerType="label",
+                arrayLayerName=object$i))
     }
-    plot + list(thm, do.call(geom_tile, list(data=df, mapping=aes, alpha=object$a)))
+    args <- list(data=df, mapping=aes, alpha=object$a)
+    plot + list(thm, do.call(geom_tile, args))
 }

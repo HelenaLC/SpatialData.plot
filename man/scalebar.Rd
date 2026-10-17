@@ -33,7 +33,7 @@ sd <- readSpatialData(zs, tables=FALSE)
 
 # mock unit (data misses specification!)
 md <- meta(image(sd, 2))
-md$multiscales[[1]]$axes[[3]]$unit <- "micron"
+md$multiscales[[1]]$coordinateTransformations[[1]]$output$axes[[3]]$unit <- "micron"
 sd$images[[2]]@meta <- md
 
 plotSpatialData(sd) +
