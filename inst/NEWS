@@ -1,6 +1,8 @@
 changes in version 0.99.11
 
 - documentation revision
+- fix unit tests according to knew 'plotShape()' capabilities
+- bug fix: 'plotShape()' now respects 'as' when shapes are circles
 
 changes in version 0.99.10
 
