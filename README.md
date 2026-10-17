@@ -13,7 +13,7 @@ from the `spatialdataR`: an R interface to Python's
 
 - [SpatialData class](https://helenalc.github.io/spatialdataR) documentation.
 - [SpatialData.demo](https://helenalc.github.io/SpatialData.demo): Biotechnology workflows.
-- [SpatialData.data](https://github.com/HelenaLC/SpatialData.data): Example `SpatialData`sets.
+- [SpatialData.data](https://helenalc.github.io/SpatialData.data): Example `SpatialData`sets.
 
 ## Installation
 
