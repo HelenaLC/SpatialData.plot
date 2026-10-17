@@ -113,15 +113,11 @@ plotPoint <- function(i=1, j=NULL, x=NULL, n=NULL, key=NULL, ...) {
             }
         }
     }
-
-    if ("radius" %in% names(df)) {
-        # points
+    if (as == "border") dot[["fill"]] <- NA
+    if (as == "centroid") {
+        st_geometry(df) <- st_centroid(st_geometry(df))
+    } else if ("radius" %in% names(df) && as != "centroid") {
         df <- st_buffer(df, df$radius)
-    } else {
-        # shapes
-        switch(as,
-            border={ dot[["fill"]] <- NA },
-            centroid={ st_geometry(df) <- st_centroid(st_geometry(df)) })
     }
     list(
         do.call(geom_sf, c(list(data=df, mapping=aes), c(dot))),
