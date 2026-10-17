@@ -103,11 +103,7 @@ plotPoint <- function(i=1, j=NULL, x=NULL, n=NULL, key=NULL, ...) {
             z <- tryCatch(
                 error=\(e) NULL,
                 getTable(x, i, val, assay=assay))
-            if (!is.null(z)) {
-                fd <- data.frame(z)
-                names(fd) <- val
-                df <- cbind(df, fd)
-            }
+            if (!is.null(z)) df[[val]] <- z
             if (val %in% names(df)) {
                 if (scale_type(df[[val]]) == "discrete")
                     df[[val]] <- factor(df[[val]])
