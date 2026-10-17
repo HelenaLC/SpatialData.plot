@@ -113,7 +113,7 @@ plotPoint <- function(i=1, j=NULL, x=NULL, n=NULL, key=NULL, ...) {
             }
         }
     }
-    if (as == "border") dot[["fill"]] <- NA
+    if (as != "solid") dot[["fill"]] <- NA
     if (as == "centroid") {
         st_geometry(df) <- st_centroid(st_geometry(df))
     } else if ("radius" %in% names(df) && as != "centroid") {
