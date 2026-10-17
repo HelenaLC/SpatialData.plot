@@ -87,24 +87,25 @@ test_that("shape annotation", {
     y <- setTable(x, shapeNames(x)[1], se)
     
     # continuous (colData)
-    expect_is(l <- plotShape(fill="num"), "sd_shape")
+    expect_is(l <- plotShape(col="num"), "sd_shape")
     p <- plotSpatialData(y) + l
-    g <- ggplot2::get_guide_data(p, "fill")
+    g <- ggplot2::get_guide_data(p, "colour")
     expect_is(g[[2]], "numeric")
     # continuous (assay)
-    expect_is(l <- plotShape(fill="a"), "sd_shape")
+    expect_is(l <- plotShape(col="a"), "sd_shape")
     p <- plotSpatialData(y) + l
-    g <- ggplot2::get_guide_data(p, "fill")
+    g <- ggplot2::get_guide_data(p, "colour")
     expect_is(g[[2]], "numeric")
     # discrete
-    expect_is(l <- plotShape(fill="fac"), "sd_shape")
+    expect_is(l <- plotShape(col="fac"), "sd_shape")
     p <- plotSpatialData(y) + l
-    g <- ggplot2::get_guide_data(p, "fill")
+    g <- ggplot2::get_guide_data(p, "colour")
     expect_is(g[[2]], "character")
     
     # arbitrary aesthetics
-    l <- plotShape(fill="fac", color="num", 
-                   stroke="num", linetype="fac")
+    l <- plotShape(as="solid",
+        fill="fac", color="num", 
+        stroke="num", linetype="fac")
     df <- ggplot2::layer_data(plotSpatialData(y) + l)
     expect_equal(df$stroke, se$num)
     expect_is(df$fill, "character")

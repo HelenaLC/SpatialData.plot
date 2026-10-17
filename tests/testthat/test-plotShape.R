@@ -117,5 +117,8 @@ test_that("plotShape(..., as)", {
         expect_true(is.na(.aes(q)$fill))
         expect_true(.aes(q)$colour == c)
         expect_true(.geom(q) == "POINT")
+        # invalid
+        expect_error(p + plotShape(i=i, as="x"))
+        expect_error(p + plotShape(i=i, as=c("border", "solid")))
     }
 })
