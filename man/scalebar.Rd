@@ -7,7 +7,7 @@
 scalebar(len = NULL, col = "red", lwd = 1, xrel = 0.05, yrel = 0.05)
 }
 \arguments{
-\item{len}{scalar numeric giving the length of the scalebar 
+\item{len}{scalar numeric giving the length of the scalebar
 in physical coordinate space; the unit will be extracted
 from the data's Zarr specifications (see \code{axes(x)}).}
 
@@ -22,8 +22,8 @@ length-two list of \code{ggplot2::annotate()} layers corresponding to
 scalebar line (\code{geom="segment"}) and unit label (\code{geom="text"})
 }
 \description{
-\code{scalebar} will get the axis unit and scale information from the 
-closest preceding layer where this information is present. Therefore, 
+\code{scalebar} will get the axis unit and scale information from the
+closest preceding layer where this information is present. Therefore,
 the placement of \code{scalebar} in the sequence of layers is important.
 }
 \examples{
@@ -33,11 +33,11 @@ sd <- readSpatialData(zs, tables=FALSE)
 
 # mock unit (data misses specification!)
 md <- meta(image(sd, 2))
-md$multiscales[[1]]$axes[[3]]$unit <- "micron"
+md$multiscales[[1]]$coordinateTransformations[[1]]$output$axes[[3]]$unit <- "micron"
 sd$images[[2]]@meta <- md
 
-plotSpatialData(sd) + 
-  plotImage(i=2) + 
+plotSpatialData(sd) +
+  plotImage(i=2) +
   scalebar(len=10)
 
 }

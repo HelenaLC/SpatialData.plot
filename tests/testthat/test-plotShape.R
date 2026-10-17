@@ -10,8 +10,8 @@ test_that("plotShape(),circles", {
     expect_error(plotShape(x=x, as="missing"), "should be")
     p <- plotSpatialData(x)
     # invalid
-    expect_error(p + plotShape(i = "."))
-    expect_error(p + plotShape(i = 100))
+    expect_error(p + plotShape(i="."))
+    expect_error(p + plotShape(i=100))
     # simple
     y <- shape(x, i <- "blobs_circles")
     q <- p + plotShape(i)
@@ -22,22 +22,23 @@ test_that("plotShape(),circles", {
     geom <- sf::st_centroid(geom)
     fd <- sf::st_coordinates(geom)
     expect_equivalent(as.matrix(df), as.matrix(fd))
+    
     # size
-    q <- p + plotShape(i = i, size=s <- runif(1, 1, 10))
+    q <- p + plotShape(i=i, size=s <- runif(1, 1, 10))
     expect_all_equal(ggplot2::layer_data(q, 1)$size, s)
     # color
-    expect_error(show(p + plotShape(i = i, colour=".")))
-    q <- p + plotShape(i = i, colour=NA) # none
+    expect_error(show(p + plotShape(i=i, colour=".")))
+    q <- p + plotShape(i=i, colour=NA) # none
     expect_all_equal(ggplot2::layer_data(q, 1)$colour, NA)
-    q <- p + plotShape(i = i, colour=c <- 1) # numeric
+    q <- p + plotShape(i=i, colour=c <- 1) # numeric
     expect_all_equal(ggplot2::layer_data(q, 1)$colour, c)
-    q <- p + plotShape(i = i, colour=c <- "red") # string
+    q <- p + plotShape(i=i, colour=c <- "red") # string
     expect_all_equal(ggplot2::layer_data(q, 1)$colour, c)
     
-    xtmp <- x
-    shape(xtmp)@data <- duckspatial::ddbs_is_simple(data(shape(xtmp)))
-    q <- plotSpatialData(xtmp) + plotShape(fill="is_simple")
-    expect_all_equal(ggplot2::layer_data(q, 1)$fill, "#F8766D")
+    y <- x
+    shape(y)@data <- duckspatial::ddbs_is_simple(data(shape(y)))
+    q <- plotSpatialData(y) + plotShape(col="is_simple")
+    expect_all_equal(layer_data(q, 1)$colour, "#F8766D")
 })
 
 test_that("plotShape(),polygons", {
@@ -93,4 +94,31 @@ test_that("plotShape(),multipolygons", {
     fd$colour <- hex
     expect_identical(sort(colnames(df)), sort(colnames(fd)))
     expect_identical(df, fd[, colnames(df)])
+})
+
+test_that("plotShape(..., as)", {
+    p <- plotSpatialData(x)
+    f <- "blue"; c <- "red"
+    .aes <- \(.) .@layers[[1]]$aes_params
+    .geom <- \(.) sf::st_geometry_type(.@layers[[1]]$data, by_geometry=FALSE)
+    for (i in c("blobs_circles", "blobs_polygons")) {
+        # border
+        q <- p + plotShape(i=i, as="border", fill=f, colour=c)
+        expect_true(is.na(.aes(q)$fill))
+        expect_true(.aes(q)$colour == c)
+        expect_true(.geom(q) == "POLYGON")
+        # solid
+        q <- p + plotShape(i=i, as="solid", fill=f, colour=c)
+        expect_true(.aes(q)$fill == f)
+        expect_true(.aes(q)$colour == c)
+        expect_true(.geom(q) == "POLYGON")
+        # centroid
+        q <- p + plotShape(i=i, as="centroid", fill=f, colour=c)
+        expect_true(is.na(.aes(q)$fill))
+        expect_true(.aes(q)$colour == c)
+        expect_true(.geom(q) == "POINT")
+        # invalid
+        expect_error(p + plotShape(i=i, as="x"))
+        expect_error(p + plotShape(i=i, as=c("border", "solid")))
+    }
 })

@@ -16,15 +16,16 @@ test_that(".str_is_col works", {
 
 test_that(".project works", {
     m <- .mock(c=2, t=0, z=3, y=5, x=3)
-    expect_error(.project(m, m@data[[1]], z=1:2), 
+    anms <- axes(m, "name")
+    expect_error(.project(anms, m@data[[1]], z=1:2),
                  "only a single z-plane can be selected")
     # project
-    p <- .project(m, m@data[[1]], z=NULL)
+    p <- .project(anms, m@data[[1]], z=NULL)
     expect_identical(p[1, , ], Reduce(pmax, lapply(1:3, function(i) as.array(m@data[[1]][1, i, , ]))))
     expect_identical(p[2, , ], Reduce(pmax, lapply(1:3, function(i) as.array(m@data[[1]][2, i, , ]))))
-    
+
     # select
-    p <- .project(m, m@data[[1]], z=1)
+    p <- .project(anms, m@data[[1]], z=1)
     expect_identical(p, m@data[[1]][, 1, , ])
 })
 
@@ -33,7 +34,7 @@ test_that(".get_wh works", {
     S4Vectors::metadata(m)$wh <- list(w=c(0,6), h=c(0,10))
     rwh <- .raw_wh(m)
     expect_identical(rwh, list(w=c(0,6), h=c(0,10)))
-    
+
     wh <- .get_wh(m)
     expect_identical(wh, rwh)
 })
@@ -43,5 +44,5 @@ test_that(".subset_array_by_axes works", {
     expect_error(.subset_array_by_axes(m, axisNames = c("x", "y")), "must equal")
     expect_identical(dim(.subset_array_by_axes(m@data[[1]], axisNames=c("c", "z", "y", "x"), y=1:2, x=1)), c(2L, 3L, 2L, 1L))
     expect_identical(dim(.subset_array_by_axes(m@data[[1]], axisNames=c("c", "z", "y", "x"), y=1:2, x=1, drop=TRUE)), c(2L, 3L, 2L))
-    
+
 })

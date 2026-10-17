@@ -1,49 +1,48 @@
 #' Add image layer to SpatialData plot
-#' 
-#' @param x \code{\link[spatialdataR]{SpatialData}} object. If \code{NULL}, 
-#'   the object will be inherited from \code{plotSpatialData()}.
+#'
+#' @param x \code{\link[spatialdataR]{SpatialData}} object.
+#'   If \code{NULL}, will be inherited from \code{plotSpatialData()}.
 #' @param i Index or name of image to plot.
-#' @param j Index or name of coordinate transformation to use. If \code{NULL}, 
-#'   the coordinate transformation will be inherited from 
-#'   \code{plotSpatialData()}.
-#' @param k Index of the scale to render; by default (NULL), will auto-select 
-#'   scale in order to minimize memory-usage and blurring for a target size of 
+#' @param j Index or name of coordinate system to use. 
+#'   If \code{NULL}, will be inherited from \code{plotSpatialData()}.
+#' @param k Index of the scale to render; by default (NULL), will auto-select
+#'   scale in order to minimize memory-usage and blurring for a target size of
 #'   800 x 800px; use Inf to plot the lowest resolution available.
-#' @param ch Image channel(s) to be used for plotting (defaults to 
-#'   the first channel(s) available); use \code{channels()} to see 
+#' @param ch Image channel(s) to be used for plotting (defaults to
+#'   the first channel(s) available); use \code{channels()} to see
 #'   which channels are available for a given \code{SpatialDataImage}
-#' @param c Character vector; colors to use for each channel. 
-#' @param cl List of length-2 numeric vectors (non-negative, increasing); 
-#'   specifies channel-wise contrast limits - defaults to [0, 1] for all 
-#'   (ignored when \code{image(x, i)} is an RGB image; 
-#'   for convenience, any NULL = [0, 1], and n = [0, n]).
+#' @param c Character vector; colors to use for each channel.
+#' @param cl List of length-2 numeric vectors (non-negative, increasing);
+#'   specifies channel-wise contrast limits - defaults to [0, 1] for all
+#'   ([0, 1/3] when \code{image(x, i)} is an RGB image).
+#'   For convenience, any NULL = [0, 1], and n = [0, n].
 #' @param t,z Integer scalar to indicate a specific time- or z-slice;
 #'   if left unspecified (default NULL), will perform a max-projection.
 #'
-#' @returns An object of type \code{sd_image}, which can be added to an 
-#' existing \code{ggplot}.
+#' @returns An object of type \code{sd_image}, 
+#' which can be added to an existing \code{ggplot}.
 #'
 #' @examples
 #' x <- file.path("extdata", "blobs.zarr")
 #' x <- system.file(x, package="spatialdataR")
 #' x <- readSpatialData(x, tables=FALSE)
-#' 
-#' ms <- lapply(seq(3), \(.) 
+#'
+#' ms <- lapply(seq(3), \(.)
 #'   plotSpatialData(x) +
 #'   plotImage(2, k=.))
 #' patchwork::wrap_plots(ms)
-#' 
+#'
 #' # custom colors
 #' cmy <- c("cyan", "magenta", "yellow")
 #' plotSpatialData(x) + plotImage(c=cmy)
-#' 
+#'
 #' # contrast limits
 #' cl <- rep(list(c(0, 1/3)), 3)
-#' plotSpatialData(x, ct="global") + 
-#'   plotImage(k=1, c=cmy, cl=cl) + 
-#'   plotShape(i="blobs_circles", fill="pink") + 
+#' plotSpatialData(x, ct="global") +
+#'   plotImage(k=1, c=cmy, cl=cl) +
+#'   plotShape(i="blobs_circles", fill="pink") +
 #'   plotPoint(i="blobs_points", colour="instance_id")
-#' 
+#'
 #' @import spatialdataR
 #' @export
 plotImage <- function(i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=NULL, x=NULL) {
@@ -114,9 +113,9 @@ plotImage <- function(i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=N
     colors_rgb <- col2rgb(c)
     normed_a <- (linear_a - cl[, 1]) / (cl[, 2] - cl[, 1])
     flat_img <- (colors_rgb %*% normed_a) / d
-    flat_img |> 
-        t() |> 
-        encode_colour() |> 
+    flat_img |>
+        t() |>
+        encode_colour() |>
         matrix(nrow=dim(a)[2], ncol=dim(a)[3])
 }
 
@@ -159,13 +158,10 @@ plotImage <- function(i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=N
     lbs <- channels(x)
     if (all(ch %in% lbs)) {
         return(match(ch, lbs))
-    }
-    if (all(ch %notin% lbs)) {
-        warning("Couldn't find channels; picking first one(s)!")
+    } else {
+        warning("Couldn't find all channels; picking the first one!")
         return(1)
     }
-    warning("Couldn't find some channels; picking first one(s)!")
-    return(1)
 }
 
 #' @importFrom spatialdataR data_type axes
@@ -175,7 +171,7 @@ plotImage <- function(i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=N
     a <- .get_ms_data(x, k)
     axisNames <- axes(x, "name")
     # 2D max-projection
-    a <- .project(x, a, z)
+    a <- .project(axisNames, a, z)
     axisNames <- axisNames[axisNames != "z"]
     ti <- which(axisNames == "t")
     tn <- length(ti)
@@ -188,7 +184,7 @@ plotImage <- function(i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=N
         }
     }
     a <- .subset_array_by_axes(
-        a=a, c=.ch_idx(x, ch), t=t, 
+        a=a, c=.ch_idx(x, ch), t=t,
         axisNames=axisNames, drop=FALSE)
     # remove time axis if it exists
     if (tn) {
@@ -221,13 +217,13 @@ plotImage <- function(i=1, j=NULL, k=NULL, ch=NULL, c=NULL, cl=NULL, t=NULL, z=N
         scale_color_identity(NULL, guide="legend", breaks=pal, labels=names(pal)),
         new_scale_color())
 }
-# `annotation_raster` plots the array the same way it is printed, i.e., with 
-# the 1st row at the top, which means we need to flip the y-axis to have the 
-# correct axis labels. We tried flipping the image itself but it means all 
+# `annotation_raster` plots the array the same way it is printed, i.e., with
+# the 1st row at the top, which means we need to flip the y-axis to have the
+# correct axis labels. We tried flipping the image itself but it means all
 # gets out of alignment if the user sets 'scale_y_reverse()' themselves.
 
 #' @exportS3Method ggplot2::ggplot_add
-#' @importFrom spatialdataR imageNames CTname transform image channels
+#' @importFrom spatialdataR imageNames CTname CTunit transform image channels
 ggplot_add.sd_image <- function(object, plot, object_name) {
     if (is.null(object$x)) {
         x <- plot@meta$sd_args$sd
@@ -251,6 +247,7 @@ ggplot_add.sd_image <- function(object, plot, object_name) {
     }
     if (is.null(plot@meta$sd_args$ct_name)) {
         plot@meta$sd_args$ct_name <- j
+        message("Using coordinate system '", j, "'")
     }
     y <- transform(y, j)
     if (.is_rgb(y)) {
@@ -266,14 +263,12 @@ ggplot_add.sd_image <- function(object, plot, object_name) {
     }
     # physical space mapping
     wh <- .get_wh(y)
-    
-    if (is.list(axes(y)[[1]]) && !is.null(axes(y)[[1]]$name)) {
-        xi <- which(axes(y, "name") == "x")
-        if (length(xi) > 0 && !is.null(axes(y)[[xi]]$unit)) {
-            plot@meta$sd_args <- modifyList(plot@meta$sd_args, 
-                                            list(arrayLayerType = "image",
-                                                 arrayLayerName = object$i))
-        }
+
+    if (!is.null(CTunit(y)[[j]]$x)) {
+        plot@meta$sd_args <- modifyList(
+            plot@meta$sd_args, list(
+                arrayLayerType="image",
+                arrayLayerName=object$i))
     }
     plot + .gg_i(df, wh$w, wh$h, pal)
 }

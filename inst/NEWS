@@ -1,3 +1,9 @@
+changes in version 0.99.11
+
+- documentation revision
+- fix unit tests according to knew 'plotShape()' capabilities
+- bug fix: 'plotShape()' now respects 'as' when shapes are circles
+
 changes in version 0.99.10
 
 - bug fix in plotFrame() to pass non-valid names as aesthetics (e.g., "mt-Co1")
@@ -8,10 +14,11 @@ changes in version 0.99.9
 - scalebar() support for points/shapes
 - infer coordinate system from layer if unspecified
 - add 'as' argument to plotShape() to plot either border, centroid or solid shapes
+- inform about automatically selected coordinate system in plot functions
 
 changes in version 0.99.8
 
-- interface revision: 'plotImage/Label/Frame' inherit 
+- interface revision: 'plotImage/Label/Frame' inherit
   object and coordinate system from 'plotSpatialData'
 
 changes in version 0.99.7
@@ -43,7 +50,7 @@ changes in version 0.99.4
 
 changes in version 0.99.3
 
-- in 'plotImage', render discrete color 
+- in 'plotImage', render discrete color
   legend for multi-channel (non-RGB) images
 
 changes in version 0.99.2

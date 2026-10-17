@@ -59,6 +59,7 @@ importFrom(sf,
 importFrom(spatialdataR,
   "element<-",
   CTname,
+  CTunit,
   axes,
   channels,
   data_type,
@@ -77,7 +78,4 @@ importFrom(spatialdataR,
   shapeNames,
   transform
 )
-importFrom(utils,
-  modifyList,
-  tail
-)
+importFrom(utils,modifyList)
