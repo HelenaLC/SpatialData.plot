@@ -1,6 +1,7 @@
 test_that("regression test of overlays", {
     zs <- system.file("extdata", "blobs.zarr", package="spatialdataR")
     x <- readSpatialData(zs)
+    set.seed(42)
     
     p <- plotSpatialData(x)
     # joint
