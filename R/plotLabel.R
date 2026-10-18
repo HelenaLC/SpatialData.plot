@@ -121,10 +121,9 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
     # physical space mapping
     ds <- dim(ym)
     wh <- .get_wh(y)
-    nx <- ds[which(axisNames == "x")]
-    ny <- ds[which(axisNames == "y")]
-    sx <- diff(wh$w)/nx
-    sy <- diff(wh$h)/ny
+    xy <- match(c("x", "y"), axisNames)
+    sx <- diff(wh$w)/ds[xy[1]]
+    sy <- diff(wh$h)/ds[xy[2]]
     df <- data.frame(
         x=wh$w[1]+idx[,2L]*sx,
         y=wh$h[1]+idx[,1L]*sy,
@@ -148,11 +147,11 @@ ggplot_add.sd_label <- function(object, plot, object_name) {
                 list(
                     theme(legend.key.size=unit(0.5, "lines")),
                     guides(fill=guide_legend(override.aes=list(alpha=1))),
-                    scale_fill_manual(c, values=pal, breaks=val, na.value=object$nan))
+                    scale_fill_manual(object$c, values=pal, breaks=val, na.value=object$nan))
             },
             continuous=list(
                 theme(legend.key.size=unit(0.5, "lines")),
-                scale_fill_gradientn(c, colors=object$pal, na.value=object$nan)))
+                scale_fill_gradientn(object$c, colors=object$pal, na.value=object$nan)))
     } else {
         if (is.null(object$pal)) {
             id <- instances(y)
