@@ -64,10 +64,14 @@ are represented as `r BiocStyle::Biocpkg("SingleCellExperiment")` as tables.
 **We here demonstrate package functionality using a trivial example dataset.
 For more realistic technology-focused examples, we refer readers to the 
 companion [demo website](https://helenalc.github.io/SpatialData.demo).**
+In particular, the *blobs* dataset from `spatialdataR` (provided by the
+scverse/Python) serves to represent all possible types of elements: an
+`image` (RGB), `label` (masks), different `shapes` (circles, multi-/polygons), 
+`points` (gene transcripts), and a `table` annotating the `label` element.
 
 ```{r read-data}
 x <- file.path("extdata", "blobs.zarr")
-x <- system.file(x, package="SpatialData.plot")
+x <- system.file(x, package="spatialdataR")
 (x <- readSpatialData(x))
 ```
 

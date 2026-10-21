@@ -1,3 +1,8 @@
+changes in version 0.99.12
+
+- remove 'inst/extdata/' in favor of 'spatialdataR'
+- expand README with image & brief textual description
+
 changes in version 0.99.11
 
 - documentation revision
