@@ -67,7 +67,7 @@ companion [demo website](https://helenalc.github.io/SpatialData.demo).**
 
 ```{r read-data}
 x <- file.path("extdata", "blobs.zarr")
-x <- system.file(x, package="SpatialData.plot")
+x <- system.file(x, package="spatialdataR")
 (x <- readSpatialData(x))
 ```
 
