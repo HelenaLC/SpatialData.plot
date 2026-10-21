@@ -26,8 +26,8 @@ plotImage(
 
 - j:
 
-  Index or name of coordinate transformation to use. If `NULL`, the
-  coordinate transformation will be inherited from
+  Index or name of coordinate system to use. If `NULL`, will be
+  inherited from
   [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 - k:
@@ -50,9 +50,9 @@ plotImage(
 - cl:
 
   List of length-2 numeric vectors (non-negative, increasing); specifies
-  channel-wise contrast limits - defaults to \[0, 1\] for all (ignored
-  when `image(x, i)` is an RGB image; for convenience, any NULL = \[0,
-  1\], and n = \[0, n\]).
+  channel-wise contrast limits - defaults to \[0, 1\] for all (\[0,
+  1/3\] when `image(x, i)` is an RGB image). For convenience, any NULL =
+  \[0, 1\], and n = \[0, n\].
 
 - t, z:
 
@@ -62,7 +62,7 @@ plotImage(
 - x:
 
   [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
-  object. If `NULL`, the object will be inherited from
+  object. If `NULL`, will be inherited from
   [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 ## Value
@@ -77,22 +77,26 @@ x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x, tables=FALSE)
 
-ms <- lapply(seq(3), \(.) 
+ms <- lapply(seq(3), \(.)
   plotSpatialData(x) +
   plotImage(2, k=.))
+#> Using coordinate system 'global'
+#> Using coordinate system 'global'
+#> Using coordinate system 'global'
 patchwork::wrap_plots(ms)
 
 
 # custom colors
 cmy <- c("cyan", "magenta", "yellow")
 plotSpatialData(x) + plotImage(c=cmy)
+#> Using coordinate system 'global'
 
 
 # contrast limits
 cl <- rep(list(c(0, 1/3)), 3)
-plotSpatialData(x, ct="global") + 
-  plotImage(k=1, c=cmy, cl=cl) + 
-  plotShape(i="blobs_circles", fill="pink") + 
+plotSpatialData(x, ct="global") +
+  plotImage(k=1, c=cmy, cl=cl) +
+  plotShape(i="blobs_circles", fill="pink") +
   plotPoint(i="blobs_points", colour="instance_id")
 #> Coordinate system already present.
 #> ℹ Adding new coordinate system, which will replace the existing one.

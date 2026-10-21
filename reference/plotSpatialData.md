@@ -30,6 +30,9 @@ x <- file.path("extdata", "blobs.zarr")
 x <- system.file(x, package="spatialdataR")
 x <- readSpatialData(x, tables=FALSE)
 ms <- lapply(seq(3), \(.) plotSpatialData(x) + plotImage(i=2, k=.))
+#> Using coordinate system 'global'
+#> Using coordinate system 'global'
+#> Using coordinate system 'global'
 patchwork::wrap_plots(ms)
 
 ```

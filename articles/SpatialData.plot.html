@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">SpatialData.plot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.12</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +57,7 @@
 
       <h1>`SpatialData.plot`</h1>
             
-            <h4 data-toc-skip class="date">October 16, 2026</h4>
+            <h4 data-toc-skip class="date">October 21, 2026</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HelenaLC/SpatialData.plot/blob/devel/vignettes/SpatialData.plot.Rmd" class="external-link"><code>vignettes/SpatialData.plot.Rmd</code></a></small>
       <div class="d-none name"><code>SpatialData.plot.Rmd</code></div>
@@ -118,18 +118,19 @@ as tables.</p>
 <p><strong>We here demonstrate package functionality using a trivial
 example dataset. For more realistic technology-focused examples, we
 refer readers to the companion <a href="https://helenalc.github.io/SpatialData.demo" class="external-link">demo
-website</a>.</strong></p>
+website</a>.</strong> In particular, the <em>blobs</em> dataset from
+<code>spatialdataR</code> (provided by the scverse/Python) serves to
+represent all possible types of elements: an <code>image</code> (RGB),
+<code>label</code> (masks), different <code>shapes</code> (circles,
+multi-/polygons), <code>points</code> (gene transcripts), and a
+<code>table</code> annotating the <code>label</code> element.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"blobs.zarr"</span><span class="op">)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="va">x</span>, package<span class="op">=</span><span class="st">"SpatialData.plot"</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="va">x</span>, package<span class="op">=</span><span class="st">"spatialdataR"</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/spatialdataR/reference/readSpatialData.html" class="external-link">readSpatialData</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## class: SpatialData</span></span>
-<span><span class="co">## - images(2):</span></span>
-<span><span class="co">##   - blobs_image (3,64,64)</span></span>
-<span><span class="co">##   - blobs_multiscale_image (3,64,64)</span></span>
-<span><span class="co">## - labels(2):</span></span>
-<span><span class="co">##   - blobs_labels (64,64)</span></span>
-<span><span class="co">##   - blobs_multiscale_labels (64,64)</span></span>
+<span><span class="co">## - images(2): blobs_image blobs_multiscale_image</span></span>
+<span><span class="co">## - labels(2): blobs_labels blobs_multiscale_labels</span></span>
 <span><span class="co">## - points(1):</span></span>
 <span><span class="co">##   - blobs_points (200)</span></span>
 <span><span class="co">## - shapes(3):</span></span>
@@ -304,7 +305,7 @@ using the <code><a href="../reference/scalebar.html">scalebar()</a></code> funct
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<pre><code><span><span class="co">## R Under development (unstable) (2026-10-14 r90673)</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2026-10-20 r90728)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">## Running under: Ubuntu 24.04.5 LTS</span></span>
 <span><span class="co">## </span></span>
@@ -325,7 +326,7 @@ using the <code><a href="../reference/scalebar.html">scalebar()</a></code> funct
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] SpatialData.plot_0.99.10 spatialdataR_0.99.45     ggnewscale_0.5.2        </span></span>
+<span><span class="co">## [1] SpatialData.plot_0.99.12 spatialdataR_0.99.47     ggnewscale_0.5.2        </span></span>
 <span><span class="co">## [4] patchwork_1.3.2          ggplot2_4.0.3            BiocStyle_2.41.0        </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
@@ -374,7 +375,7 @@ using the <code><a href="../reference/scalebar.html">scalebar()</a></code> funct
 <span><span class="co">## [85] paws.common_0.9.0           bslib_0.12.0               </span></span>
 <span><span class="co">## [87] class_7.3-24                uuid_1.2-2                 </span></span>
 <span><span class="co">## [89] Rcpp_1.1.2                  SparseArray_1.13.4         </span></span>
-<span><span class="co">## [91] anndataR_1.3.2              xfun_0.61                  </span></span>
+<span><span class="co">## [91] anndataR_1.3.2              xfun_0.62                  </span></span>
 <span><span class="co">## [93] fs_2.1.0                    MatrixGenerics_1.25.0      </span></span>
 <span><span class="co">## [95] pkgconfig_2.0.3</span></span></code></pre>
 </div>

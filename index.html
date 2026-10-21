@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">SpatialData.plot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.12</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,20 +56,18 @@
 <code>SpatialData.plot</code><a class="anchor" aria-label="anchor" href="#spatialdataplot"></a>
 </h1></div>
 <p><a href="https://github.com/HelenaLC/SpatialData.plot/actions/workflows/r-universe.yaml" class="external-link"><img src="https://github.com/HelenaLC/SpatialData.plot/actions/workflows/r-universe.yaml/badge.svg?branch=main&amp;event=push" alt="R-universe"></a></p>
-<p>Visualization capabilities for <code>SpatialData</code> object elements from the <code>spatialdataR</code>: an R interface to Python’s <a href="https://spatialdata.scverse.org" class="external-link">spatialdata</a> framework (<a href="https://doi.org/10.1038/s41592-024-02212-x" class="external-link">Marconato et al. (2024)</a>).</p>
-<blockquote>
-<p><a href="https://helenalc.github.io/SpatialData.plot/articles/SpatialData.plot.html" class="external-link">DEMO</a></p>
-</blockquote>
+<p><code>SpatialData.plot</code> is one of several companion packages to <code>spatialdataR</code>, an R interface to scverse/Python’s <a href="https://spatialdata.scverse.org" class="external-link">spatialdata</a> framework (<a href="https://doi.org/10.1038/s41592-024-02212-x" class="external-link">Marconato et al. (2024)</a>), providing a visualization suit for <code>SpatialData</code> objects in <code>ggplot2</code>-style. This allows layering of elements into composite plots using <code>+</code>, where each layer can be customized using familiar aesthetics (e.g., <code>fill</code> or <code>size</code>).</p>
 <div class="section level2">
 <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
 </h2>
 <ul>
+<li><strong><a href="https://helenalc.github.io/SpatialData.plot" class="external-link">SpatialData.plot</a>: visualization.</strong></li>
 <li>
 <a href="https://helenalc.github.io/spatialdataR" class="external-link">SpatialData class</a> documentation.</li>
 <li>
 <a href="https://helenalc.github.io/SpatialData.demo" class="external-link">SpatialData.demo</a>: Biotechnology workflows.</li>
 <li>
-<a href="https://github.com/HelenaLC/SpatialData.data" class="external-link">SpatialData.data</a>: Example <code>SpatialData</code>sets.</li>
+<a href="https://helenalc.github.io/SpatialData.data" class="external-link">SpatialData.data</a>: Example <code>SpatialData</code>sets.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -85,17 +83,46 @@
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
+<p>In order to demonstrate the package’s basic functionality, we here</p>
+<ol style="list-style-type: decimal">
+<li>load a toy dataset from the <code>spatialdataR</code> package</li>
+<li>render one element per layer on top of each other</li>
+</ol>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://helenalc.github.io/spatialdataR" class="external-link">spatialdataR</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HelenaLC/SpatialData.plot" class="external-link">SpatialData.plot</a></span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">zs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"blobs.zarr"</span><span class="op">)</span></span>
 <span><span class="va">zs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="va">zs</span>, package<span class="op">=</span><span class="st">"spatialdataR"</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://helenalc.github.io/spatialdataR/reference/readSpatialData.html" class="external-link">readSpatialData</a></span><span class="op">(</span><span class="va">zs</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; class: SpatialData</span></span>
+<span><span class="co">#&gt; - images(2): blobs_image blobs_multiscale_image</span></span>
+<span><span class="co">#&gt; - labels(2): blobs_labels blobs_multiscale_labels</span></span>
+<span><span class="co">#&gt; - points(1):</span></span>
+<span><span class="co">#&gt;   - blobs_points (200)</span></span>
+<span><span class="co">#&gt; - shapes(3):</span></span>
+<span><span class="co">#&gt;   - blobs_circles (5,circle)</span></span>
+<span><span class="co">#&gt;   - blobs_multipolygons (2,polygon)</span></span>
+<span><span class="co">#&gt;   - blobs_polygons (5,polygon)</span></span>
+<span><span class="co">#&gt; - tables(1):</span></span>
+<span><span class="co">#&gt;   - table (3,10) [blobs_labels]</span></span>
+<span><span class="co">#&gt; coordinate systems(5):</span></span>
+<span><span class="co">#&gt; - global(8): blobs_image blobs_multiscale_image ... blobs_polygons</span></span>
+<span><span class="co">#&gt;   blobs_points</span></span>
+<span><span class="co">#&gt; - scale(1): blobs_labels</span></span>
+<span><span class="co">#&gt; - translation(1): blobs_labels</span></span>
+<span><span class="co">#&gt; - affine(1): blobs_labels</span></span>
+<span><span class="co">#&gt; - sequence(1): blobs_labels</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/plotSpatialData.html">plotSpatialData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/plotImage.html">plotImage</a></span><span class="op">(</span><span class="va">sd</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/plotLabel.html">plotLabel</a></span><span class="op">(</span><span class="va">sd</span>, a<span class="op">=</span><span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/plotShape.html">plotShape</a></span><span class="op">(</span><span class="va">sd</span>, fill<span class="op">=</span><span class="st">"pink"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/plotPoint.html">plotPoint</a></span><span class="op">(</span><span class="va">sd</span>, col<span class="op">=</span><span class="st">"genes"</span>, size<span class="op">=</span><span class="fl">1.2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/plotSpatialData.html">plotSpatialData</a></span><span class="op">(</span><span class="va">sd</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/plotImage.html">plotImage</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/plotLabel.html">plotLabel</a></span><span class="op">(</span>a<span class="op">=</span><span class="fl">2</span><span class="op">/</span><span class="fl">3</span>, pal<span class="op">=</span><span class="st">"gold"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/plotShape.html">plotShape</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"white"</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/plotPoint.html">plotPoint</a></span><span class="op">(</span>col<span class="op">=</span><span class="st">"genes"</span>, size<span class="op">=</span><span class="fl">1</span><span class="op">)</span> </span></code></pre></div>
+<div id="fig-readme">
+<p><img src="reference/figures/README-fig-readme-1.png" id="fig-readme" style="width:66.0%"></p>
+<p>Figure 1</p>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

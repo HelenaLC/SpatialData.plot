@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">SpatialData.plot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.12</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,7 @@
 <span>  j <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  assay <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  as <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"border"</span>, <span class="st">"solid"</span>, <span class="st">"centroid"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -61,16 +62,15 @@
 
 
 <dt id="arg-j">j<a class="anchor" aria-label="anchor" href="#arg-j"></a></dt>
-<dd><p>Index or name of coordinate transformation to use. If <code>NULL</code>,
-the coordinate transformation will be inherited from
-<code><a href="plotSpatialData.html">plotSpatialData()</a></code>.</p></dd>
+<dd><p>Index or name of coordinate system to use.
+If <code>NULL</code>, will be inherited from <code><a href="plotSpatialData.html">plotSpatialData()</a></code>.</p></dd>
 
 
 <dt id="arg-assay">assay<a class="anchor" aria-label="anchor" href="#arg-assay"></a></dt>
-<dd><p>Character string; in case of <code>c</code>
-denoting a row name, specifies which <code>assay</code>
+<dd><p>Index or name of an assay; in case of <code>fill</code> or
+<code>colour</code> denoting a row name, specifies which <code>assay</code>
 data to use (see <code><a href="https://helenalc.github.io/spatialdataR/reference/table-utils.html" class="external-link">getTable</a></code>).
-(ignored when <code>x</code> is a <code>SpatialDataPoint</code>).</p></dd>
+Ignored when <code>x</code> is a <code>SpatialDataPoint</code>.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
@@ -78,14 +78,28 @@ data to use (see <code><a href="https://helenalc.github.io/spatialdataR/referenc
 the object will be inherited from <code><a href="plotSpatialData.html">plotSpatialData()</a></code>.</p></dd>
 
 
+<dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
+<dd><p>Positive integer scalar;
+if not <code>NULL</code>, will randomly sample <code>n</code> points for plotting.
+Use <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> before plotting to get a reproducible subset.</p></dd>
+
+
+<dt id="arg-as">as<a class="anchor" aria-label="anchor" href="#arg-as"></a></dt>
+<dd><p>Character scalar defining how to plot shapes. Must be one of
+<code>"border"</code> (just plot the outline, the default), <code>"solid"</code>
+(plot filled shapes) or <code>"centroid"</code> (just plot a point at the
+coordinates of the centroid of the shape).</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Optional aesthetic arguments passed to <code>geom_sf</code>.</p></dd>
+<dd><p>Optional aesthetic arguments (for example,
+<code>fill</code> or <code>color</code>) passed to <code>geom_sf</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of type <code>sd_shape</code>, which can be added to an
-existing <code>ggplot</code>.</p>
+    <p>An object of type <code>sd_shape</code>,
+which can be added to an existing <code>ggplot</code>.</p>
     </div>
 
     <div class="section level2">
@@ -96,6 +110,7 @@ existing <code>ggplot</code>.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># shapes</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="plotSpatialData.html">plotSpatialData</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using coordinate system 'global'</span>
 <span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="va">p</span> <span class="op">+</span> <span class="fu">plotShape</span><span class="op">(</span>i<span class="op">=</span><span class="st">"blobs_polygons"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Coordinate system already present.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Adding new coordinate system, which will replace the existing one.</span>

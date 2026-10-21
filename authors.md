@@ -23,12 +23,12 @@ Source:
 
 Crowell H, Manukyan A, Gruson H, Soneson C, Stadler M, Carey V (2026).
 *SpatialData.plot: SpatialData visualization*. R package version
-0.99.10, <https://github.com/HelenaLC/SpatialData.plot>.
+0.99.12, <https://github.com/HelenaLC/SpatialData.plot>.
 
     @Manual{,
       title = {SpatialData.plot: SpatialData visualization},
       author = {Helena L. Crowell and Artür Manukyan and Hugo Gruson and Charlotte Soneson and Michael Stadler and Vince Carey},
       year = {2026},
-      note = {R package version 0.99.10},
+      note = {R package version 0.99.12},
       url = {https://github.com/HelenaLC/SpatialData.plot},
     }

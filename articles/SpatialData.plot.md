@@ -58,22 +58,22 @@ as tables.
 **We here demonstrate package functionality using a trivial example
 dataset. For more realistic technology-focused examples, we refer
 readers to the companion [demo
-website](https://helenalc.github.io/SpatialData.demo).**
+website](https://helenalc.github.io/SpatialData.demo).** In particular,
+the *blobs* dataset from `spatialdataR` (provided by the scverse/Python)
+serves to represent all possible types of elements: an `image` (RGB),
+`label` (masks), different `shapes` (circles, multi-/polygons), `points`
+(gene transcripts), and a `table` annotating the `label` element.
 
 ``` r
 
 x <- file.path("extdata", "blobs.zarr")
-x <- system.file(x, package="SpatialData.plot")
+x <- system.file(x, package="spatialdataR")
 (x <- readSpatialData(x))
 ```
 
     ## class: SpatialData
-    ## - images(2):
-    ##   - blobs_image (3,64,64)
-    ##   - blobs_multiscale_image (3,64,64)
-    ## - labels(2):
-    ##   - blobs_labels (64,64)
-    ##   - blobs_multiscale_labels (64,64)
+    ## - images(2): blobs_image blobs_multiscale_image
+    ## - labels(2): blobs_labels blobs_multiscale_labels
     ## - points(1):
     ##   - blobs_points (200)
     ## - shapes(3):
@@ -270,7 +270,7 @@ plotSpatialData(x) +
 
 ## Session info
 
-    ## R Under development (unstable) (2026-10-14 r90673)
+    ## R Under development (unstable) (2026-10-20 r90728)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.5 LTS
     ## 
@@ -291,7 +291,7 @@ plotSpatialData(x) +
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] SpatialData.plot_0.99.10 spatialdataR_0.99.45     ggnewscale_0.5.2        
+    ## [1] SpatialData.plot_0.99.12 spatialdataR_0.99.47     ggnewscale_0.5.2        
     ## [4] patchwork_1.3.2          ggplot2_4.0.3            BiocStyle_2.41.0        
     ## 
     ## loaded via a namespace (and not attached):
@@ -340,6 +340,6 @@ plotSpatialData(x) +
     ## [85] paws.common_0.9.0           bslib_0.12.0               
     ## [87] class_7.3-24                uuid_1.2-2                 
     ## [89] Rcpp_1.1.2                  SparseArray_1.13.4         
-    ## [91] anndataR_1.3.2              xfun_0.61                  
+    ## [91] anndataR_1.3.2              xfun_0.62                  
     ## [93] fs_2.1.0                    MatrixGenerics_1.25.0      
     ## [95] pkgconfig_2.0.3

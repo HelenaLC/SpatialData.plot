@@ -28,8 +28,8 @@ plotLabel(
 
 - j:
 
-  Index or name of coordinate transformation to use. If `NULL`, the
-  coordinate transformation will be inherited from
+  Index or name of coordinate system to use. If `NULL`, will be
+  inherited from
   [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 - k:
@@ -72,7 +72,7 @@ plotLabel(
 - x:
 
   [`SpatialData`](https://helenalc.github.io/spatialdataR/reference/SpatialData.html)
-  object. If `NULL`, the object will be inherited from
+  object. If `NULL`, will be inherited from
   [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 ## Value
@@ -89,6 +89,7 @@ x <- readSpatialData(x)
 
 i <- "blobs_labels"
 p <- plotSpatialData(x)
+#> Using coordinate system 'global'
 
 # simple binary image
 p + plotLabel(i)
@@ -104,11 +105,13 @@ t <- getTable(x, i)
 t$id <- sample(letters, ncol(t))
 table(x) <- t
 plotSpatialData(x) + plotLabel(i=i, c="id")
+#> Using coordinate system 'global'
 
 
 # coloring by 'assay' data
-plotSpatialData(x) + plotLabel(i=i, 
-  c="channel_1_sum", 
+plotSpatialData(x) + plotLabel(i=i,
+  c="channel_1_sum",
   pal=c("lavender", "blue"))
+#> Using coordinate system 'global'
 
 ```

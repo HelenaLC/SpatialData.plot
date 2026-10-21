@@ -10,6 +10,7 @@ plotShape(
   j = NULL,
   assay = 1,
   x = NULL,
+  n = NULL,
   as = c("border", "solid", "centroid"),
   ...
 )
@@ -23,16 +24,16 @@ plotShape(
 
 - j:
 
-  Index or name of coordinate transformation to use. If `NULL`, the
-  coordinate transformation will be inherited from
+  Index or name of coordinate system to use. If `NULL`, will be
+  inherited from
   [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
 - assay:
 
-  Character string; in case of `c` denoting a row name, specifies which
-  `assay` data to use (see
+  Index or name of an assay; in case of `fill` or `colour` denoting a
+  row name, specifies which `assay` data to use (see
   [`getTable`](https://helenalc.github.io/spatialdataR/reference/table-utils.html)).
-  (ignored when `x` is a `SpatialDataPoint`).
+  Ignored when `x` is a `SpatialDataPoint`.
 
 - x:
 
@@ -40,9 +41,24 @@ plotShape(
   object. If `NULL`, the object will be inherited from
   [`plotSpatialData()`](https://HelenaLC.github.io/SpatialData.plot/reference/plotSpatialData.md).
 
+- n:
+
+  Positive integer scalar; if not `NULL`, will randomly sample `n`
+  points for plotting. Use
+  [`set.seed()`](https://rdrr.io/r/base/Random.html) before plotting to
+  get a reproducible subset.
+
+- as:
+
+  Character scalar defining how to plot shapes. Must be one of
+  `"border"` (just plot the outline, the default), `"solid"` (plot
+  filled shapes) or `"centroid"` (just plot a point at the coordinates
+  of the centroid of the shape).
+
 - ...:
 
-  Optional aesthetic arguments passed to `geom_sf`.
+  Optional aesthetic arguments (for example, `fill` or `color`) passed
+  to `geom_sf`.
 
 ## Value
 
@@ -58,6 +74,7 @@ x <- readSpatialData(x)
 
 # shapes
 p <- plotSpatialData(x)
+#> Using coordinate system 'global'
 a <- p + plotShape(i="blobs_polygons")
 #> Coordinate system already present.
 #> ℹ Adding new coordinate system, which will replace the existing one.
