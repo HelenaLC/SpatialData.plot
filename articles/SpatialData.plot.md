@@ -270,7 +270,7 @@ plotSpatialData(x) +
 
 ## Session info
 
-    ## R Under development (unstable) (2026-10-20 r90728)
+    ## R Under development (unstable) (2026-10-26 r90766)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 24.04.5 LTS
     ## 
@@ -299,7 +299,7 @@ plotSpatialData(x) +
     ##  [3] blob_1.3.0                  dplyr_1.2.1                
     ##  [5] farver_2.1.2                R.utils_2.13.0             
     ##  [7] S7_0.2.2                    fastmap_1.2.0              
-    ##  [9] SingleCellExperiment_1.35.2 duckdb_1.5.6               
+    ##  [9] SingleCellExperiment_1.35.2 duckdb_2.0.0               
     ## [11] digest_0.6.39               lifecycle_1.0.5            
     ## [13] sf_1.1-3                    paws.storage_0.11.0        
     ## [15] magrittr_2.0.5              compiler_4.7.0             
@@ -328,7 +328,7 @@ plotSpatialData(x) +
     ## [61] jquerylib_0.1.4             units_1.0-1                
     ## [63] glue_1.8.1                  pkgdown_2.2.1              
     ## [65] ZarrArray_1.1.7             gtable_0.3.6               
-    ## [67] Rarr_2.1.48                 GenomicRanges_1.65.4       
+    ## [67] Rarr_2.1.53                 GenomicRanges_1.65.4       
     ## [69] tibble_3.3.1                pillar_1.11.1              
     ## [71] htmltools_0.5.9             Seqinfo_1.3.2              
     ## [73] graph_1.91.0                dbplyr_2.6.0               
@@ -340,6 +340,6 @@ plotSpatialData(x) +
     ## [85] paws.common_0.9.0           bslib_0.12.0               
     ## [87] class_7.3-24                uuid_1.2-2                 
     ## [89] Rcpp_1.1.2                  SparseArray_1.13.4         
-    ## [91] anndataR_1.3.2              xfun_0.62                  
+    ## [91] anndataR_1.3.3              xfun_0.62                  
     ## [93] fs_2.1.0                    MatrixGenerics_1.25.0      
     ## [95] pkgconfig_2.0.3
