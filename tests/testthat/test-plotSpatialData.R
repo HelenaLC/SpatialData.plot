@@ -23,5 +23,5 @@ test_that("regression test of overlays", {
     
     # ARM macOS has rounding issues. See https://github.com/r-lib/vdiffr/issues/119
     sys_id <- paste0(Sys.info()[c("sysname", "machine")], collapse = "-")
-    vdiffr::expect_doppelganger("overlays", fig, variant = sys_id)
+    vdiffr::expect_doppelganger("overlays", fig, cran = TRUE, variant = sys_id)
 })
