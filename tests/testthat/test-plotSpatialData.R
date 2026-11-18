@@ -21,7 +21,6 @@ test_that("regression test of overlays", {
         p + plotPoint(col="genes") + ggplot2::ggtitle("points"))
     fig <- patchwork::wrap_plots(c(list(all), one), nrow=2)
     
-    # ARM macOS has rounding issues. See https://github.com/r-lib/vdiffr/issues/119
-    sys_id <- paste0(Sys.info()[c("sysname", "machine")], collapse = "-")
-    vdiffr::expect_doppelganger("overlays", fig, cran = TRUE, variant = sys_id)
+    vdiffr::expect_doppelganger("overlays", fig, cran = TRUE,
+        variant = snapshot_variant())
 })
